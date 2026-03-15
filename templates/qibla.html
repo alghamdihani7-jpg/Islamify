@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}أدعية إسلامية | القِبلة{% endblock %}
+
+{% block content %}
+<section class="qibla-hero">
+  <div class="qibla-pattern"></div>
+  <div class="qibla-content">
+    <h1 class="qibla-title anim-fade-down" style="animation-delay:.15s">القِبلة</h1>
+    <p class="qibla-sub anim-fade-down" style="animation-delay:.3s">
+      حدّد اتجاه القبلة من موقعك الحالي بدقة عالية عبر أداة Google
+    </p>
+
+    <div class="qibla-pin anim-fade-up" style="animation-delay:.5s" aria-hidden="true">
+      <div class="qibla-pin-head">
+        <i class="bi bi-kaaba"></i>
+      </div>
+      <div class="qibla-pin-point"></div>
+      <div class="qibla-pin-shadow"></div>
+    </div>
+
+    <a class="qibla-btn anim-fade-up" style="animation-delay:.7s"
+       href="https://qiblafinder.withgoogle.com/" target="_blank" rel="noopener noreferrer">
+      <i class="bi bi-compass"></i> تحديد اتجاه القبلة
+    </a>
+  </div>
+</section>
+{% endblock %}

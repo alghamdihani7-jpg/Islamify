@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}أدعية إسلامية — حصّن يومك بالذكر{% endblock %}
+
+{% block content %}
+<!-- ═══ Hero ═══ -->
+<section class="landing-hero">
+  <div class="landing-hero__pattern"></div>
+  <div class="landing-hero__glow"></div>
+
+  <div class="landing-hero__content">
+    <!-- Ornamental divider -->
+    <div class="landing-hero__ornament anim-fade-in" style="animation-delay:.05s">
+      <span class="landing-hero__ornament-line"></span>
+      <span class="landing-hero__ornament-diamond"></span>
+      <span class="landing-hero__ornament-line"></span>
+    </div>
+
+    <span class="landing-hero__badge anim-fade-down anim-badge-glow" style="animation-delay:.15s">
+      ✦ أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ ✦
+    </span>
+
+    <h1 class="landing-hero__title anim-fade-down" style="animation-delay:.3s">
+      حصّن يومك <span class="landing-hero__title-accent">بالأذكار والأدعية</span>
+    </h1>
+
+    <div class="landing-hero__chips anim-fade-down" style="animation-delay:.65s">
+      <span class="landing-chip"><i class="bi bi-patch-check-fill"></i> موثّق بالمراجع</span>
+      <span class="landing-chip"><i class="bi bi-translate"></i> عربي بالكامل</span>
+      <span class="landing-chip"><i class="bi bi-phone"></i> متوافق مع الجوال</span>
+    </div>
+
+    <a href="#sections" class="landing-hero__scroll anim-fade-in" style="animation-delay:.95s">
+      <i class="bi bi-chevron-double-down"></i>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ Sections Grid ═══ -->
+<section id="sections" class="landing-sections">
+  <div class="row g-3 g-lg-4">
+    {% for card in feature_cards %}
+    <div class="col-6 col-lg-4 anim-fade-up" style="animation-delay:{{ '%.2f'|format(0.06 * loop.index) }}s">
+      <a class="landing-card" href="{{ card.link }}"
+         {% if card.get('external') %}target="_blank" rel="noopener noreferrer"{% endif %}>
+        <div class="landing-card__icon-wrap">
+          <i class="bi {{ card.icon }}"></i>
+        </div>
+        <h3 class="landing-card__title">{{ card.title }}</h3>
+        <p class="landing-card__desc">{{ card.description }}</p>
+        <span class="landing-card__arrow"><i class="bi bi-arrow-left"></i></span>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ═══ Trust ═══ -->
+<p class="landing-trust-line anim-fade-in" style="animation-delay:1.2s">
+  <i class="bi bi-shield-check"></i>
+  {% for note in trust_notes %}
+    {{ note }}{% if not loop.last %} · {% endif %}
+  {% endfor %}
+</p>
+{% endblock %}

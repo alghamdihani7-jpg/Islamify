@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}أدعية إسلامية | Quran{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <h1 class="h3">Quran Collection</h1>
+    <p class="text-secondary mb-0">Search by Surah name (English) or Arabic words.</p>
+</div>
+
+<form class="row g-2 mb-4" method="get">
+    <div class="col-md-8 col-lg-6">
+        <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Example: Al-Baqarah or اللَّه">
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+    {% if query %}
+    <div class="col-auto">
+        <a class="btn btn-outline-secondary" href="{{ url_for('quran') }}">Clear</a>
+    </div>
+    {% endif %}
+</form>
+
+<div class="row g-3">
+    {% for verse in verses %}
+        <div class="col-lg-6">
+            <article class="panel-card rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="h6 m-0">{{ verse.surah_en }} <span class="text-secondary">({{ verse.surah_ar }})</span></h2>
+                    <span class="badge text-bg-light">Ayah {{ verse.ayah }}</span>
+                </div>
+                <p class="arabic-text mb-2">{{ verse.arabic_text }}</p>
+                <p class="mb-0">{{ verse.translation }}</p>
+            </article>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-warning rounded-4">No results found. Try a different keyword.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

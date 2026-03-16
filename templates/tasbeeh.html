@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}أدعية إسلامية | المسبحة الإلكترونية{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+  <h1 class="h3">
+    <span class="header-icon"><i class="bi bi-circle"></i></span>
+    المسبحة الإلكترونية
+  </h1>
+  <p>اختر تسبيحة واضغط على الزرّ أو الجسم للتسبيح</p>
+</div>
+
+{% set skins = ['wood','marble','teal','dark'] %}
+{% set tasbeeh_data = [
+  {"zikr":"سبحان الله","ref":"رواه مسلم","hadith":"أحبُّ الكلامِ إلى اللهِ أربعٌ: سبحانَ اللهِ، والحمدُ للهِ، ولا إلهَ إلا اللهُ، واللهُ أكبرُ."},
+  {"zikr":"الحمد لله","ref":"رواه مسلم","hadith":"الحمدُ للهِ تملأُ الميزان."},
+  {"zikr":"الله أكبر","ref":"رواه أحمد","hadith":"مَن قال اللهُ أكبرُ كُتِبت له عشرون حسنة وحُطّت عنه عشرون سيئة."},
+  {"zikr":"لا إله إلا الله","ref":"رواه الترمذي","hadith":"أفضلُ الذِّكرِ لا إلهَ إلا اللهُ."},
+  {"zikr":"سبحان الله وبحمده","ref":"رواه البخاري ومسلم","hadith":"مَن قال سبحانَ اللهِ وبحمدِه في يومٍ مئةَ مرةٍ حُطّت خطاياه وإن كانت مثلَ زبدِ البحرِ."},
+  {"zikr":"سبحان الله العظيم وبحمده","ref":"رواه الترمذي","hadith":"مَن قال سبحانَ اللهِ العظيمِ وبحمدِه غُرِسَت له نخلةٌ في الجنة."},
+  {"zikr":"لا حول ولا قوة إلا بالله","ref":"رواه البخاري ومسلم","hadith":"كنزٌ من كنوزِ الجنة."},
+  {"zikr":"أستغفر الله","ref":"رواه أبو داود","hadith":"مَن لزِمَ الاستغفارَ جعلَ اللهُ له من كلِّ ضيقٍ مخرجاً ومن كلِّ همٍّ فرجاً."},
+  {"zikr":"اللهم صلِّ على محمد","ref":"رواه مسلم","hadith":"مَن صلّى عليَّ صلاةً صلّى اللهُ عليه بها عشراً."},
+  {"zikr":"حسبي الله لا إله إلا هو","ref":"رواه أبو داود","hadith":"مَن قالها سبعَ مراتٍ حين يُصبح وحين يُمسي كفاهُ اللهُ ما أهمَّه."}
+] %}
+
+<div class="row g-3 g-lg-4">
+  {% for item in tasbeeh_data %}
+  <div class="col-6 col-lg-4">
+    {# .misbaha-card wrapper required by tasbeeh.js #}
+    <div class="misbaha-card" data-id="{{ loop.index0 }}">
+      <div class="misbaha-device misbaha--{{ skins[loop.index0 % 4] }}">
+        <div class="misbaha-screen">
+          <div class="misbaha-digits" id="digits-{{ loop.index0 }}">000</div>
+        </div>
+        <div class="misbaha-btns">
+          <button class="misbaha-btn misbaha-btn-count" data-id="{{ loop.index0 }}">سبّح</button>
+          <button class="misbaha-btn misbaha-btn-reset" data-id="{{ loop.index0 }}">إعادة</button>
+        </div>
+        <div class="misbaha-click-area" data-id="{{ loop.index0 }}">
+          <div class="misbaha-ring"></div>
+        </div>
+      </div>
+      <p class="misbaha-zikr">{{ item.zikr }}</p>
+      <p class="misbaha-hadith">{{ item.hadith }}</p>
+      <small class="misbaha-ref">{{ item.ref }}</small>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{# Toast — structure matches tasbeeh.js expectations #}
+<div id="tasbeehToast" class="tasbeeh-toast" role="alert" aria-live="assertive">
+  <i class="bi bi-check-circle-fill"></i>
+  <span id="toastMsg">ما شاء الله!</span>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/tasbeeh.js') }}"></script>
+{% endblock %}

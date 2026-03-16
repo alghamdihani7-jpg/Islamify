@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}أدعية إسلامية | Prayer Times{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <h1 class="h3">Prayer Times</h1>
+    <p class="text-secondary mb-0">Get today's timings by city and country.</p>
+</div>
+
+<form method="post" class="row g-2 mb-4">
+    <div class="col-md-5 col-lg-4">
+        <input class="form-control" name="city" placeholder="City" value="{{ city }}" required>
+    </div>
+    <div class="col-md-5 col-lg-4">
+        <input class="form-control" name="country" placeholder="Country" value="{{ country }}" required>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" type="submit">Get Times</button>
+    </div>
+</form>
+
+{% if error %}
+    <div class="alert alert-danger rounded-4">{{ error }}</div>
+{% endif %}
+
+{% if result %}
+    <section class="panel-card rounded-4 p-4">
+        <div class="mb-3">
+            <h2 class="h5 mb-1">{{ result.city }}, {{ result.country }}</h2>
+            <small class="text-secondary">{{ result.weekday }} - {{ result.date }}</small>
+        </div>
+        <div class="row g-3">
+            {% for name, time in result.timings.items() %}
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="timing-box p-3 rounded-3 text-center">
+                        <strong class="d-block">{{ name }}</strong>
+                        <span>{{ time }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}أدعية إسلامية | الأذكار والأدعية{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+  <h1 class="h3">
+    <span class="header-icon"><i class="bi bi-journal-bookmark-fill"></i></span>
+    الأذكار والأدعية
+  </h1>
+  <p>تصفّح الأقسام واختر ما تريد</p>
+</div>
+
+<div class="row g-3 g-lg-4">
+  {% if categories %}
+    {% for cat in categories %}
+    <div class="col-lg-4">
+      <div class="panel-card">
+        <h3 class="panel-card__title">{{ cat.title }}</h3>
+        <ol class="panel-card__list">
+          {% for link in cat.links %}
+          <li><a href="{{ link.href }}">{{ link.label }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,6 +1,9 @@
 import os
 import secrets
+import threading
+import time
 from datetime import datetime
+from urllib.request import urlopen
 
 from flask import Flask, render_template, request, g
 from flask_talisman import Talisman
@@ -221,6 +224,30 @@ def tasbeeh():
 @app.route("/qibla")
 def qibla():
     return render_template("qibla.html")
+
+
+@app.route("/health")
+def health():
+    return "OK", 200
+
+
+def keep_alive():
+    """Ping the app every 10 minutes to prevent Render free-tier sleep."""
+    url = os.environ.get("RENDER_EXTERNAL_URL")
+    if not url:
+        return
+    url = f"{url}/health"
+    while True:
+        time.sleep(600)  # 10 minutes
+        try:
+            urlopen(url, timeout=10)
+        except Exception:
+            pass
+
+
+if os.environ.get("RENDER"):
+    t = threading.Thread(target=keep_alive, daemon=True)
+    t.start()
 
 
 if __name__ == "__main__":

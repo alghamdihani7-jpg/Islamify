@@ -11,3 +11,5 @@ services:
         value: "3.12.3"
       - key: RENDER
         value: "true"
+      - key: RENDER_EXTERNAL_URL
+        value: "https://islamify.onrender.com"

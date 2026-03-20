@@ -51,7 +51,7 @@ csp = {
         "cdn.jsdelivr.net",
     ],
     "img-src": "'self' data:",
-    "connect-src": "'self'",
+    "connect-src": "'self' https://api.aladhan.com https://nominatim.openstreetmap.org",
     "frame-src": "'none'",
     "object-src": "'none'",
     "base-uri": "'self'",
@@ -219,6 +219,11 @@ def azkar_laylat_alqadr():
 @app.route("/tasbeeh")
 def tasbeeh():
     return render_template("tasbeeh.html")
+
+
+@app.route("/prayer-times")
+def prayer_times():
+    return render_template("prayer_times.html")
 
 
 @app.route("/qibla")

@@ -2,14 +2,27 @@ services:
   - type: web
     name: islamify
     runtime: python
+
+    # Build and start commands
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 2 --timeout 120
+
+    # Environment variables
     envVars:
+      # Security
       - key: SECRET_KEY
         generateValue: true
+
+      # Python version
       - key: PYTHON_VERSION
         value: "3.12.3"
+
+      # Render-specific variables
       - key: RENDER
         value: "true"
       - key: RENDER_EXTERNAL_URL
         value: "https://islamify.onrender.com"
+
+      # Add more environment variables below as needed
+      # - key: EXAMPLE_VAR
+      #   value: "example_value"

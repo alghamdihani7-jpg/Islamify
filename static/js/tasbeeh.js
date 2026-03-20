@@ -80,7 +80,7 @@
             setTimeout(function () { device.classList.remove('misbaha-pulse'); }, 200);
 
             // Vibrate
-            if (navigator.vibrate) navigator.vibrate(15);
+            if (navigator.vibrate) navigator.vibrate(40);
 
             // Milestones: 33, 100, 500, 1000
             var v = counters[id];

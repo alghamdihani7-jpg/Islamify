@@ -59,12 +59,7 @@ FEATURE_CARDS = [
         "link": "/tasbeeh",
         "icon": "bi-plus-circle",
     },
-    {
-        "title": "أوقات الأذان",
-        "description": "مواقيت الصلاة لمدينتك مع مؤقت تنازلي للصلاة القادمة",
-        "link": "/prayer-times",
-        "icon": "bi-clock",
-    },
+
     {
         "title": "اتجاه القِبلة",
         "description": "يمكنك تحديد اتجاه القِبلة أينما كنت",

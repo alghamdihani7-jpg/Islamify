@@ -50,6 +50,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'prayer_times' %}active{% endif %}"
+               href="{{ url_for('prayer_times') }}">
+              <i class="bi bi-clock"></i> أوقات الأذان
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'qibla' %}active{% endif %}"
                href="{{ url_for('qibla') }}">
               <i class="bi bi-compass"></i> القِبلة

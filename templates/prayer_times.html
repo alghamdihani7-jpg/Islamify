@@ -1,45 +1,64 @@
 {% extends 'base.html' %}
 
-{% block title %}أدعية إسلامية | Prayer Times{% endblock %}
+{% block title %}أدعية إسلامية | أوقات الأذان{% endblock %}
 
 {% block content %}
 <div class="page-header mb-4">
-    <h1 class="h3">Prayer Times</h1>
-    <p class="text-secondary mb-0">Get today's timings by city and country.</p>
+    <h1 class="h3"><span class="header-icon"><i class="bi bi-clock"></i></span> أوقات الأذان</h1>
+    <p class="text-secondary mb-0">مواقيت الصلاة لمدينتك مع مؤقت تنازلي للصلاة القادمة.</p>
 </div>
 
-<form method="post" class="row g-2 mb-4">
-    <div class="col-md-5 col-lg-4">
-        <input class="form-control" name="city" placeholder="City" value="{{ city }}" required>
-    </div>
-    <div class="col-md-5 col-lg-4">
-        <input class="form-control" name="country" placeholder="Country" value="{{ country }}" required>
-    </div>
-    <div class="col-auto">
-        <button class="btn btn-primary" type="submit">Get Times</button>
-    </div>
-</form>
+<!-- Location status -->
+<div id="location-status" class="alert alert-info rounded-4 d-flex align-items-center gap-2 mb-3">
+    <div class="spinner-border spinner-border-sm" role="status"></div>
+    <span>جارٍ تحديد موقعك...</span>
+</div>
 
-{% if error %}
-    <div class="alert alert-danger rounded-4">{{ error }}</div>
-{% endif %}
+<!-- Manual search fallback -->
+<div id="manual-search" class="mb-4" style="display:none;">
+    <p class="text-secondary small mb-2">أو ابحث يدويًا:</p>
+    <div class="row g-2">
+        <div class="col-5">
+            <input class="form-control" id="city-input" placeholder="المدينة" value="">
+        </div>
+        <div class="col-5">
+            <input class="form-control" id="country-input" placeholder="الدولة" value="">
+        </div>
+        <div class="col-2">
+            <button class="btn btn-primary w-100" id="search-btn">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
 
-{% if result %}
-    <section class="panel-card rounded-4 p-4">
-        <div class="mb-3">
-            <h2 class="h5 mb-1">{{ result.city }}, {{ result.country }}</h2>
-            <small class="text-secondary">{{ result.weekday }} - {{ result.date }}</small>
+<!-- Prayer times card -->
+<section id="prayer-card" style="display:none;">
+    <div class="panel-card rounded-4 p-4 mb-3">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+            <div>
+                <h2 class="h5 mb-1" id="city-name"></h2>
+                <small class="text-secondary" id="date-info"></small>
+            </div>
+            <span class="badge bg-primary rounded-pill" id="hijri-date"></span>
         </div>
-        <div class="row g-3">
-            {% for name, time in result.timings.items() %}
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="timing-box p-3 rounded-3 text-center">
-                        <strong class="d-block">{{ name }}</strong>
-                        <span>{{ time }}</span>
-                    </div>
-                </div>
-            {% endfor %}
+
+        <!-- Countdown -->
+        <div class="text-center p-3 rounded-3 mb-3" style="background:var(--surface-2,#1a2332);">
+            <small class="text-secondary d-block mb-1">الصلاة القادمة</small>
+            <h3 class="h4 mb-1" id="next-prayer-name" style="color:var(--teal,#0d7377);"></h3>
+            <div id="countdown" class="h2 fw-bold" style="font-family:monospace;color:var(--text-1,#e8edf3);"></div>
         </div>
-    </section>
-{% endif %}
+
+        <!-- Timings grid -->
+        <div class="row g-3" id="timings-grid"></div>
+    </div>
+</section>
+
+<!-- Error -->
+<div id="error-msg" class="alert alert-danger rounded-4" style="display:none;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/prayer_times.js') }}"></script>
 {% endblock %}

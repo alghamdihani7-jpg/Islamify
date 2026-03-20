@@ -25,6 +25,16 @@
   {% for item in items %}
   <div class="zikr-card {% if loop.index is even %}zikr-card--alt{% endif %}"
        id="zikr-{{ loop.index }}" data-index="{{ loop.index }}" data-target="{{ item['count'] }}">
+    <div class="zikr-card__counter">
+      <button class="counter-btn" data-index="{{ loop.index }}">
+        <span class="counter-value" id="cv-{{ loop.index }}">{{ '%02d' % item['count'] }}</span>
+      </button>
+      <div class="counter-target">{{ '%02d' % item['count'] }}</div>
+      <div class="counter-num">{{ loop.index }}</div>
+      <button class="undo-btn" data-index="{{ loop.index }}" title="تراجع">
+        <i class="bi bi-arrow-counterclockwise"></i>
+      </button>
+    </div>
     <div class="zikr-card__body">
       {% if item.get('prefix') %}
         <p class="zikr-prefix">{{ item['prefix'] }}</p>
@@ -36,16 +46,6 @@
           <span>{{ item['note'] }}</span>
         </div>
       {% endif %}
-    </div>
-    <div class="zikr-card__counter">
-      <button class="counter-btn" data-index="{{ loop.index }}">
-        <span class="counter-value" id="cv-{{ loop.index }}">{{ '%02d' % item['count'] }}</span>
-      </button>
-      <div class="counter-target">{{ '%02d' % item['count'] }}</div>
-      <div class="counter-num">{{ loop.index }}</div>
-      <button class="undo-btn" data-index="{{ loop.index }}" title="تراجع">
-        <i class="bi bi-arrow-counterclockwise"></i>
-      </button>
     </div>
   </div>
   {% endfor %}

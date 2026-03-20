@@ -49,7 +49,12 @@
             if (remaining > 0) {
                 remaining--;
                 counters[idx] = remaining;
-                if (navigator.vibrate) navigator.vibrate(15);
+                if (navigator.vibrate) navigator.vibrate(40);
+
+                // Pulse animation
+                this.classList.remove('is-pulsing');
+                void this.offsetWidth;
+                this.classList.add('is-pulsing');
             }
 
             renderAll();

@@ -221,11 +221,6 @@ def tasbeeh():
     return render_template("tasbeeh.html")
 
 
-@app.route("/prayer-times")
-def prayer_times():
-    return render_template("prayer_times.html")
-
-
 @app.route("/qibla")
 def qibla():
     return render_template("qibla.html")

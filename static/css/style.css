@@ -1403,6 +1403,26 @@ a:hover { color: var(--teal-dark); }
   font-weight: 600;
 }
 
+/* Inline Umm Al-Qura pill — header */
+.pt-uq-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  background: var(--teal-pale);
+  color: var(--teal-dark);
+  border: 1px solid rgba(13,115,119,.18);
+  border-radius: var(--r-pill);
+  padding: .28rem .85rem;
+  font-size: .82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pt-uq-pill i {
+  color: var(--teal);
+  font-size: .85rem;
+}
+
 /* Countdown container */
 .pt-countdown {
   background: var(--teal-ghost);

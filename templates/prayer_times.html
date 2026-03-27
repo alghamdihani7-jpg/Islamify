@@ -4,14 +4,9 @@
 
 {% block content %}
 <div class="page-header mb-3">
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-    <h1 class="h3 mb-0">
-      <span class="header-icon"><i class="bi bi-clock"></i></span> أوقات الصلاة
-    </h1>
-    <span class="badge pt-badge-uq rounded-pill">
-      <i class="bi bi-patch-check-fill"></i> طريقة حساب أم القرى
-    </span>
-  </div>
+  <h1 class="h3 mb-1">
+    <span class="header-icon"><i class="bi bi-clock"></i></span> أوقات الصلاة
+  </h1>
   <p class="text-secondary mb-0 mt-1">مواقيت الصلوات الخمس مع عداد تنازلي للصلاة القادمة</p>
 </div>
 
@@ -62,7 +57,7 @@
       <div class="d-flex flex-column align-items-end gap-1">
         <span class="badge bg-primary rounded-pill" id="hijri-date"></span>
         <span class="badge pt-badge-uq rounded-pill">
-          <i class="bi bi-patch-check-fill"></i> أم القرى
+          <i class="bi bi-patch-check-fill"></i> تقويم أم القرى
         </span>
       </div>
     </div>
@@ -87,7 +82,16 @@
 <!-- ─── Error alert ─── -->
 <div id="error-msg" class="alert alert-danger rounded-4 mt-3" role="alert" style="display:none;"></div>
 
+<!-- ─── Source attribution ─── -->
+<div class="text-center mt-4 mb-2">
+  <span class="pt-uq-pill">
+    <i class="bi bi-patch-check-fill"></i> المصدر تقويم أم القرى
+  </span>
+</div>
+
 {% endblock %}
+
+{% block footer %}{% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/prayer_times.js') }}"></script>

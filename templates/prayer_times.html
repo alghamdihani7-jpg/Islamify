@@ -11,57 +11,180 @@
 </div>
 
 <!-- ─── Loading state ─── -->
-<div id="loading-state" class="pt-intro text-center py-4">
+<div id="loading-state" class="pt-intro">
 
-  <!-- Sky canvas -->
-  <div class="pt-sky" aria-hidden="true">
-    <!-- Stars -->
-    <span class="pt-star" style="top:12%;left:15%;animation-delay:0s"></span>
-    <span class="pt-star" style="top:20%;left:72%;animation-delay:.6s"></span>
-    <span class="pt-star" style="top:8%;left:48%;animation-delay:1.1s"></span>
-    <span class="pt-star" style="top:30%;left:28%;animation-delay:.3s"></span>
-    <span class="pt-star" style="top:18%;left:85%;animation-delay:.9s"></span>
-    <span class="pt-star" style="top:35%;left:58%;animation-delay:1.5s"></span>
-    <span class="pt-star" style="top:6%;left:62%;animation-delay:.4s"></span>
+  <!-- Night-sky scene -->
+  <div class="pt-scene" aria-hidden="true">
+
+    <!-- Twinkling stars (3 sizes) -->
+    <span class="pt-star pt-star--sm" style="top:9%;left:7%;--dur:2.1s;--del:.0s"></span>
+    <span class="pt-star pt-star--md" style="top:17%;left:21%;--dur:1.9s;--del:.5s"></span>
+    <span class="pt-star pt-star--sm" style="top:7%;left:38%;--dur:2.7s;--del:.2s"></span>
+    <span class="pt-star pt-star--lg" style="top:13%;left:53%;--dur:3.0s;--del:.8s"></span>
+    <span class="pt-star pt-star--sm" style="top:22%;left:67%;--dur:2.3s;--del:1.2s"></span>
+    <span class="pt-star pt-star--md" style="top:6%;left:78%;--dur:2.8s;--del:.3s"></span>
+    <span class="pt-star pt-star--sm" style="top:31%;left:11%;--dur:1.8s;--del:.7s"></span>
+    <span class="pt-star pt-star--lg" style="top:36%;left:31%;--dur:2.5s;--del:1.5s"></span>
+    <span class="pt-star pt-star--sm" style="top:27%;left:49%;--dur:2.2s;--del:.1s"></span>
+    <span class="pt-star pt-star--md" style="top:15%;left:88%;--dur:3.2s;--del:.9s"></span>
+    <span class="pt-star pt-star--sm" style="top:41%;left:72%;--dur:2.0s;--del:.6s"></span>
+    <span class="pt-star pt-star--md" style="top:4%;left:59%;--dur:2.6s;--del:1.1s"></span>
+
+    <!-- Shooting star -->
+    <div class="pt-shoot"></div>
 
     <!-- Crescent moon -->
-    <div class="pt-crescent" aria-hidden="true"></div>
+    <div class="pt-moon-wrap">
+      <div class="pt-moon-halo"></div>
+      <div class="pt-moon"></div>
+    </div>
 
-    <!-- Mosque silhouette -->
-    <svg class="pt-mosque" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- main dome -->
-      <ellipse cx="160" cy="80" rx="52" ry="52" />
-      <rect x="108" y="80" width="104" height="50" />
-      <!-- side domes -->
-      <ellipse cx="90" cy="92" rx="30" ry="30" />
-      <rect x="60" y="92" width="60" height="38" />
-      <ellipse cx="230" cy="92" rx="30" ry="30" />
-      <rect x="200" y="92" width="60" height="38" />
-      <!-- minarets -->
-      <rect x="30" y="50" width="18" height="80" rx="4" />
-      <polygon points="39,28 31,52 47,52" />
-      <rect x="272" y="50" width="18" height="80" rx="4" />
-      <polygon points="281,28 273,52 289,52" />
-      <!-- door arch -->
-      <path d="M145 130 Q160 108 175 130" fill="var(--teal-ghost)" />
-      <!-- windows -->
-      <ellipse cx="128" cy="95" rx="7" ry="9" fill="var(--teal-ghost)" />
-      <ellipse cx="192" cy="95" rx="7" ry="9" fill="var(--teal-ghost)" />
-      <!-- ground line -->
-      <rect x="0" y="128" width="320" height="4" rx="2" />
+    <!-- Mosque SVG silhouette — detailed Kaaba-style grand mosque -->
+    <svg class="pt-mosque" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g class="pt-mosque-body" fill="currentColor">
+
+        <!-- ══ FAR-LEFT MINARET (tallest) ══ -->
+        <!-- spire -->
+        <polygon points="28,8 22,30 34,30"/>
+        <!-- upper balcony -->
+        <rect x="19" y="29" width="18" height="4" rx="2"/>
+        <!-- upper shaft -->
+        <rect x="23" y="33" width="10" height="28" rx="2"/>
+        <!-- mid balcony -->
+        <rect x="18" y="60" width="20" height="4" rx="2"/>
+        <!-- lower shaft -->
+        <rect x="23" y="64" width="10" height="90" rx="2"/>
+        <!-- base -->
+        <rect x="16" y="150" width="24" height="50" rx="2"/>
+
+        <!-- ══ FAR-RIGHT MINARET (tallest) ══ -->
+        <polygon points="452,8 446,30 458,30"/>
+        <rect x="443" y="29" width="18" height="4" rx="2"/>
+        <rect x="447" y="33" width="10" height="28" rx="2"/>
+        <rect x="442" y="60" width="20" height="4" rx="2"/>
+        <rect x="447" y="64" width="10" height="90" rx="2"/>
+        <rect x="440" y="150" width="24" height="50" rx="2"/>
+
+        <!-- ══ INNER-LEFT MINARET (shorter) ══ -->
+        <polygon points="95,38 90,55 100,55"/>
+        <rect x="87" y="54" width="16" height="3" rx="1.5"/>
+        <rect x="91" y="57" width="8" height="22" rx="2"/>
+        <rect x="86" y="78" width="18" height="3" rx="1.5"/>
+        <rect x="91" y="81" width="8" height="69" rx="2"/>
+        <rect x="84" y="146" width="22" height="54" rx="2"/>
+
+        <!-- ══ INNER-RIGHT MINARET (shorter) ══ -->
+        <polygon points="385,38 380,55 390,55"/>
+        <rect x="377" y="54" width="16" height="3" rx="1.5"/>
+        <rect x="381" y="57" width="8" height="22" rx="2"/>
+        <rect x="376" y="78" width="18" height="3" rx="1.5"/>
+        <rect x="381" y="81" width="8" height="69" rx="2"/>
+        <rect x="374" y="146" width="22" height="54" rx="2"/>
+
+        <!-- ══ OUTER WING BUILDINGS ══ -->
+        <!-- left wing -->
+        <rect x="50" y="130" width="55" height="70" rx="3"/>
+        <!-- left wing small dome -->
+        <path d="M50 131 A27.5 22 0 0 1 105 131 Z"/>
+        <!-- right wing -->
+        <rect x="375" y="130" width="55" height="70" rx="3"/>
+        <!-- right wing small dome -->
+        <path d="M375 131 A27.5 22 0 0 1 430 131 Z"/>
+
+        <!-- ══ SIDE COLONNADES ══ -->
+        <rect x="105" y="138" width="95" height="62" rx="2"/>
+        <!-- side arcade arches left -->
+        <path d="M108 138 Q116 127 124 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M124 138 Q132 127 140 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M140 138 Q148 127 156 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M156 138 Q164 127 172 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M172 138 Q180 127 188 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M188 138 Q196 127 200 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+        <rect x="280" y="138" width="95" height="62" rx="2"/>
+        <!-- side arcade arches right -->
+        <path d="M280 138 Q288 127 296 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M296 138 Q304 127 312 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M312 138 Q320 127 328 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M328 138 Q336 127 344 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M344 138 Q352 127 360 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M360 138 Q368 127 372 138" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+        <!-- ══ SIDE DOMES (medium) ══ -->
+        <!-- left side dome -->
+        <path d="M130 118 A38 30 0 0 1 206 118 Z"/>
+        <rect x="130" y="116" width="76" height="84" rx="2"/>
+        <!-- right side dome -->
+        <path d="M274 118 A38 30 0 0 1 350 118 Z"/>
+        <rect x="274" y="116" width="76" height="84" rx="2"/>
+
+        <!-- ══ MAIN CENTRAL BUILDING ══ -->
+        <rect x="165" y="122" width="150" height="78" rx="2"/>
+
+        <!-- ══ MAIN DOME ══ -->
+        <!-- outer dome curve — tall ogee shape -->
+        <path d="M176 123
+                 C176 80, 200 55, 240 50
+                 C280 55, 304 80, 304 123 Z"/>
+        <!-- inner dome ridge line -->
+        <path d="M200 123 C200 90 220 72 240 68 C260 72 280 90 280 123"
+              fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/>
+
+        <!-- ══ FINIAL ON MAIN DOME ══ -->
+        <rect x="237" y="42" width="6" height="14" rx="2"/>
+        <polygon points="240,36 236,43 244,43"/>
+
+        <!-- ══ GROUND / PLAZA STRIP ══ -->
+        <rect x="0" y="197" width="480" height="3" rx="1.5"/>
+      </g>
+
+      <!-- ── Warm door glow ── -->
+      <path d="M226 200 L226 168 A14 14 0 0 0 254 168 L254 200 Z"
+            fill="rgba(232,200,112,0.10)"/>
+
+      <!-- ── Glowing pointed arch windows — main building ── -->
+      <!-- left side pair -->
+      <path class="pt-win" d="M175 155 L175 140 Q182 130 189 140 L189 155 Z" rx="3" style="animation-delay:.1s"/>
+      <path class="pt-win" d="M194 155 L194 140 Q201 130 208 140 L208 155 Z" rx="3" style="animation-delay:.8s"/>
+      <!-- centre trio -->
+      <path class="pt-win" d="M219 153 L219 136 Q227 124 235 136 L235 153 Z" style="animation-delay:.3s"/>
+      <path class="pt-win" d="M245 153 L245 136 Q253 124 261 136 L261 153 Z" style="animation-delay:.0s"/>
+      <!-- right side pair -->
+      <path class="pt-win" d="M272 155 L272 140 Q279 130 286 140 L286 155 Z" style="animation-delay:.6s"/>
+      <path class="pt-win" d="M291 155 L291 140 Q298 130 305 140 L305 155 Z" style="animation-delay:1.1s"/>
+      <!-- side building windows -->
+      <ellipse class="pt-win" cx="168" cy="138" rx="6"  ry="9"  style="animation-delay:.5s"/>
+      <ellipse class="pt-win" cx="312" cy="138" rx="6"  ry="9"  style="animation-delay:.2s"/>
+
+      <!-- ── Minaret beacons ── -->
+      <circle class="pt-beacon" cx="28"  cy="11" r="5" style="animation-delay:.0s"/>
+      <circle class="pt-beacon" cx="452" cy="11" r="5" style="animation-delay:.7s"/>
+      <circle class="pt-beacon" cx="95"  cy="41" r="4" style="animation-delay:.4s"/>
+      <circle class="pt-beacon" cx="385" cy="41" r="4" style="animation-delay:1.0s"/>
     </svg>
 
-    <!-- Pulsing glow beneath mosque -->
-    <div class="pt-glow" aria-hidden="true"></div>
+    <!-- Floating golden particles -->
+    <span class="pt-particle" style="left:44%;bottom:30%;--pd:3.8s;--pdel:.0s;--px:7px"></span>
+    <span class="pt-particle" style="left:51%;bottom:36%;--pd:4.5s;--pdel:1.2s;--px:-8px"></span>
+    <span class="pt-particle" style="left:58%;bottom:28%;--pd:3.2s;--pdel:.6s;--px:5px"></span>
+    <span class="pt-particle" style="left:31%;bottom:23%;--pd:5.0s;--pdel:2.0s;--px:6px"></span>
+    <span class="pt-particle" style="left:67%;bottom:25%;--pd:4.2s;--pdel:.3s;--px:-6px"></span>
+
+    <!-- Ground glow -->
+    <div class="pt-ground-glow"></div>
   </div>
 
-  <!-- Text -->
+  <!-- Ring spinner -->
+  <div class="pt-ring-wrap" role="status" aria-label="جارٍ التحميل">
+    <svg class="pt-ring" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle class="pt-ring-track" cx="30" cy="30" r="26"/>
+      <circle class="pt-ring-arc"   cx="30" cy="30" r="26"/>
+    </svg>
+    <i class="bi bi-moon-stars-fill pt-ring-icon" aria-hidden="true"></i>
+  </div>
+
+  <!-- Label -->
   <p class="pt-loading-label" id="loading-label">جارٍ تحديد موقعك تلقائياً…</p>
-
-  <!-- Bouncing dots -->
-  <div class="pt-dots" aria-hidden="true">
-    <span></span><span></span><span></span>
-  </div>
 </div>
 
 <!-- ─── Search / change city (sits above the card) ─── -->

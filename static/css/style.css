@@ -1385,6 +1385,219 @@ a:hover { color: var(--teal-dark); }
 }
 
 
+/* ─── §16b  PRAYER TIMES ──────────────────────────────── */
+
+/* Loading spinner */
+.pt-spinner {
+  display: inline-block;
+  width: 2.8rem;
+  height: 2.8rem;
+  color: var(--teal);
+}
+
+/* Umm Al-Qura badge */
+.pt-badge-uq {
+  background: var(--teal-pale);
+  color: var(--teal-dark);
+  font-size: .72rem;
+  font-weight: 600;
+}
+
+/* Countdown container */
+.pt-countdown {
+  background: var(--teal-ghost);
+  border: 1px solid var(--teal-pale);
+}
+
+/* Large monospace countdown digits */
+.pt-countdown-timer {
+  font-family: "Readex Pro", monospace;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: .06em;
+  line-height: 1;
+}
+
+/* Flash animation when adhan fires */
+@keyframes ptAdhanFlash {
+  0%, 100% { color: var(--text); }
+  25%, 75%  { color: var(--teal); }
+  50%       { color: var(--gold); text-shadow: 0 0 18px rgba(200,153,62,.6); }
+}
+.pt-adhan-flash {
+  animation: ptAdhanFlash 1.8s ease-in-out;
+}
+
+/* Timing boxes grid */
+.timing-box {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r);
+  padding: .9rem .4rem;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .15rem;
+  cursor: default;
+  transition: border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              background var(--dur) var(--ease);
+}
+
+/* Highlight the upcoming prayer */
+.timing-box--next {
+  border-color: var(--teal);
+  background: var(--teal-ghost);
+  box-shadow: 0 0 0 1px var(--teal), 0 0 16px rgba(13,115,119,.18);
+}
+.timing-box--next .timing-box__icon {
+  color: var(--teal-dark);
+}
+
+.timing-box__icon {
+  font-size: 1.3rem;
+  color: var(--teal);
+  transition: color var(--dur) var(--ease);
+}
+
+.timing-box strong {
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.timing-time {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--teal);
+  font-family: "Readex Pro", monospace;
+  letter-spacing: .04em;
+}
+
+
+/* ─── §16c  ADHAN PAGE ─────────────────────────────────── */
+
+.adhan-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+
+.adhan-phrase-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--sh-sm);
+  transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.adhan-phrase-card:hover {
+  box-shadow: var(--sh-md);
+  border-color: var(--teal-pale);
+}
+
+.adhan-phrase-card--last {
+  border-color: var(--teal);
+  background: var(--teal-ghost);
+}
+
+.adhan-phrase-card--fajr {
+  border-color: var(--gold);
+  background: var(--gold-ghost);
+}
+
+.adhan-phrase-card--reply {
+  background: var(--teal-ghost);
+}
+
+.adhan-phrase-count {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  background: var(--teal-pale);
+  border-radius: var(--r);
+  padding: .5rem .3rem;
+  color: var(--teal-dark);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.adhan-phrase-count span {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--teal);
+  font-family: "Readex Pro", monospace;
+}
+
+.adhan-phrase-count small {
+  font-size: .62rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: .02em;
+}
+
+.adhan-phrase-count--muadhin {
+  background: rgba(13,115,119,.1);
+}
+
+.adhan-phrase-count--reply {
+  background: rgba(13,115,119,.06);
+}
+
+.adhan-badge-muadhin,
+.adhan-badge-reply {
+  font-size: 1.1rem;
+  color: var(--teal);
+}
+
+.adhan-phrase-body {
+  flex: 1;
+}
+
+.adhan-text {
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: .2rem;
+  line-height: 1.6;
+  font-family: "Readex Pro", "Noto Naskh Arabic", serif;
+}
+
+.adhan-transliteration {
+  font-size: .78rem;
+  color: var(--text-muted);
+  margin-bottom: .2rem;
+  font-style: italic;
+}
+
+.adhan-note {
+  font-size: .75rem;
+  color: var(--text-soft);
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.adhan-source {
+  font-size: .75rem;
+  color: var(--teal);
+  margin-bottom: 0;
+}
+
 /* ─── §17  RESPONSIVE — Tablets ────────────────────────── */
 
 @media (max-width:991.98px) {

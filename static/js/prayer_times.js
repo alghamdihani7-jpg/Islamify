@@ -19,6 +19,7 @@
         Isha:    'bi-moon-stars-fill'
     };
     var PRAYER_ORDER = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    var ADHAN_URL     = '/static/files/adhan_mecca.mp3';
 
     /* ════════ element helper ════════ */
     function g(id) { return document.getElementById(id); }
@@ -29,6 +30,7 @@
     var lastFiredKey      = null;   // "Key|DateString" prevents double-fire
     var adhanEnabled      = localStorage.getItem('adhanNotify') === '1';
     var audioCtx          = null;
+    var adhanAudio        = null;   // HTML5 Audio element for Mecca adhan MP3
     var reqId             = 0;      // incremented on every new async request;
                                     // callbacks check their own copy and bail
                                     // if a newer request has started (race-condition fix)
@@ -132,29 +134,17 @@
         ], 0.13);
     }
 
-    /* Full adhan notification melody (~9 s pentatonic calling phrase) */
+    /* Full Mecca adhan — plays the MP3 file */
     function playAdhanMelody() {
-        playSynthNotes([
-            // Phrase 1 — ascending
-            [392.00, 0.00, 0.50],   // G4
-            [440.00, 0.56, 0.45],   // A4
-            [523.25, 1.07, 0.50],   // C5
-            [587.33, 1.63, 0.55],   // D5
-            [659.25, 2.24, 0.72],   // E5  (hold)
-            // resolve down
-            [587.33, 3.10, 0.42],   // D5
-            [523.25, 3.58, 0.50],   // C5
-            [440.00, 4.14, 0.50],   // A4
-            [392.00, 4.70, 0.92],   // G4  (long)
-            // Phrase 2 — restate higher
-            [523.25, 5.85, 0.46],   // C5
-            [659.25, 6.37, 0.50],   // E5
-            [783.99, 6.93, 0.56],   // G5
-            [880.00, 7.55, 0.88],   // A5  (hold)
-            // final resolve
-            [659.25, 8.58, 0.46],   // E5
-            [523.25, 9.10, 1.25],   // C5  (final)
-        ], 0.18);
+        try {
+            if (!adhanAudio) {
+                adhanAudio = new Audio(ADHAN_URL);
+                adhanAudio.preload = 'auto';
+            }
+            adhanAudio.currentTime = 0;
+            adhanAudio.volume = 0.95;
+            adhanAudio.play().catch(function () {});
+        } catch (e) {}
     }
 
     function triggerAdhan() {
@@ -417,7 +407,29 @@
         adhanEnabled = !adhanEnabled;
         localStorage.setItem('adhanNotify', adhanEnabled ? '1' : '0');
         updateBellBtn();
-        if (adhanEnabled) playPreview(); // short tone so user confirms audio works
+        if (adhanEnabled) {
+            // preload the audio file and play a short 3-second preview
+            if (!adhanAudio) {
+                adhanAudio = new Audio(ADHAN_URL);
+                adhanAudio.preload = 'auto';
+            }
+            adhanAudio.currentTime = 0;
+            adhanAudio.volume = 0.95;
+            adhanAudio.play().catch(function () { playPreview(); });
+            // stop preview after 3 seconds
+            setTimeout(function () {
+                if (adhanAudio && !adhanAudio.paused) {
+                    adhanAudio.pause();
+                    adhanAudio.currentTime = 0;
+                }
+            }, 3000);
+        } else {
+            // stop if currently playing
+            if (adhanAudio && !adhanAudio.paused) {
+                adhanAudio.pause();
+                adhanAudio.currentTime = 0;
+            }
+        }
     });
 
     g('change-city-btn').addEventListener('click', function () {

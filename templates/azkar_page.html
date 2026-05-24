@@ -39,7 +39,7 @@
       {% if item.get('prefix') %}
         <p class="zikr-prefix">{{ item['prefix'] }}</p>
       {% endif %}
-      <p class="zikr-text">{{ item['text'] }}</p>
+      <p class="zikr-text">{{ item['text'] | e | replace('\n', '<br>') | safe }}</p>
       {% if item.get('note') %}
         <div class="zikr-note">
           <i class="bi bi-info-circle-fill"></i>

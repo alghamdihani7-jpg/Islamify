@@ -10,7 +10,7 @@ from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-from data.content import FEATURE_CARDS, TRUST_NOTES
+from data.content import FEATURE_CARDS, TRUST_NOTES, ARAFAT_DUAS
 from data.morning_azkar import MORNING_AZKAR
 from data.evening_azkar import EVENING_AZKAR
 from data.post_salah_azkar import POST_SALAH_AZKAR
@@ -213,6 +213,16 @@ def azkar_laylat_alqadr():
         title="دعاء ليلة القدر",
         items=LAYLAT_ALQADR_DUAS,
         storage_key="azkar_laylat_alqadr_v1",
+    )
+
+
+@app.route("/azkar/arafah")
+def azkar_arafah():
+    return render_template(
+        "azkar_page.html",
+        title="دعاء يوم عرفة",
+        items=ARAFAT_DUAS,
+        storage_key="azkar_arafah_v1",
     )
 
 

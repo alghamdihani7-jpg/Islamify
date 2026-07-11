@@ -20,6 +20,7 @@ from data.prophet_duas import PROPHET_DUAS
 from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
+from data.night_prayer_duas import NIGHT_PRAYER_DUAS
 
 app = Flask(__name__)
 
@@ -225,6 +226,16 @@ def azkar_arafah():
         storage_key="azkar_arafah_v1",
     )
 
+
+
+@app.route("/azkar/night-prayer")
+def azkar_night_prayer():
+    return render_template(
+        "azkar_page.html",
+        title="دعاء قيام الليل",
+        items=NIGHT_PRAYER_DUAS,
+        storage_key="azkar_night_prayer_v1",
+    )
 
 @app.route("/prayer-times")
 def prayer_times():

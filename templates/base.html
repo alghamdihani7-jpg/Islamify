@@ -78,8 +78,94 @@
   <!-- ═══ Footer ═══ -->
   {% block footer %}
   <footer class="app-footer">
-    <div class="container">
-      <div class="footer-inner">
+    <div class="footer-top-gradient"></div>
+    
+    <div class="container-fluid footer-container">
+      <div class="container">
+        
+        <!-- Brand Section -->
+        <div class="row footer-brand-section mb-5 pb-4">
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+            <div class="footer-brand-card">
+              <div class="brand-icon">
+                <i class="bi bi-moon-stars"></i>
+              </div>
+              <h3 class="brand-title">أدعية إسلامية</h3>
+              <p class="brand-description">
+                منصة متخصصة في جمع الأدعية والأذكار الإسلامية الموثقة بأدلة شرعية قوية.
+              </p>
+              <div class="social-links-footer">
+                <a href="#" class="social-link-icon" title="Facebook">
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a href="#" class="social-link-icon" title="Twitter">
+                  <i class="bi bi-twitter"></i>
+                </a>
+                <a href="#" class="social-link-icon" title="Instagram">
+                  <i class="bi bi-instagram"></i>
+                </a>
+                <a href="#" class="social-link-icon" title="YouTube">
+                  <i class="bi bi-youtube"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+            <div class="footer-links-column">
+              <h4 class="footer-column-title">الروابط</h4>
+              <ul class="footer-links-list">
+                <li><a href="{{ url_for('home') }}" class="footer-link">الرئيسية</a></li>
+                <li><a href="{{ url_for('tasbeeh') }}" class="footer-link">المسبحة</a></li>
+                <li><a href="{{ url_for('prayer_times') }}" class="footer-link">مواقيت الصلاة</a></li>
+                <li><a href="{{ url_for('qibla') }}" class="footer-link">القِبلة</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+            <div class="footer-links-column">
+              <h4 class="footer-column-title">المميزات</h4>
+              <ul class="footer-links-list">
+                <li><a href="#" class="footer-link">أدعية موثقة</a></li>
+                <li><a href="#" class="footer-link">مسبحة ذكية</a></li>
+                <li><a href="#" class="footer-link">مواقيت دقيقة</a></li>
+                <li><a href="#" class="footer-link">واجهة سهلة</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="col-lg-2 col-md-6">
+            <div class="footer-links-column">
+              <h4 class="footer-column-title">التواصل</h4>
+              <ul class="footer-links-list">
+                <li><a href="mailto:info@islamify.com" class="footer-link">البريد الإلكتروني</a></li>
+                <li><a href="#" class="footer-link">نموذج التواصل</a></li>
+                <li><a href="#" class="footer-link">الدعم الفني</a></li>
+                <li><a href="#" class="footer-link">الأسئلة الشائعة</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-divider"></div>
+        <div class="row footer-bottom-section py-4">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <p class="footer-copyright">
+              © 2026 أدعية إسلامية • جميع الحقوق محفوظة
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="footer-tagline">
+              <i class="bi bi-heart-fill"></i> صُنع بـ ❤️ لنشر الدعوة الإسلامية
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   </footer>

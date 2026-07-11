@@ -249,11 +249,17 @@ a:hover { color: var(--teal-dark); }
 .app-footer-modern {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 50%, var(--primary-green-light) 100%);
+    background: #0d7377;
   color: #fff;
   font-family: 'Readex Pro', sans-serif;
   margin-top: 5rem;
   padding: 0;
+}
+
+/* Force all footer text to white */
+.app-footer-modern,
+.app-footer-modern * {
+     color: #fff !important;
 }
 
 /* Decorative Elements */

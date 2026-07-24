@@ -77,34 +77,32 @@
 
   <!-- ═══ Footer ═══ -->
   {% block footer %}
-  <footer class="app-footer">
-    <div class="footer-top-gradient"></div>
-    
-    <div class="container-fluid footer-container">
+  <footer class="app-footer-modern">
+    <div class="footer-container">
       <div class="container">
-        
+
         <!-- Brand Section -->
         <div class="row footer-brand-section mb-5 pb-4">
           <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
             <div class="footer-brand-card">
-              <div class="brand-icon">
+              <div class="brand-icon-wrapper">
                 <i class="bi bi-moon-stars"></i>
               </div>
               <h3 class="brand-title">أدعية إسلامية</h3>
-              <p class="brand-description">
+              <p class="brand-desc">
                 منصة متخصصة في جمع الأدعية والأذكار الإسلامية الموثقة بأدلة شرعية.
               </p>
-              <div class="social-links-footer">
-                <a href="#" class="social-link-icon" title="Facebook">
+              <div class="social-icons">
+                <a href="#" class="social-icon" title="Facebook" aria-label="Facebook">
                   <i class="bi bi-facebook"></i>
                 </a>
-                <a href="#" class="social-link-icon" title="Twitter">
+                <a href="#" class="social-icon" title="Twitter" aria-label="Twitter">
                   <i class="bi bi-twitter"></i>
                 </a>
-                <a href="#" class="social-link-icon" title="Instagram">
+                <a href="#" class="social-icon" title="Instagram" aria-label="Instagram">
                   <i class="bi bi-instagram"></i>
                 </a>
-                <a href="#" class="social-link-icon" title="YouTube">
+                <a href="#" class="social-icon" title="YouTube" aria-label="YouTube">
                   <i class="bi bi-youtube"></i>
                 </a>
               </div>
@@ -113,8 +111,11 @@
 
           <!-- Quick Links -->
           <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-            <div class="footer-links-column">
-              <h4 class="footer-column-title">الروابط</h4>
+            <div class="footer-section">
+              <h4 class="section-title">
+                <span class="title-icon"><i class="bi bi-link-45deg"></i></span>
+                الروابط
+              </h4>
               <ul class="footer-links-list">
                 <li><a href="{{ url_for('home') }}" class="footer-link">الرئيسية</a></li>
                 <li><a href="{{ url_for('tasbeeh') }}" class="footer-link">المسبحة</a></li>
@@ -126,8 +127,11 @@
 
           <!-- Features -->
           <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
-            <div class="footer-links-column">
-              <h4 class="footer-column-title">المميزات</h4>
+            <div class="footer-section">
+              <h4 class="section-title">
+                <span class="title-icon"><i class="bi bi-star"></i></span>
+                المميزات
+              </h4>
               <ul class="footer-links-list">
                 <li><a href="#" class="footer-link">أدعية موثقة</a></li>
                 <li><a href="#" class="footer-link">مسبحة ذكية</a></li>
@@ -139,8 +143,11 @@
 
           <!-- Contact -->
           <div class="col-lg-2 col-md-6">
-            <div class="footer-links-column">
-              <h4 class="footer-column-title">التواصل</h4>
+            <div class="footer-section">
+              <h4 class="section-title">
+                <span class="title-icon"><i class="bi bi-telephone"></i></span>
+                التواصل
+              </h4>
               <ul class="footer-links-list">
                 <li><a href="mailto:info@islamify.com" class="footer-link">البريد الإلكتروني</a></li>
                 <li><a href="#" class="footer-link">نموذج التواصل</a></li>
@@ -155,7 +162,7 @@
         <div class="footer-divider"></div>
         <div class="row footer-bottom-section py-4">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-            <p class="footer-copyright">
+            <p class="copyright-text">
               © 2026 أدعية إسلامية • جميع الحقوق محفوظة
             </p>
           </div>

@@ -233,27 +233,29 @@ a:hover { color: var(--teal-dark); }
 /* ─── §4  FOOTER ───────────────────────────────────────── */
 
 /* ═══════════════════════════════════════════════════════════════════
-   MODERN FOOTER REDESIGN - Green Theme (FULLY RESPONSIVE)
+   MODERN FOOTER REDESIGN - Teal Theme (FULLY RESPONSIVE)
+   Matches Islamify's Deep Teal Color (#0d7377)
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-  --primary-green: #1B7A3F;
-  --primary-green-light: #2DA856;
-  --primary-green-dark: #0F4C27;
-  --accent-green: #3FD48B;
-  --gradient-start: #0F4C27;
-  --gradient-end: #1B7A3F;
+  --primary-teal: #0d7377;
+  --primary-teal-light: #14a3a8;
+  --primary-teal-dark: #095558;
+  --accent-teal: #1cc4c9;
+  --gradient-start: #064042;
+  --gradient-end: #0d7377;
 }
 
 /* Main Footer Container */
 .app-footer-modern {
   position: relative;
   overflow: hidden;
-    background: #0d7377;
+  background: linear-gradient(135deg, #064042 0%, #0d7377 50%, #14a3a8 100%);
   color: #fff;
   font-family: 'Readex Pro', sans-serif;
   margin-top: 5rem;
-  padding: 0;
+  padding: 3.5rem 0;
+  box-shadow: 0 -8px 32px rgba(13, 115, 119, 0.15);
 }
 
 /* Force all footer text to white */
@@ -265,7 +267,7 @@ a:hover { color: var(--teal-dark); }
 /* Decorative Elements */
 .footer-top-border {
   height: 4px;
-  background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-teal), transparent);
   animation: shimmer 3s ease-in-out infinite;
   width: 100%;
 }
@@ -276,7 +278,7 @@ a:hover { color: var(--teal-dark); }
   right: 0;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(63, 212, 139, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(28, 196, 201, 0.1) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -295,7 +297,7 @@ a:hover { color: var(--teal-dark); }
 /* Brand Card */
 .footer-brand-card {
   background: rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(63, 212, 139, 0.3);
+  border: 2px solid rgba(28, 196, 201, 0.3);
   border-radius: 20px;
   padding: 2rem;
   backdrop-filter: blur(10px);
@@ -313,13 +315,13 @@ a:hover { color: var(--teal-dark); }
   right: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(63, 212, 139, 0.1) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(28, 196, 201, 0.1) 0%, transparent 100%);
   pointer-events: none;
 }
 
 .footer-brand-card:hover {
   background: rgba(255, 255, 255, 0.12);
-  border-color: var(--accent-green);
+  border-color: var(--accent-teal);
   transform: translateY(-5px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
@@ -327,7 +329,7 @@ a:hover { color: var(--teal-dark); }
 .brand-icon-wrapper {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, var(--accent-green), var(--primary-green-light));
+  background: linear-gradient(135deg, var(--accent-teal), var(--primary-teal-light));
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -363,17 +365,17 @@ a:hover { color: var(--teal-dark); }
 }
 
 .stat-item {
-  background: rgba(63, 212, 139, 0.2);
+  background: rgba(28, 196, 201, 0.2);
   border-radius: 12px;
   padding: 0.75rem;
   text-align: center;
-  border: 1px solid rgba(63, 212, 139, 0.3);
+  border: 1px solid rgba(28, 196, 201, 0.3);
   transition: all 0.3s ease;
   min-width: 0;
 }
 
 .stat-item:hover {
-  background: rgba(63, 212, 139, 0.3);
+  background: rgba(28, 196, 201, 0.3);
   transform: scale(1.05);
 }
 
@@ -381,7 +383,7 @@ a:hover { color: var(--teal-dark); }
   display: block;
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--accent-green);
+  color: var(--accent-teal);
   word-break: break-word;
 }
 
@@ -420,9 +422,9 @@ a:hover { color: var(--teal-dark); }
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: rgba(63, 212, 139, 0.3);
+  background: rgba(28, 196, 201, 0.3);
   border-radius: 8px;
-  color: var(--accent-green);
+  color: var(--accent-teal);
   font-size: 0.95rem;
   flex-shrink: 0;
 }
@@ -444,14 +446,14 @@ a:hover { color: var(--teal-dark); }
   text-decoration: none;
   color: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
-  border: 1px solid rgba(63, 212, 139, 0.2);
+  border: 1px solid rgba(28, 196, 201, 0.2);
   box-sizing: border-box;
   min-width: 0;
 }
 
 .feature-item:hover {
-  background: rgba(63, 212, 139, 0.25);
-  border-color: var(--accent-green);
+  background: rgba(28, 196, 201, 0.25);
+  border-color: var(--accent-teal);
   transform: translateX(-0.5rem);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
@@ -462,7 +464,7 @@ a:hover { color: var(--teal-dark); }
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--accent-green), var(--primary-green-light));
+  background: linear-gradient(135deg, var(--accent-teal), var(--primary-teal-light));
   border-radius: 10px;
   color: #fff;
   flex-shrink: 0;
@@ -498,7 +500,7 @@ a:hover { color: var(--teal-dark); }
   text-decoration: none;
   color: #fff;
   transition: all 0.3s ease;
-  border: 2px solid rgba(63, 212, 139, 0.2);
+  border: 2px solid rgba(28, 196, 201, 0.2);
   cursor: pointer;
   gap: 0.75rem;
   box-sizing: border-box;
@@ -506,8 +508,8 @@ a:hover { color: var(--teal-dark); }
 }
 
 .dua-card:hover {
-  background: rgba(63, 212, 139, 0.3);
-  border-color: var(--accent-green);
+  background: rgba(28, 196, 201, 0.3);
+  border-color: var(--accent-teal);
   transform: scale(1.08) rotate(2deg);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
@@ -528,7 +530,7 @@ a:hover { color: var(--teal-dark); }
 /* Divider */
 .footer-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(63, 212, 139, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(28, 196, 201, 0.5), transparent);
   margin: 2rem 0;
   width: 100%;
 }
@@ -549,7 +551,7 @@ a:hover { color: var(--teal-dark); }
 
 .separator {
   margin: 0 0.5rem;
-  color: rgba(63, 212, 139, 0.6);
+  color: rgba(28, 196, 201, 0.6);
 }
 
 /* Social Icons */
@@ -565,8 +567,8 @@ a:hover { color: var(--teal-dark); }
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(63, 212, 139, 0.2);
-  border: 2px solid rgba(63, 212, 139, 0.4);
+  background: rgba(28, 196, 201, 0.2);
+  border: 2px solid rgba(28, 196, 201, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -578,10 +580,10 @@ a:hover { color: var(--teal-dark); }
 }
 
 .social-icon:hover {
-  background: var(--accent-green);
-  border-color: var(--accent-green);
+  background: var(--accent-teal);
+  border-color: var(--accent-teal);
   transform: translateY(-4px) rotate(5deg);
-  box-shadow: 0 10px 30px rgba(63, 212, 139, 0.4);
+  box-shadow: 0 10px 30px rgba(28, 196, 201, 0.4);
 }
 
 /* Quick Links Row */
@@ -589,7 +591,7 @@ a:hover { color: var(--teal-dark); }
   text-align: center;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(63, 212, 139, 0.2);
+  border-top: 1px solid rgba(28, 196, 201, 0.2);
   width: 100%;
   box-sizing: border-box;
 }
@@ -604,12 +606,12 @@ a:hover { color: var(--teal-dark); }
 }
 
 .quick-link:hover {
-  color: var(--accent-green);
+  color: var(--accent-teal);
   text-decoration: underline;
 }
 
 .divider {
-  color: rgba(63, 212, 139, 0.5);
+  color: rgba(28, 196, 201, 0.5);
   margin: 0 0.75rem;
 }
 
@@ -898,22 +900,22 @@ a:hover { color: var(--teal-dark); }
   }
 
   .feature-item:active {
-    background: rgba(63, 212, 139, 0.25);
+    background: rgba(28, 196, 201, 0.25);
   }
 
   .dua-card:active {
-    background: rgba(63, 212, 139, 0.3);
+    background: rgba(28, 196, 201, 0.3);
   }
 
   .social-icon:active {
-    background: var(--accent-green);
+    background: var(--accent-teal);
   }
 }
 
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .app-footer-modern {
-    background: linear-gradient(135deg, #051f1a 0%, #0F4C27 50%, #1B7A3F 100%);
+    background: linear-gradient(135deg, #041112 0%, #064042 50%, #0d7377 100%);
   }
 }
 
@@ -941,7 +943,7 @@ a:hover { color: var(--teal-dark); }
 }
 
 .app-footer-modern a:focus {
-  outline: 2px solid var(--accent-green);
+  outline: 2px solid var(--accent-teal);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -949,15 +951,15 @@ a:hover { color: var(--teal-dark); }
 /* High Contrast Mode */
 @media (prefers-contrast: more) {
   .footer-brand-card {
-    border: 3px solid var(--accent-green);
+    border: 3px solid var(--accent-teal);
   }
 
   .feature-item {
-    border: 2px solid var(--accent-green);
+    border: 2px solid var(--accent-teal);
   }
 
   .dua-card {
-    border: 3px solid var(--accent-green);
+    border: 3px solid var(--accent-teal);
   }
 }
 
@@ -2727,10 +2729,10 @@ a:hover { color: var(--teal-dark); }
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-  --footer-green: #1B7A3F;
-  --footer-green-dark: #0F4C27;
-  --footer-green-light: #2DA856;
-  --footer-accent: #3FD48B;
+  --footer-teal: #0d7377;
+  --footer-teal-dark: #064042;
+  --footer-teal-light: #14a3a8;
+  --footer-accent: #1cc4c9;
   --footer-white: #ffffff;
   --footer-text-light: rgba(255, 255, 255, 0.9);
   --footer-text-muted: rgba(255, 255, 255, 0.7);
@@ -2738,7 +2740,7 @@ a:hover { color: var(--teal-dark); }
 
 /* Main Footer Container */
 .app-footer {
-  background: linear-gradient(135deg, var(--footer-green-dark) 0%, var(--footer-green) 50%, var(--footer-green-light) 100%);
+  background: linear-gradient(135deg, var(--footer-teal-dark) 0%, var(--footer-teal) 50%, var(--footer-teal-light) 100%);
   color: var(--footer-text-light);
   padding-top: 4rem;
   padding-bottom: 2rem;
@@ -2754,7 +2756,7 @@ a:hover { color: var(--teal-dark); }
   right: 0;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(63, 212, 139, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(28, 196, 201, 0.1) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -2766,7 +2768,7 @@ a:hover { color: var(--teal-dark); }
   left: 0;
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(63, 212, 139, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(28, 196, 201, 0.08) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -2791,7 +2793,7 @@ a:hover { color: var(--teal-dark); }
 .footer-brand-card {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(63, 212, 139, 0.3);
+  border: 2px solid rgba(28, 196, 201, 0.3);
   border-radius: 20px;
   padding: 2rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2806,7 +2808,7 @@ a:hover { color: var(--teal-dark); }
   right: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(63, 212, 139, 0.1) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(28, 196, 201, 0.1) 0%, transparent 100%);
   pointer-events: none;
 }
 
@@ -2820,7 +2822,7 @@ a:hover { color: var(--teal-dark); }
 .brand-icon {
   width: 70px;
   height: 70px;
-  background: linear-gradient(135deg, var(--footer-accent), var(--footer-green-light));
+  background: linear-gradient(135deg, var(--footer-accent), var(--footer-teal-light));
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -2855,8 +2857,8 @@ a:hover { color: var(--teal-dark); }
 .social-link-icon {
   width: 48px;
   height: 48px;
-  background: rgba(63, 212, 139, 0.2);
-  border: 2px solid rgba(63, 212, 139, 0.4);
+  background: rgba(28, 196, 201, 0.2);
+  border: 2px solid rgba(28, 196, 201, 0.4);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -2871,7 +2873,7 @@ a:hover { color: var(--teal-dark); }
   background: var(--footer-accent);
   border-color: var(--footer-accent);
   transform: translateY(-4px) rotate(5deg);
-  box-shadow: 0 10px 30px rgba(63, 212, 139, 0.4);
+  box-shadow: 0 10px 30px rgba(28, 196, 201, 0.4);
 }
 
 /* Footer Links Columns */
@@ -2945,7 +2947,7 @@ a:hover { color: var(--teal-dark); }
 /* Divider */
 .footer-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(63, 212, 139, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(28, 196, 201, 0.5), transparent);
   margin: 2rem 0;
 }
 

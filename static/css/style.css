@@ -254,7 +254,7 @@ a:hover { color: var(--teal-dark); }
   color: #fff;
   font-family: 'Readex Pro', sans-serif;
   margin-top: 5rem;
-  padding: 2rem 0;
+  padding: 3rem 0 2rem 0;
   box-shadow: 0 -8px 32px rgba(13, 115, 119, 0.15);
 }
 

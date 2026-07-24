@@ -258,14 +258,9 @@ a:hover { color: var(--teal-dark); }
   box-shadow: 0 -8px 32px rgba(13, 115, 119, 0.15);
 }
 
-/* Hide brand section */
-.footer-brand-section {
-  display: none;
-}
-
-/* Hide contact section (التواصل) */
-.footer-section:nth-child(3) {
-  display: none;
+/* Organized footer content sections */
+.footer-content-section {
+  margin-bottom: 1.5rem;
 }
 
 /* Force all footer text to white */

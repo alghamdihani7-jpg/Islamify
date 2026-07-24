@@ -263,6 +263,11 @@ a:hover { color: var(--teal-dark); }
   display: none;
 }
 
+/* Hide contact section (التواصل) */
+.footer-section:nth-child(3) {
+  display: none;
+}
+
 /* Force all footer text to white */
 .app-footer-modern,
 .app-footer-modern * {

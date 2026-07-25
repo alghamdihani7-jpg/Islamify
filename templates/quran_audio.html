@@ -148,17 +148,43 @@
     }
 
     init() {
-      this.setupReciterList();
-      this.setupSurahList();
-      this.setupAudioControls();
-      this.setupEventListeners();
-      this.loadPreferences();
-      this.displayBookmarks();
-      this.loadAudio();
+      console.log('🔧 Initializing Quran Audio Player...');
+      try {
+        this.setupReciterList();
+        console.log('✅ Reciters loaded');
+
+        this.setupSurahList();
+        console.log('✅ Surahs loaded');
+
+        this.setupAudioControls();
+        console.log('✅ Audio controls setup');
+
+        this.setupEventListeners();
+        console.log('✅ Event listeners attached');
+
+        this.loadPreferences();
+        console.log('✅ Preferences loaded');
+
+        this.displayBookmarks();
+        console.log('✅ Bookmarks displayed');
+
+        this.loadAudio();
+        console.log('✅ Audio loaded');
+
+        console.log('🎉 Quran Audio Player fully initialized!');
+      } catch (error) {
+        console.error('❌ Initialization error:', error);
+      }
     }
 
     setupReciterList() {
       const reciterList = document.getElementById('reciterList');
+      if (!reciterList) {
+        console.error('❌ Reciter list element not found');
+        return;
+      }
+
+      console.log('🎤 Setting up reciter list with', RECITERS.length, 'reciters');
       reciterList.innerHTML = '';
 
       RECITERS.forEach(reciter => {
@@ -178,10 +204,18 @@
         reciterCard.addEventListener('click', () => this.selectReciter(reciter.id));
         reciterList.appendChild(reciterCard);
       });
+
+      console.log('✅ Reciter list populated with', reciterList.children.length, 'items');
     }
 
     setupSurahList() {
       const surahList = document.getElementById('surahList');
+      if (!surahList) {
+        console.error('❌ Surah list element not found');
+        return;
+      }
+
+      console.log('📖 Setting up surah list with', SURAHS.length, 'surahs');
       surahList.innerHTML = '';
 
       SURAHS.forEach(surah => {
@@ -199,6 +233,8 @@
         surahItem.addEventListener('click', () => this.selectSurah(surah.number));
         surahList.appendChild(surahItem);
       });
+
+      console.log('✅ Surah list populated with', surahList.children.length, 'items');
     }
 
     setupAudioControls() {

@@ -23,43 +23,10 @@ from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
-from data.quran_audio import RECITERS, SURAHS
 from data.notifications import DEFAULT_NOTIFICATION_SETTINGS, PRAYER_TIMES, NOTIFICATION_MESSAGES
 
 app = Flask(__name__)
 
-# ── Database Setup ──
-DATABASE = 'islamify_data.db'
-
-def init_db():
-    """Initialize SQLite database for tafsir cache"""
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-
-    # Create tafsir cache table
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS tafsir_cache (
-        id INTEGER PRIMARY KEY,
-        surah_id INTEGER NOT NULL,
-        ayah_num INTEGER NOT NULL,
-        tafsir_source VARCHAR(50),
-        tafsir_text TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(surah_id, ayah_num, tafsir_source)
-    )
-    ''')
-
-    cursor.execute('''
-    CREATE INDEX IF NOT EXISTS idx_tafsir_lookup
-        ON tafsir_cache(surah_id, ayah_num)
-    ''')
-
-    conn.commit()
-    conn.close()
-
-# Initialize database on startup
-init_db()
 
 # ── Core Security Config ──
 app.config.update(
@@ -291,153 +258,8 @@ def qibla():
     return render_template("qibla.html")
 
 
-@app.route("/quran/audio")
-@limiter.limit("30 per minute")
-def quran_audio():
-    return render_template("quran_audio.html", reciters=RECITERS, surahs=SURAHS)
 
 
-@app.route("/api/reciters")
-@limiter.limit("60 per minute")
-def api_reciters():
-    return {"reciters": RECITERS}
-
-
-@app.route("/api/surahs")
-@limiter.limit("60 per minute")
-def api_surahs():
-    return {"surahs": SURAHS}
-
-
-@app.route("/api/quran/audio/<reciter_id>/<int:surah_number>")
-@limiter.limit("120 per minute")
-def api_quran_audio(reciter_id, surah_number):
-    """Stream Quran audio from backend with CORS support"""
-    from flask import send_file
-    import requests
-    from io import BytesIO
-    import os
-
-    # In development, use test audio file
-    if app.debug and os.path.exists('static/audio/test_surah.wav'):
-        return send_file(
-            'static/audio/test_surah.wav',
-            mimetype='audio/wav',
-            as_attachment=False,
-            download_name=f'surah_{surah_number}.wav'
-        )
-
-    # Reciter ID mapping for production
-    reciter_map = {
-        'mishary-afasi': 'mishary_afasi_ibraisim',
-        'abdul-basit': 'abdul_basit_abdus_samad',
-        'ahmed-aljami': 'ahmed_ali_al_hajjaj',
-        'fatih-seferagic': 'fatih_seferagic',
-        'maher-al-muaiqly': 'maher_almueaqly'
-    }
-
-    reciter_folder = reciter_map.get(reciter_id, 'mishary_afasi_ibraisim')
-
-    try:
-        # Use CA bundle if available (for proxy environments)
-        ca_bundle = '/root/.ccr/ca-bundle.crt' if os.path.exists('/root/.ccr/ca-bundle.crt') else True
-
-        # Fetch from mp3quran.net (production)
-        url = f"https://mp3quran.net/arabic/audio/surah/{surah_number:03d}/{reciter_folder}.mp3"
-        response = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'}, verify=ca_bundle)
-
-        if response.status_code == 200:
-            return send_file(
-                BytesIO(response.content),
-                mimetype='audio/mpeg',
-                as_attachment=False,
-                download_name=f'surah_{surah_number}.mp3'
-            )
-    except Exception as e:
-        return {"error": str(e)}, 500
-
-    return {"error": "Audio not available"}, 404
-
-
-@app.route("/api/tafsir/<int:surah>/<int:ayah>")
-@limiter.limit("60 per minute")
-def api_tafsir(surah, ayah):
-    """Get Tafsir for a specific Surah and Ayah"""
-    # Validate inputs
-    if surah < 1 or surah > 114:
-        return {"error": "Invalid surah number"}, 400
-    if ayah < 1:
-        return {"error": "Invalid ayah number"}, 400
-
-    # Check cache first
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-
-    cursor.execute('''
-    SELECT tafsir_source, tafsir_text FROM tafsir_cache
-    WHERE surah_id = ? AND ayah_num = ?
-    ''', (surah, ayah))
-
-    cached_tafsirs = cursor.fetchall()
-    conn.close()
-
-    tafsirs = {}
-    if cached_tafsirs:
-        for source, text in cached_tafsirs:
-            tafsirs[source] = {
-                "name": source.replace('_', ' ').title(),
-                "text": text,
-                "cached": True
-            }
-        return {
-            "surah": surah,
-            "ayah": ayah,
-            "tafsirs": tafsirs
-        }
-
-    # If not in cache, return empty (frontend can fetch from external API)
-    return {
-        "surah": surah,
-        "ayah": ayah,
-        "tafsirs": {},
-        "message": "Tafsir not cached. Use external API for full content."
-    }
-
-
-@app.route("/api/tafsir/cache", methods=["POST"])
-@limiter.limit("30 per minute")
-def cache_tafsir():
-    """Cache tafsir data from external API"""
-    data = request.get_json()
-
-    if not data or 'surah' not in data or 'ayah' not in data:
-        return {"error": "Missing required fields"}, 400
-
-    surah = data.get('surah')
-    ayah = data.get('ayah')
-    source = data.get('source', 'ibn_kathir')
-    text = data.get('text', '')
-
-    # Validate
-    if not text or len(text) < 10:
-        return {"error": "Invalid tafsir text"}, 400
-
-    try:
-        conn = sqlite3.connect(DATABASE)
-        cursor = conn.cursor()
-
-        cursor.execute('''
-        INSERT OR REPLACE INTO tafsir_cache
-        (surah_id, ayah_num, tafsir_source, tafsir_text, updated_at)
-        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-        ''', (surah, ayah, source, text))
-
-        conn.commit()
-        conn.close()
-
-        return {"success": True, "message": "Tafsir cached successfully"}
-    except Exception as e:
-        return {"error": str(e)}, 500
 
 
 @app.route("/api/notification-preferences", methods=["GET", "POST"])

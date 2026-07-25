@@ -210,13 +210,25 @@
       const progressBar = document.getElementById('progressBar');
       const bookmarkButton = document.getElementById('bookmarkButton');
 
-      playButton.addEventListener('click', () => this.togglePlay());
-      prevButton.addEventListener('click', () => this.previousSurah());
-      nextButton.addEventListener('click', () => this.nextSurah());
-      speedControl.addEventListener('change', (e) => this.setPlaybackSpeed(e.target.value));
-      volumeControl.addEventListener('input', (e) => this.setVolume(e.target.value));
-      progressBar.addEventListener('input', (e) => this.seek(e.target.value));
-      bookmarkButton.addEventListener('click', () => this.toggleBookmark());
+      if (!playButton) {
+        console.error('Play button not found in DOM');
+        return;
+      }
+
+      console.log('Attaching event listeners to controls...');
+
+      playButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Play button clicked');
+        this.togglePlay();
+      });
+
+      if (prevButton) prevButton.addEventListener('click', () => this.previousSurah());
+      if (nextButton) nextButton.addEventListener('click', () => this.nextSurah());
+      if (speedControl) speedControl.addEventListener('change', (e) => this.setPlaybackSpeed(e.target.value));
+      if (volumeControl) volumeControl.addEventListener('input', (e) => this.setVolume(e.target.value));
+      if (progressBar) progressBar.addEventListener('input', (e) => this.seek(e.target.value));
+      if (bookmarkButton) bookmarkButton.addEventListener('click', () => this.toggleBookmark());
 
       // Tafsir button
       const tafsirButton = document.getElementById('tafsirButton');
@@ -229,7 +241,12 @@
       }
 
       // Surah search
-      document.getElementById('surahSearch').addEventListener('input', (e) => this.filterSurahs(e.target.value));
+      const surahSearch = document.getElementById('surahSearch');
+      if (surahSearch) {
+        surahSearch.addEventListener('input', (e) => this.filterSurahs(e.target.value));
+      }
+
+      console.log('✅ All event listeners attached successfully');
     }
 
     setupEventListeners() {
@@ -263,7 +280,15 @@
       if (reciter && surah) {
         this.updateReciterInfo();
         // Load audio through backend API proxy for CORS support
-        this.audioPlayer.src = `/api/quran/audio/${reciter.id}/${surah.number}`;
+        const audioUrl = `/api/quran/audio/${reciter.id}/${surah.number}`;
+        console.log('Loading audio:', audioUrl);
+        this.audioPlayer.src = audioUrl;
+
+        // Add error handler
+        this.audioPlayer.addEventListener('error', () => {
+          console.error('Audio load error:', this.audioPlayer.error);
+        }, { once: true });
+
         this.audioPlayer.load();
 
         // Update bookmark button
@@ -282,10 +307,25 @@
     }
 
     togglePlay() {
+      console.log('togglePlay called, isPlaying:', this.isPlaying, 'src:', this.audioPlayer.src);
+      if (!this.audioPlayer.src) {
+        console.warn('No audio source set, loading audio first...');
+        this.loadAudio();
+      }
+
       if (this.isPlaying) {
         this.audioPlayer.pause();
       } else {
-        this.audioPlayer.play();
+        const playPromise = this.audioPlayer.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log('✅ Audio playback started');
+            })
+            .catch(err => {
+              console.error('❌ Playback failed:', err);
+            });
+        }
       }
     }
 
@@ -430,9 +470,33 @@
     }
   }
 
-  // Initialize player on page load
-  document.addEventListener('DOMContentLoaded', () => {
-    new QuranAudioPlayer();
+  // Initialize player on page load with error handling
+  let quranPlayer = null;
+
+  function initializePlayer() {
+    try {
+      quranPlayer = new QuranAudioPlayer();
+      window.quranPlayer = quranPlayer; // Make globally accessible for debugging
+      console.log('✅ Quran Audio Player initialized successfully');
+    } catch (error) {
+      console.error('❌ Error initializing player:', error);
+      // Retry after delay
+      setTimeout(initializePlayer, 1000);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePlayer);
+  } else {
+    // DOM already loaded
+    initializePlayer();
+  }
+
+  // Ensure audio loads on window load
+  window.addEventListener('load', () => {
+    if (window.quranPlayer) {
+      window.quranPlayer.loadAudio();
+    }
   });
 </script>
 {% endblock %}

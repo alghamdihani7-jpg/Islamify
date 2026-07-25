@@ -1,0 +1,424 @@
+{% extends "base.html" %}
+
+{% block title %}القرآن بالصوت | أدعية إسلامية{% endblock %}
+
+{% block content %}
+<div class="quran-audio-container">
+  <!-- Header -->
+  <div class="quran-audio-header">
+    <h1><i class="bi bi-music-note-list"></i> القرآن الكريم بالصوت</h1>
+    <p class="subtitle">استمع إلى تلاوات من أفضل القراء بأصوات عالية الجودة</p>
+  </div>
+
+  <div class="quran-audio-wrapper">
+    <!-- Left Panel: Reciter Selector -->
+    <div class="quran-reciter-panel">
+      <h3><i class="bi bi-person-circle"></i> اختر القارئ</h3>
+      <div class="reciter-list" id="reciterList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Center Panel: Audio Player -->
+    <div class="quran-player-panel">
+      <div class="audio-player-container">
+        <!-- Reciter Info Card -->
+        <div class="player-reciter-info">
+          <img id="playerReciterImage" src="" alt="Reciter" class="reciter-avatar">
+          <div class="reciter-details">
+            <h4 id="playerReciterName">الشيخ مشاري العفاسي</h4>
+            <p id="playerReciterRegion">Kuwait</p>
+            <div class="reciter-rating">
+              <i class="bi bi-star-fill"></i>
+              <span id="playerReciterRating">4.9</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio Element -->
+        <audio id="audioPlayer" class="audio-element"></audio>
+
+        <!-- Waveform & Progress -->
+        <div class="player-progress-section">
+          <div class="audio-waveform">
+            <canvas id="waveformCanvas" width="400" height="80"></canvas>
+          </div>
+          <input type="range" id="progressBar" class="progress-bar" min="0" max="100" value="0">
+          <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span class="separator"> / </span>
+            <span id="duration">0:00</span>
+          </div>
+        </div>
+
+        <!-- Player Controls -->
+        <div class="player-controls">
+          <button id="prevButton" class="control-btn" title="السورة السابقة">
+            <i class="bi bi-skip-start-fill"></i>
+          </button>
+          <button id="playButton" class="control-btn play-btn" title="تشغيل">
+            <i class="bi bi-play-fill"></i>
+          </button>
+          <button id="nextButton" class="control-btn" title="السورة التالية">
+            <i class="bi bi-skip-end-fill"></i>
+          </button>
+        </div>
+
+        <!-- Additional Controls -->
+        <div class="player-additional-controls">
+          <div class="control-group">
+            <label for="speedControl">السرعة</label>
+            <select id="speedControl" class="control-select">
+              <option value="0.75">0.75x</option>
+              <option value="1" selected>1x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2x</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="volumeControl"><i class="bi bi-volume-up"></i></label>
+            <input type="range" id="volumeControl" class="volume-slider" min="0" max="100" value="80">
+            <span id="volumeLabel">80%</span>
+          </div>
+
+          <button id="bookmarkButton" class="control-btn" title="حفظ السورة">
+            <i class="bi bi-bookmark"></i>
+          </button>
+        </div>
+
+        <!-- Bookmarks Section -->
+        <div class="bookmarks-section">
+          <h4><i class="bi bi-bookmark-fill"></i> السور المحفوظة</h4>
+          <div id="bookmarksList" class="bookmarks-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Surah List -->
+    <div class="quran-surah-panel">
+      <h3><i class="bi bi-list-ul"></i> السور</h3>
+      <input type="text" id="surahSearch" class="surah-search" placeholder="ابحث عن سورة...">
+      <div class="surah-list" id="surahList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tafsir Modal (Future Feature) -->
+<div id="tafsirModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <h3 id="tafsirTitle">تفسير الآية</h3>
+    <div id="tafsirContent">
+      <!-- Tafsir will be populated here -->
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script nonce="{{ csp_nonce }}">
+  // Audio Player Data
+  const RECITERS = {{ reciters | tojson }};
+  const SURAHS = {{ surahs | tojson }};
+
+  class QuranAudioPlayer {
+    constructor() {
+      this.audioPlayer = document.getElementById('audioPlayer');
+      this.currentReciter = 'mishary-afasi';
+      this.currentSurah = 1;
+      this.isPlaying = false;
+      this.bookmarks = JSON.parse(localStorage.getItem('quran_bookmarks')) || [];
+      this.preferences = JSON.parse(localStorage.getItem('quran_preferences')) || {
+        preferred_reciter: 'mishary-afasi',
+        volume: 80,
+        playback_speed: 1
+      };
+
+      this.init();
+    }
+
+    init() {
+      this.setupReciterList();
+      this.setupSurahList();
+      this.setupAudioControls();
+      this.setupEventListeners();
+      this.loadPreferences();
+      this.displayBookmarks();
+      this.loadAudio();
+    }
+
+    setupReciterList() {
+      const reciterList = document.getElementById('reciterList');
+      reciterList.innerHTML = '';
+
+      RECITERS.forEach(reciter => {
+        const reciterCard = document.createElement('div');
+        reciterCard.className = `reciter-card ${reciter.id === this.currentReciter ? 'active' : ''}`;
+        reciterCard.innerHTML = `
+          <img src="${reciter.image}" alt="${reciter.name}" class="reciter-img">
+          <div class="reciter-info-card">
+            <h5>${reciter.name}</h5>
+            <p>${reciter.nameEn}</p>
+            <div class="rating">
+              <i class="bi bi-star-fill"></i> ${reciter.rating}
+            </div>
+          </div>
+        `;
+
+        reciterCard.addEventListener('click', () => this.selectReciter(reciter.id));
+        reciterList.appendChild(reciterCard);
+      });
+    }
+
+    setupSurahList() {
+      const surahList = document.getElementById('surahList');
+      surahList.innerHTML = '';
+
+      SURAHS.forEach(surah => {
+        const surahItem = document.createElement('div');
+        surahItem.className = `surah-item ${surah.number === this.currentSurah ? 'active' : ''}`;
+        surahItem.innerHTML = `
+          <div class="surah-number">${surah.number}</div>
+          <div class="surah-name">
+            <h5>${surah.name}</h5>
+            <p>${surah.nameEn}</p>
+          </div>
+          <div class="surah-verses">${surah.verses} آية</div>
+        `;
+
+        surahItem.addEventListener('click', () => this.selectSurah(surah.number));
+        surahList.appendChild(surahItem);
+      });
+    }
+
+    setupAudioControls() {
+      const playButton = document.getElementById('playButton');
+      const prevButton = document.getElementById('prevButton');
+      const nextButton = document.getElementById('nextButton');
+      const speedControl = document.getElementById('speedControl');
+      const volumeControl = document.getElementById('volumeControl');
+      const progressBar = document.getElementById('progressBar');
+      const bookmarkButton = document.getElementById('bookmarkButton');
+
+      playButton.addEventListener('click', () => this.togglePlay());
+      prevButton.addEventListener('click', () => this.previousSurah());
+      nextButton.addEventListener('click', () => this.nextSurah());
+      speedControl.addEventListener('change', (e) => this.setPlaybackSpeed(e.target.value));
+      volumeControl.addEventListener('input', (e) => this.setVolume(e.target.value));
+      progressBar.addEventListener('input', (e) => this.seek(e.target.value));
+      bookmarkButton.addEventListener('click', () => this.toggleBookmark());
+
+      // Surah search
+      document.getElementById('surahSearch').addEventListener('input', (e) => this.filterSurahs(e.target.value));
+    }
+
+    setupEventListeners() {
+      this.audioPlayer.addEventListener('play', () => this.onPlay());
+      this.audioPlayer.addEventListener('pause', () => this.onPause());
+      this.audioPlayer.addEventListener('timeupdate', () => this.updateProgress());
+      this.audioPlayer.addEventListener('loadedmetadata', () => this.updateDuration());
+      this.audioPlayer.addEventListener('ended', () => this.nextSurah());
+    }
+
+    selectReciter(reciterId) {
+      this.currentReciter = reciterId;
+      this.preferences.preferred_reciter = reciterId;
+      this.savePreferences();
+      this.setupReciterList();
+      this.updateReciterInfo();
+      this.loadAudio();
+    }
+
+    selectSurah(surahNumber) {
+      this.currentSurah = surahNumber;
+      this.setupSurahList();
+      this.loadAudio();
+      this.audioPlayer.play();
+    }
+
+    loadAudio() {
+      const reciter = RECITERS.find(r => r.id === this.currentReciter);
+      const surah = SURAHS.find(s => s.number === this.currentSurah);
+
+      if (reciter && surah) {
+        this.updateReciterInfo();
+        // Format: https://cdn.quran.com/audio/{reciter-id}/{surah-number}.mp3
+        this.audioPlayer.src = `https://cdn.quran.com/audio/${reciter.id}/${surah.number}.mp3`;
+        this.audioPlayer.load();
+
+        // Update bookmark button
+        this.updateBookmarkButton();
+      }
+    }
+
+    updateReciterInfo() {
+      const reciter = RECITERS.find(r => r.id === this.currentReciter);
+      if (reciter) {
+        document.getElementById('playerReciterImage').src = reciter.image;
+        document.getElementById('playerReciterName').textContent = reciter.name;
+        document.getElementById('playerReciterRegion').textContent = reciter.nameEn;
+        document.getElementById('playerReciterRating').textContent = reciter.rating;
+      }
+    }
+
+    togglePlay() {
+      if (this.isPlaying) {
+        this.audioPlayer.pause();
+      } else {
+        this.audioPlayer.play();
+      }
+    }
+
+    onPlay() {
+      this.isPlaying = true;
+      document.getElementById('playButton').innerHTML = '<i class="bi bi-pause-fill"></i>';
+    }
+
+    onPause() {
+      this.isPlaying = false;
+      document.getElementById('playButton').innerHTML = '<i class="bi bi-play-fill"></i>';
+    }
+
+    previousSurah() {
+      if (this.currentSurah > 1) {
+        this.selectSurah(this.currentSurah - 1);
+      }
+    }
+
+    nextSurah() {
+      if (this.currentSurah < 114) {
+        this.selectSurah(this.currentSurah + 1);
+      }
+    }
+
+    setPlaybackSpeed(speed) {
+      this.audioPlayer.playbackRate = parseFloat(speed);
+      this.preferences.playback_speed = speed;
+      this.savePreferences();
+    }
+
+    setVolume(volume) {
+      this.audioPlayer.volume = volume / 100;
+      this.preferences.volume = volume;
+      document.getElementById('volumeLabel').textContent = volume + '%';
+      this.savePreferences();
+    }
+
+    seek(position) {
+      const duration = this.audioPlayer.duration;
+      this.audioPlayer.currentTime = (position / 100) * duration;
+    }
+
+    updateProgress() {
+      const progress = (this.audioPlayer.currentTime / this.audioPlayer.duration) * 100;
+      document.getElementById('progressBar').value = progress;
+      document.getElementById('currentTime').textContent = this.formatTime(this.audioPlayer.currentTime);
+    }
+
+    updateDuration() {
+      document.getElementById('duration').textContent = this.formatTime(this.audioPlayer.duration);
+    }
+
+    formatTime(seconds) {
+      if (!seconds || isNaN(seconds)) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    toggleBookmark() {
+      const index = this.bookmarks.indexOf(this.currentSurah);
+      if (index > -1) {
+        this.bookmarks.splice(index, 1);
+      } else {
+        this.bookmarks.push(this.currentSurah);
+      }
+      this.saveBookmarks();
+      this.displayBookmarks();
+      this.updateBookmarkButton();
+    }
+
+    updateBookmarkButton() {
+      const bookmarkButton = document.getElementById('bookmarkButton');
+      if (this.bookmarks.includes(this.currentSurah)) {
+        bookmarkButton.classList.add('active');
+      } else {
+        bookmarkButton.classList.remove('active');
+      }
+    }
+
+    displayBookmarks() {
+      const bookmarksList = document.getElementById('bookmarksList');
+      bookmarksList.innerHTML = '';
+
+      if (this.bookmarks.length === 0) {
+        bookmarksList.innerHTML = '<p class="empty-bookmarks">لم تقم بحفظ أي سورة بعد</p>';
+        return;
+      }
+
+      this.bookmarks.forEach(surahNumber => {
+        const surah = SURAHS.find(s => s.number === surahNumber);
+        if (surah) {
+          const bookmarkItem = document.createElement('div');
+          bookmarkItem.className = 'bookmark-item';
+          bookmarkItem.innerHTML = `
+            <span>${surah.name}</span>
+            <button class="remove-bookmark" data-number="${surahNumber}">
+              <i class="bi bi-x"></i>
+            </button>
+          `;
+          bookmarkItem.addEventListener('click', () => this.selectSurah(surahNumber));
+          bookmarksList.appendChild(bookmarkItem);
+        }
+      });
+    }
+
+    filterSurahs(query) {
+      const surahItems = document.querySelectorAll('.surah-item');
+      const lowerQuery = query.toLowerCase();
+
+      surahItems.forEach(item => {
+        const name = item.textContent.toLowerCase();
+        if (name.includes(lowerQuery)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    savePreferences() {
+      localStorage.setItem('quran_preferences', JSON.stringify(this.preferences));
+    }
+
+    loadPreferences() {
+      if (this.preferences.preferred_reciter) {
+        this.currentReciter = this.preferences.preferred_reciter;
+      }
+      if (this.preferences.volume) {
+        document.getElementById('volumeControl').value = this.preferences.volume;
+        this.audioPlayer.volume = this.preferences.volume / 100;
+      }
+      if (this.preferences.playback_speed) {
+        document.getElementById('speedControl').value = this.preferences.playback_speed;
+        this.audioPlayer.playbackRate = parseFloat(this.preferences.playback_speed);
+      }
+    }
+
+    saveBookmarks() {
+      localStorage.setItem('quran_bookmarks', JSON.stringify(this.bookmarks));
+    }
+  }
+
+  // Initialize player on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    new QuranAudioPlayer();
+  });
+</script>
+{% endblock %}

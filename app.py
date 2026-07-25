@@ -21,6 +21,7 @@ from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
+from data.quran_audio import RECITERS, SURAHS
 
 app = Flask(__name__)
 
@@ -51,8 +52,9 @@ csp = {
         "fonts.gstatic.com",
         "cdn.jsdelivr.net",
     ],
-    "img-src": "'self' data:",
-    "connect-src": "'self' https://api.aladhan.com https://nominatim.openstreetmap.org",
+    "img-src": "'self' data: https://cdn.islamic.network",
+    "media-src": ["'self'", "https://cdn.quran.com", "https://cdn.islamic.network"],
+    "connect-src": ["'self'", "https://api.aladhan.com", "https://nominatim.openstreetmap.org"],
     "frame-src": "'none'",
     "object-src": "'none'",
     "base-uri": "'self'",
@@ -250,6 +252,24 @@ def tasbeeh():
 @app.route("/qibla")
 def qibla():
     return render_template("qibla.html")
+
+
+@app.route("/quran/audio")
+@limiter.limit("30 per minute")
+def quran_audio():
+    return render_template("quran_audio.html", reciters=RECITERS, surahs=SURAHS)
+
+
+@app.route("/api/reciters")
+@limiter.limit("60 per minute")
+def api_reciters():
+    return {"reciters": RECITERS}
+
+
+@app.route("/api/surahs")
+@limiter.limit("60 per minute")
+def api_surahs():
+    return {"surahs": SURAHS}
 
 
 @app.route("/health")

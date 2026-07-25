@@ -123,16 +123,23 @@ class TafsirViewer {
   }
 
   openModal(surah, ayah) {
+    console.log('Opening tafsir modal for Surah:', surah, 'Ayah:', ayah);
     this.currentSurah = surah;
     this.currentAyah = ayah;
     this.selectedSource = 'ibn_kathir';
 
     const modal = document.getElementById('tafsirModal');
-    if (modal) {
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+    if (!modal) {
+      console.error('Tafsir modal element not found in DOM');
+      return;
     }
 
+    // Use class instead of inline style for better control
+    modal.style.display = 'flex';
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    console.log('✅ Tafsir modal opened');
     this.loadTafsir();
   }
 
@@ -140,13 +147,15 @@ class TafsirViewer {
     const modal = document.getElementById('tafsirModal');
     if (modal) {
       modal.style.display = 'none';
+      modal.classList.remove('show');
       document.body.style.overflow = 'auto';
+      console.log('✅ Tafsir modal closed');
     }
   }
 
   isOpen() {
     const modal = document.getElementById('tafsirModal');
-    return modal && modal.style.display === 'flex';
+    return modal && (modal.style.display === 'flex' || modal.classList.contains('show'));
   }
 
   loadTafsir() {
@@ -166,7 +175,7 @@ class TafsirViewer {
       .then(data => {
         // For now, show a placeholder
         const placeholder = {
-          ayah_text: `آية من سورة ${SURAHS.find(s => s.number === this.currentSurah)?.name || ''}`,
+          ayah_text: `آية من سورة ${(window.SURAHS || []).find(s => s.number === this.currentSurah)?.name || ''}`,
           tafsirs: {
             ibn_kathir: {
               name: 'تفسير ابن كثير',
@@ -190,11 +199,18 @@ class TafsirViewer {
   displayTafsir(data) {
     this.showLoading(false);
 
-    const surah = SURAHS.find(s => s.number === this.currentSurah);
-    document.getElementById('tafsirTitle').textContent = `تفسير سورة ${surah?.name || ''} الآية ${this.currentAyah}`;
+    // Get SURAHS from window if available
+    const surahs = window.SURAHS || [];
+    const surah = surahs.find(s => s.number === this.currentSurah);
+
+    if (!surah) {
+      console.warn(`Surah ${this.currentSurah} not found`);
+    }
+
+    document.getElementById('tafsirTitle').textContent = `تفسير سورة ${surah?.name || 'غير محدد'} الآية ${this.currentAyah}`;
     document.getElementById('tafsirAyahText').textContent = data.ayah_text || 'آية من القرآن الكريم';
-    document.getElementById('tafsirAyahRef').textContent = `${surah?.number}:${this.currentAyah}`;
-    document.getElementById('tafsirAyahCounter').textContent = `الآية ${this.currentAyah} من ${surah?.verses || '?'}`;
+    document.getElementById('tafsirAyahRef').textContent = `${surah?.number || this.currentSurah}:${this.currentAyah}`;
+    document.getElementById('tafsirAyahCounter').textContent = `الآية ${this.currentAyah} من ${surah?.verses || '؟'}`;
 
     const sourceSelect = document.getElementById('tafsirSourceSelect');
     sourceSelect.innerHTML = '';
@@ -238,21 +254,23 @@ class TafsirViewer {
   }
 
   previousAyah() {
-    const surah = SURAHS.find(s => s.number === this.currentSurah);
+    const surahs = window.SURAHS || [];
+    const surah = surahs.find(s => s.number === this.currentSurah);
     if (this.currentAyah > 1) {
       this.currentAyah--;
       this.loadTafsir();
     } else if (this.currentSurah > 1) {
-      const prevSurah = SURAHS.find(s => s.number === this.currentSurah - 1);
+      const prevSurah = surahs.find(s => s.number === this.currentSurah - 1);
       this.currentSurah--;
-      this.currentAyah = prevSurah.verses;
+      this.currentAyah = prevSurah?.verses || 1;
       this.loadTafsir();
     }
   }
 
   nextAyah() {
-    const surah = SURAHS.find(s => s.number === this.currentSurah);
-    if (this.currentAyah < surah.verses) {
+    const surahs = window.SURAHS || [];
+    const surah = surahs.find(s => s.number === this.currentSurah);
+    if (surah && this.currentAyah < surah.verses) {
       this.currentAyah++;
       this.loadTafsir();
     } else if (this.currentSurah < 114) {
@@ -272,7 +290,8 @@ class TafsirViewer {
   }
 
   shareTafsir() {
-    const surah = SURAHS.find(s => s.number === this.currentSurah);
+    const surahs = window.SURAHS || [];
+    const surah = surahs.find(s => s.number === this.currentSurah);
     const text = `${surah?.name}:${this.currentAyah} - ${this.currentSurah}:${this.currentAyah}`;
 
     if (navigator.share) {

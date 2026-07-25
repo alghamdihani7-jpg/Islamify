@@ -89,8 +89,8 @@ csp = {
         "cdn.jsdelivr.net",
     ],
     "img-src": "'self' data: https://cdn.islamic.network",
-    "media-src": ["'self'", "https://everyayah.com", "https://cdn.quran.com", "https://cdn.islamic.network"],
-    "connect-src": ["'self'", "https://api.aladhan.com", "https://nominatim.openstreetmap.org"],
+    "media-src": ["'self'"],
+    "connect-src": ["'self'", "https://api.aladhan.com", "https://nominatim.openstreetmap.org", "https://mp3quran.net"],
     "frame-src": "'none'",
     "object-src": "'none'",
     "base-uri": "'self'",
@@ -306,6 +306,43 @@ def api_reciters():
 @limiter.limit("60 per minute")
 def api_surahs():
     return {"surahs": SURAHS}
+
+
+@app.route("/api/quran/audio/<reciter_id>/<int:surah_number>")
+@limiter.limit("120 per minute")
+def api_quran_audio(reciter_id, surah_number):
+    """Stream Quran audio from backend with CORS support"""
+    from flask import send_file
+    import requests
+    from io import BytesIO
+
+    # Reciter ID mapping
+    reciter_map = {
+        'mishary-afasi': 'mishary_afasi_ibraisim',
+        'abdul-basit': 'abdul_basit_abdus_samad',
+        'ahmed-aljami': 'ahmed_ali_al_hajjaj',
+        'fatih-seferagic': 'fatih_seferagic',
+        'maher-al-muaiqly': 'maher_almueaqly'
+    }
+
+    reciter_folder = reciter_map.get(reciter_id, 'mishary_afasi_ibraisim')
+
+    try:
+        # Fetch from mp3quran.net
+        url = f"https://mp3quran.net/arabic/audio/surah/{surah_number:03d}/{reciter_folder}.mp3"
+        response = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
+
+        if response.status_code == 200:
+            return send_file(
+                BytesIO(response.content),
+                mimetype='audio/mpeg',
+                as_attachment=False,
+                download_name=f'surah_{surah_number}.mp3'
+            )
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+    return {"error": "Audio not available"}, 404
 
 
 @app.route("/api/tafsir/<int:surah>/<int:ayah>")

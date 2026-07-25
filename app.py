@@ -89,7 +89,7 @@ csp = {
         "cdn.jsdelivr.net",
     ],
     "img-src": "'self' data: https://cdn.islamic.network",
-    "media-src": ["'self'", "https://cdn.quran.com", "https://cdn.islamic.network"],
+    "media-src": ["'self'", "https://everyayah.com", "https://cdn.quran.com", "https://cdn.islamic.network"],
     "connect-src": ["'self'", "https://api.aladhan.com", "https://nominatim.openstreetmap.org"],
     "frame-src": "'none'",
     "object-src": "'none'",

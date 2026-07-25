@@ -262,8 +262,17 @@
 
       if (reciter && surah) {
         this.updateReciterInfo();
-        // Format: https://cdn.quran.com/audio/{reciter-id}/{surah-number}.mp3
-        this.audioPlayer.src = `https://cdn.quran.com/audio/${reciter.id}/${surah.number}.mp3`;
+        // Use everyayah.com API for reliable audio streaming with CORS support
+        const reciterMap = {
+          'mishary-afasi': 'Alafasy',
+          'abdul-basit': 'AbdulBaset',
+          'ahmed-aljami': 'Ahmed_Aljami',
+          'fatih-seferagic': 'Fatih_Seferagic',
+          'maher-al-muaiqly': 'Maher'
+        };
+        const reciterFolder = reciterMap[reciter.id] || 'Alafasy';
+        const surahNumber = String(surah.number).padStart(3, '0');
+        this.audioPlayer.src = `https://everyayah.com/data/${reciterFolder}/${surahNumber}.mp3`;
         this.audioPlayer.load();
 
         // Update bookmark button

@@ -75,6 +75,7 @@ csp = {
     "default-src": "'self'",
     "script-src": [
         "'self'",
+        "'unsafe-inline'",  # Allow inline scripts (necessary for Jinja2 templates)
         "cdn.jsdelivr.net",
     ],
     "style-src": [
@@ -88,7 +89,7 @@ csp = {
         "fonts.gstatic.com",
         "cdn.jsdelivr.net",
     ],
-    "img-src": "'self' data: https://cdn.islamic.network",
+    "img-src": "'self' data: https://cdn.islamic.network https://cdn.quran.com",
     "media-src": ["'self'"],
     "connect-src": ["'self'", "https://api.aladhan.com", "https://nominatim.openstreetmap.org", "https://mp3quran.net"],
     "frame-src": "'none'",

@@ -1,0 +1,500 @@
+<!-- Prayer Notifications Settings Modal/Card -->
+<div id="notificationSettingsCard" class="notification-settings-card">
+  <div class="settings-header">
+    <h3><i class="bi bi-bell-fill"></i> إعدادات التنبيهات</h3>
+    <button class="close-settings" id="closeSettings">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+
+  <div class="settings-content">
+    <!-- Master Toggle -->
+    <div class="settings-group">
+      <div class="setting-row">
+        <label class="setting-label">تفعيل التنبيهات</label>
+        <div class="toggle-switch">
+          <input type="checkbox" id="enableNotifications" class="toggle-input" checked>
+          <label for="enableNotifications" class="toggle-label"></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sound Settings -->
+    <div class="settings-group">
+      <h4>إعدادات الصوت</h4>
+
+      <div class="setting-row">
+        <label class="setting-label">تفعيل صوت التنبيه</label>
+        <div class="toggle-switch">
+          <input type="checkbox" id="enableSound" class="toggle-input" checked>
+          <label for="enableSound" class="toggle-label"></label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <label for="soundVolume" class="setting-label">مستوى الصوت</label>
+        <div class="volume-control">
+          <input type="range" id="soundVolume" class="volume-slider" min="0" max="100" value="80">
+          <span id="volumePercent">80%</span>
+        </div>
+      </div>
+
+      <!-- Sound Preview -->
+      <div class="setting-row">
+        <button id="testSoundButton" class="btn-test-sound">
+          <i class="bi bi-play-circle"></i> اختبر الصوت
+        </button>
+        <audio id="notificationAudio" src="/static/sounds/notification.mp3" style="display: none;"></audio>
+      </div>
+    </div>
+
+    <!-- Timing Settings -->
+    <div class="settings-group">
+      <h4>توقيت التنبيهات</h4>
+
+      <div class="setting-row">
+        <label for="notifyBefore" class="setting-label">إخطرني قبل الصلاة بـ</label>
+        <select id="notifyBefore" class="setting-select">
+          <option value="-15">15 دقيقة قبل</option>
+          <option value="-10">10 دقائق قبل</option>
+          <option value="-5" selected>5 دقائق قبل</option>
+          <option value="0">عند وقت الصلاة</option>
+          <option value="5">5 دقائق بعد</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <label for="snoozeDuration" class="setting-label">مدة إعادة التذكير</label>
+        <select id="snoozeDuration" class="setting-select">
+          <option value="5">5 دقائق</option>
+          <option value="10" selected>10 دقائق</option>
+          <option value="15">15 دقيقة</option>
+          <option value="30">30 دقيقة</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Per-Prayer Settings -->
+    <div class="settings-group">
+      <h4>تنبيهات الصلوات</h4>
+      <p class="group-description">اختر الصلوات التي تريد التنبيه عنها</p>
+
+      <div class="prayers-toggles">
+        <div class="prayer-toggle">
+          <div class="prayer-info">
+            <i class="bi bi-sunrise"></i>
+            <span class="prayer-name">الفجر</span>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="notify-fajr" class="prayer-toggle-input" checked>
+            <label for="notify-fajr" class="toggle-label"></label>
+          </div>
+        </div>
+
+        <div class="prayer-toggle">
+          <div class="prayer-info">
+            <i class="bi bi-sun"></i>
+            <span class="prayer-name">الظهر</span>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="notify-dhuhr" class="prayer-toggle-input" checked>
+            <label for="notify-dhuhr" class="toggle-label"></label>
+          </div>
+        </div>
+
+        <div class="prayer-toggle">
+          <div class="prayer-info">
+            <i class="bi bi-cloud-sun"></i>
+            <span class="prayer-name">العصر</span>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="notify-asr" class="prayer-toggle-input" checked>
+            <label for="notify-asr" class="toggle-label"></label>
+          </div>
+        </div>
+
+        <div class="prayer-toggle">
+          <div class="prayer-info">
+            <i class="bi bi-sunset"></i>
+            <span class="prayer-name">المغرب</span>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="notify-maghrib" class="prayer-toggle-input" checked>
+            <label for="notify-maghrib" class="toggle-label"></label>
+          </div>
+        </div>
+
+        <div class="prayer-toggle">
+          <div class="prayer-info">
+            <i class="bi bi-moon-stars"></i>
+            <span class="prayer-name">العشاء</span>
+          </div>
+          <div class="toggle-switch">
+            <input type="checkbox" id="notify-isha" class="prayer-toggle-input" checked>
+            <label for="notify-isha" class="toggle-label"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wudu Reminder -->
+    <div class="settings-group">
+      <h4>تذكير الوضوء</h4>
+
+      <div class="setting-row">
+        <label class="setting-label">تذكيرني بالوضوء قبل الصلاة</label>
+        <div class="toggle-switch">
+          <input type="checkbox" id="enableWuduReminder" class="toggle-input" checked>
+          <label for="enableWuduReminder" class="toggle-label"></label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <label for="wuduReminderTime" class="setting-label">اذكرني قبل الصلاة بـ</label>
+        <select id="wuduReminderTime" class="setting-select">
+          <option value="5">5 دقائق</option>
+          <option value="10">10 دقائق</option>
+          <option value="15" selected>15 دقيقة</option>
+          <option value="20">20 دقيقة</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="settings-actions">
+      <button id="saveSettingsButton" class="btn btn-primary">
+        <i class="bi bi-check-circle"></i> حفظ الإعدادات
+      </button>
+      <button id="resetSettingsButton" class="btn btn-secondary">
+        <i class="bi bi-arrow-counterclockwise"></i> إعادة تعيين
+      </button>
+    </div>
+
+    <div id="settingsSaveMessage" class="save-message"></div>
+  </div>
+</div>
+
+<style>
+.notification-settings-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin: 2rem 0;
+  border: 1px solid #e0e0e0;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #0d7377;
+  padding-bottom: 1rem;
+}
+
+.settings-header h3 {
+  color: #0d7377;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.close-settings {
+  background: none;
+  border: none;
+  color: #0d7377;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-group h4 {
+  color: #0d7377;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.group-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  gap: 1rem;
+}
+
+.setting-label {
+  font-weight: 500;
+  color: #333;
+  min-width: 200px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 28px;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ccc;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-input:checked + .toggle-label {
+  background: #0d7377;
+}
+
+.toggle-label::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.toggle-input:checked + .toggle-label::after {
+  right: 25px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  max-width: 300px;
+}
+
+.volume-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #e0e0e0;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0d7377;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0d7377;
+  cursor: pointer;
+  border: none;
+}
+
+#volumePercent {
+  min-width: 50px;
+  text-align: right;
+  font-weight: 600;
+  color: #0d7377;
+}
+
+.btn-test-sound {
+  background: #14a3a8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-test-sound:hover {
+  background: #0d7377;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(20, 163, 168, 0.3);
+}
+
+.setting-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.95rem;
+  min-width: 200px;
+  transition: all 0.3s ease;
+}
+
+.setting-select:hover,
+.setting-select:focus {
+  border-color: #0d7377;
+  outline: none;
+  box-shadow: 0 0 8px rgba(13, 115, 119, 0.1);
+}
+
+.prayers-toggles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.prayer-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(13, 115, 119, 0.05);
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.prayer-toggle:hover {
+  background: rgba(20, 163, 168, 0.1);
+  border-color: #0d7377;
+}
+
+.prayer-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.prayer-info i {
+  color: #0d7377;
+  font-size: 1.3rem;
+}
+
+.prayer-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: #0d7377;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #14a3a8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 115, 119, 0.3);
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-secondary:hover {
+  background: #e8e8e8;
+  border-color: #0d7377;
+}
+
+.save-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+  display: none;
+}
+
+.save-message.success {
+  display: block;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.save-message.error {
+  display: block;
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 768px) {
+  .notification-settings-card {
+    padding: 1rem;
+  }
+
+  .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .setting-label {
+    min-width: auto;
+  }
+
+  .volume-control {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .prayers-toggles {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .settings-actions {
+    flex-direction: column;
+  }
+}
+</style>

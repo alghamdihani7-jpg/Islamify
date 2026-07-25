@@ -4061,3 +4061,328 @@ a:hover { color: var(--teal-dark); }
     font-size: 0.75rem;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TAFSIR MODAL STYLING
+   ═════════════════════════════════════════════════════════════════ */
+
+#tafsirModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  direction: rtl;
+}
+
+.tafsir-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.tafsir-modal-content {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+}
+
+.tafsir-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid #0d7377;
+  background: linear-gradient(135deg, rgba(13, 115, 119, 0.05) 0%, rgba(20, 163, 168, 0.05) 100%);
+}
+
+.tafsir-modal-header h2 {
+  color: #0d7377;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.tafsir-close-btn {
+  background: none;
+  border: none;
+  color: #0d7377;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.tafsir-close-btn:hover {
+  background: rgba(20, 163, 168, 0.2);
+}
+
+.tafsir-modal-body {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tafsir-ayah-section {
+  background: rgba(13, 115, 119, 0.08);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-right: 4px solid #0d7377;
+}
+
+.tafsir-ayah-section h3 {
+  color: #0d7377;
+  margin: 0 0 1rem;
+  font-size: 1rem;
+}
+
+.ayah-text {
+  font-size: 1.3rem;
+  color: #333;
+  line-height: 2;
+  margin: 0 0 0.75rem;
+  font-weight: 500;
+}
+
+.ayah-reference {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.tafsir-source-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tafsir-source-selector label {
+  font-weight: 600;
+  color: #0d7377;
+  font-size: 0.95rem;
+}
+
+.tafsir-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tafsir-select:hover,
+.tafsir-select:focus {
+  border-color: #0d7377;
+  outline: none;
+  box-shadow: 0 0 8px rgba(13, 115, 119, 0.1);
+}
+
+.tafsir-content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tafsir-content-section h3 {
+  color: #0d7377;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.tafsir-text {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  line-height: 2;
+  color: #333;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.tafsir-text p {
+  margin: 0;
+}
+
+.tafsir-text .loading {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.tafsir-text .error {
+  color: #e74c3c;
+}
+
+.tafsir-text .no-data {
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.tafsir-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #0d7377;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.tafsir-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(13, 115, 119, 0.05);
+  border-radius: 8px;
+}
+
+.tafsir-nav-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: #0d7377;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tafsir-nav-btn:hover {
+  background: #14a3a8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 115, 119, 0.3);
+}
+
+.ayah-counter {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  min-width: 100px;
+  text-align: center;
+}
+
+.tafsir-modal-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  background: #f9f9f9;
+}
+
+.tafsir-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tafsir-btn-primary {
+  background: #0d7377;
+  color: white;
+}
+
+.tafsir-btn-primary:hover {
+  background: #14a3a8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 115, 119, 0.3);
+}
+
+.tafsir-btn-secondary {
+  background: white;
+  color: #0d7377;
+  border: 1px solid #0d7377;
+}
+
+.tafsir-btn-secondary:hover {
+  background: #0d7377;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .tafsir-modal-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .tafsir-modal-body {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .tafsir-text {
+    max-height: 200px;
+  }
+
+  .tafsir-nav {
+    flex-direction: column;
+  }
+
+  .tafsir-nav-btn {
+    width: 100%;
+  }
+
+  .ayah-counter {
+    width: 100%;
+  }
+
+  .tafsir-modal-footer {
+    flex-direction: column;
+  }
+
+  .tafsir-btn {
+    width: 100%;
+  }
+}
+

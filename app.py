@@ -2,10 +2,12 @@ import os
 import secrets
 import threading
 import time
+import json
+import sqlite3
 from datetime import datetime
 from urllib.request import urlopen
 
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request, g, jsonify
 from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -22,8 +24,42 @@ from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
 from data.quran_audio import RECITERS, SURAHS
+from data.notifications import DEFAULT_NOTIFICATION_SETTINGS, PRAYER_TIMES, NOTIFICATION_MESSAGES
 
 app = Flask(__name__)
+
+# ── Database Setup ──
+DATABASE = 'islamify_data.db'
+
+def init_db():
+    """Initialize SQLite database for tafsir cache"""
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    # Create tafsir cache table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS tafsir_cache (
+        id INTEGER PRIMARY KEY,
+        surah_id INTEGER NOT NULL,
+        ayah_num INTEGER NOT NULL,
+        tafsir_source VARCHAR(50),
+        tafsir_text TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(surah_id, ayah_num, tafsir_source)
+    )
+    ''')
+
+    cursor.execute('''
+    CREATE INDEX IF NOT EXISTS idx_tafsir_lookup
+        ON tafsir_cache(surah_id, ayah_num)
+    ''')
+
+    conn.commit()
+    conn.close()
+
+# Initialize database on startup
+init_db()
 
 # ── Core Security Config ──
 app.config.update(
@@ -270,6 +306,102 @@ def api_reciters():
 @limiter.limit("60 per minute")
 def api_surahs():
     return {"surahs": SURAHS}
+
+
+@app.route("/api/tafsir/<int:surah>/<int:ayah>")
+@limiter.limit("60 per minute")
+def api_tafsir(surah, ayah):
+    """Get Tafsir for a specific Surah and Ayah"""
+    # Validate inputs
+    if surah < 1 or surah > 114:
+        return {"error": "Invalid surah number"}, 400
+    if ayah < 1:
+        return {"error": "Invalid ayah number"}, 400
+
+    # Check cache first
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT tafsir_source, tafsir_text FROM tafsir_cache
+    WHERE surah_id = ? AND ayah_num = ?
+    ''', (surah, ayah))
+
+    cached_tafsirs = cursor.fetchall()
+    conn.close()
+
+    tafsirs = {}
+    if cached_tafsirs:
+        for source, text in cached_tafsirs:
+            tafsirs[source] = {
+                "name": source.replace('_', ' ').title(),
+                "text": text,
+                "cached": True
+            }
+        return {
+            "surah": surah,
+            "ayah": ayah,
+            "tafsirs": tafsirs
+        }
+
+    # If not in cache, return empty (frontend can fetch from external API)
+    return {
+        "surah": surah,
+        "ayah": ayah,
+        "tafsirs": {},
+        "message": "Tafsir not cached. Use external API for full content."
+    }
+
+
+@app.route("/api/tafsir/cache", methods=["POST"])
+@limiter.limit("30 per minute")
+def cache_tafsir():
+    """Cache tafsir data from external API"""
+    data = request.get_json()
+
+    if not data or 'surah' not in data or 'ayah' not in data:
+        return {"error": "Missing required fields"}, 400
+
+    surah = data.get('surah')
+    ayah = data.get('ayah')
+    source = data.get('source', 'ibn_kathir')
+    text = data.get('text', '')
+
+    # Validate
+    if not text or len(text) < 10:
+        return {"error": "Invalid tafsir text"}, 400
+
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+        INSERT OR REPLACE INTO tafsir_cache
+        (surah_id, ayah_num, tafsir_source, tafsir_text, updated_at)
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+        ''', (surah, ayah, source, text))
+
+        conn.commit()
+        conn.close()
+
+        return {"success": True, "message": "Tafsir cached successfully"}
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
+@app.route("/api/notification-preferences", methods=["GET", "POST"])
+@limiter.limit("30 per minute")
+def notification_preferences():
+    """Get or save notification preferences"""
+    if request.method == "GET":
+        prefs = g.get('notification_prefs', DEFAULT_NOTIFICATION_SETTINGS)
+        return jsonify(prefs)
+
+    elif request.method == "POST":
+        data = request.get_json()
+        # Store in session (would be DB in production with user accounts)
+        g.notification_prefs = data
+        return jsonify({"success": True, "message": "Preferences saved"})
 
 
 @app.route("/health")

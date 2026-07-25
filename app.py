@@ -315,8 +315,18 @@ def api_quran_audio(reciter_id, surah_number):
     from flask import send_file
     import requests
     from io import BytesIO
+    import os
 
-    # Reciter ID mapping
+    # In development, use test audio file
+    if app.debug and os.path.exists('static/audio/test_surah.wav'):
+        return send_file(
+            'static/audio/test_surah.wav',
+            mimetype='audio/wav',
+            as_attachment=False,
+            download_name=f'surah_{surah_number}.wav'
+        )
+
+    # Reciter ID mapping for production
     reciter_map = {
         'mishary-afasi': 'mishary_afasi_ibraisim',
         'abdul-basit': 'abdul_basit_abdus_samad',
@@ -328,9 +338,12 @@ def api_quran_audio(reciter_id, surah_number):
     reciter_folder = reciter_map.get(reciter_id, 'mishary_afasi_ibraisim')
 
     try:
-        # Fetch from mp3quran.net
+        # Use CA bundle if available (for proxy environments)
+        ca_bundle = '/root/.ccr/ca-bundle.crt' if os.path.exists('/root/.ccr/ca-bundle.crt') else True
+
+        # Fetch from mp3quran.net (production)
         url = f"https://mp3quran.net/arabic/audio/surah/{surah_number:03d}/{reciter_folder}.mp3"
-        response = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'})
+        response = requests.get(url, timeout=10, headers={'User-Agent': 'Mozilla/5.0'}, verify=ca_bundle)
 
         if response.status_code == 200:
             return send_file(

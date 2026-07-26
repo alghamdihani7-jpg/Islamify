@@ -2,8 +2,6 @@ import os
 import secrets
 import threading
 import time
-import json
-import sqlite3
 from datetime import datetime
 from urllib.request import urlopen
 

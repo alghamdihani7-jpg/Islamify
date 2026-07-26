@@ -21,6 +21,7 @@ from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
+from data.hajj_umrah_azkar import HAJJ_UMRAH_AZKAR
 from data.notifications import DEFAULT_NOTIFICATION_SETTINGS, PRAYER_TIMES, NOTIFICATION_MESSAGES
 
 app = Flask(__name__)
@@ -239,6 +240,16 @@ def azkar_night_prayer():
         title="دعاء قيام الليل",
         items=NIGHT_PRAYER_DUAS,
         storage_key="azkar_night_prayer_v1",
+    )
+
+
+@app.route("/azkar/hajj-umrah")
+def azkar_hajj_umrah():
+    return render_template(
+        "azkar_page.html",
+        title="أذكار العمرة والحج",
+        items=HAJJ_UMRAH_AZKAR,
+        storage_key="azkar_hajj_umrah_v1",
     )
 
 @app.route("/prayer-times")

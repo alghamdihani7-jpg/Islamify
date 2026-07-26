@@ -60,6 +60,12 @@ FEATURE_CARDS = [
         "icon": "bi-cloud-sun",
     },
     {
+        "title": "أذكار العمرة والحج",
+        "description": "تلبية وأذكار وأدعية مأثورة لمناسك الحج والعمرة مع عداد",
+        "link": "/azkar/hajj-umrah",
+        "icon": "bi-geo-alt",
+    },
+    {
         "title": "المسبحة الإلكترونية",
         "description": "مسبحة رقمية بأشكال مختلفة مع حفظ تلقائي",
         "link": "/tasbeeh",

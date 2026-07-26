@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="{{ current_language }}" dir="{% if current_language in ['ar', 'ur'] %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,28 +40,43 @@
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}"
                href="{{ url_for('home') }}">
-              <i class="bi bi-house-door"></i> الرئيسية
+              <i class="bi bi-house-door"></i> {{ get_text('home') }}
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'tasbeeh' %}active{% endif %}"
                href="{{ url_for('tasbeeh') }}">
-              <i class="bi bi-circle"></i> المسبحة
+              <i class="bi bi-circle"></i> {{ get_text('tasbeeh') }}
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'prayer_times' %}active{% endif %}"
                href="{{ url_for('prayer_times') }}">
-              <i class="bi bi-clock"></i> مواقيت الصلاة
+              <i class="bi bi-clock"></i> {{ get_text('prayer_times') }}
             </a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'qibla' %}active{% endif %}"
                href="{{ url_for('qibla') }}">
-              <i class="bi bi-compass"></i> القِبلة
+              <i class="bi bi-compass"></i> {{ get_text('qibla') }}
             </a>
+          </li>
+
+          <li class="nav-item dropdown ms-2">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-translate"></i> {{ all_languages[current_language]['flag'] }}
+            </a>
+            <ul class="dropdown-menu {% if current_language in ['ar', 'ur'] %}dropdown-menu-start{% else %}dropdown-menu-end{% endif %}" aria-labelledby="languageDropdown">
+              {% for lang_code, lang_info in all_languages.items() %}
+              <li>
+                <a class="dropdown-item {% if lang_code == current_language %}active{% endif %}" href="?lang={{ lang_code }}">
+                  {{ lang_info['flag'] }} {{ lang_info['name'] }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
           </li>
         </ul>
       </div>
@@ -133,6 +148,22 @@
   {% endblock %}
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Language Switcher -->
+  <script>
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        const langCode = this.getAttribute('href').split('=')[1];
+        if (langCode) {
+          e.preventDefault();
+          fetch(`/api/set-language/${langCode}`)
+            .then(() => {
+              window.location.reload();
+            });
+        }
+      });
+    });
+  </script>
 
   <!-- Notifications & Tafsir Scripts -->
   <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>

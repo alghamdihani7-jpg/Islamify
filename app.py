@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from urllib.request import urlopen
 
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request, g, jsonify
 from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -21,6 +21,7 @@ from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
+from data.translations import get_text, get_all_languages, TRANSLATIONS
 
 app = Flask(__name__)
 
@@ -90,12 +91,23 @@ limiter = Limiter(
 )
 
 
+# ── Language Support ──
+def get_current_language():
+    """Get current language from cookie or request args, default to 'ar'"""
+    lang = request.args.get("lang") or request.cookies.get("language", "ar")
+    return lang if lang in TRANSLATIONS else "ar"
+
+
 # ── Nonce for inline scripts ──
 @app.context_processor
 def inject_globals():
+    current_lang = get_current_language()
     return {
         "current_year": datetime.now().year,
         "csp_nonce": getattr(g, "_csp_nonce", ""),
+        "current_language": current_lang,
+        "all_languages": TRANSLATIONS,
+        "get_text": lambda key: get_text(key, current_lang),
     }
 
 
@@ -255,6 +267,23 @@ def qibla():
 @app.route("/health")
 def health():
     return "OK", 200
+
+
+@app.route("/api/set-language/<language>")
+def set_language(language):
+    """Set user's language preference"""
+    if language not in TRANSLATIONS:
+        language = "ar"
+    response = jsonify({"success": True, "language": language})
+    response.set_cookie(
+        "language",
+        language,
+        max_age=31536000,
+        secure=True,
+        httponly=True,
+        samesite="Lax"
+    )
+    return response
 
 
 def keep_alive():

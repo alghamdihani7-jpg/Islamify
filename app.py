@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from urllib.request import urlopen
 
-from flask import Flask, render_template, request, g, jsonify
+from flask import Flask, render_template, request, g, jsonify, session, redirect, url_for
 from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -22,6 +22,7 @@ from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
 from data.translations import get_text, get_all_languages, TRANSLATIONS
+from auth_service import verify_credentials, generate_otp, store_otp, verify_otp, send_otp_email, get_masked_email
 
 app = Flask(__name__)
 
@@ -284,6 +285,110 @@ def set_language(language):
         samesite="Lax"
     )
     return response
+
+
+# ── Dashboard Authentication ──
+
+def is_logged_in():
+    """Check if user is logged in"""
+    return 'dashboard_user' in session
+
+
+def login_required(f):
+    """Decorator to require login"""
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not is_logged_in():
+            return redirect(url_for('dashboard_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route("/dashboard/login", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
+def dashboard_login():
+    """Dashboard login page"""
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+
+        if verify_credentials(username, password):
+            # Generate and send OTP
+            otp = generate_otp()
+            store_otp("alghamdihani7@gmail.com", otp)
+            send_otp_email("alghamdihani7@gmail.com", otp)
+
+            # Store temp session data
+            session['temp_username'] = username
+            session['temp_email'] = "alghamdihani7@gmail.com"
+            session.modified = True
+
+            return redirect(url_for('verify_otp'))
+        else:
+            return render_template("login.html", error="Invalid credentials")
+
+    return render_template("login.html")
+
+
+@app.route("/dashboard/verify-otp", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
+def verify_otp():
+    """OTP verification page"""
+    if 'temp_username' not in session:
+        return redirect(url_for('dashboard_login'))
+
+    email = session.get('temp_email', '')
+    masked_email = get_masked_email(email)
+
+    if request.method == "POST":
+        otp = request.form.get("otp", "").strip()
+
+        success, message = verify_otp(email, otp)
+        if success:
+            # Set authenticated session
+            username = session.pop('temp_username')
+            session.pop('temp_email', None)
+            session['dashboard_user'] = username
+            session.modified = True
+
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template("otp_verify.html", masked_email=masked_email, error=message)
+
+    return render_template("otp_verify.html", masked_email=masked_email)
+
+
+@app.route("/dashboard/resend-otp")
+@limiter.limit("5 per minute")
+def resend_otp():
+    """Resend OTP"""
+    if 'temp_email' not in session:
+        return redirect(url_for('dashboard_login'))
+
+    email = session.get('temp_email', '')
+    otp = generate_otp()
+    store_otp(email, otp)
+    send_otp_email(email, otp)
+
+    masked_email = get_masked_email(email)
+    return render_template("otp_verify.html", masked_email=masked_email, success_message="OTP resent successfully!")
+
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    """Dashboard page"""
+    username = session.get('dashboard_user', 'User')
+    return render_template("dashboard.html", username=username)
+
+
+@app.route("/dashboard/logout")
+def logout():
+    """Logout from dashboard"""
+    session.pop('dashboard_user', None)
+    session.modified = True
+    return redirect(url_for('dashboard_login'))
 
 
 def keep_alive():

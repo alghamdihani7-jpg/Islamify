@@ -22,7 +22,7 @@ from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
 from data.translations import get_text, get_all_languages, TRANSLATIONS
-from auth_service import verify_credentials, generate_otp, store_otp, verify_otp, send_otp_email, get_masked_email
+from auth_service import verify_credentials, generate_otp, store_otp, verify_otp as check_otp, send_otp_email, get_masked_email
 
 app = Flask(__name__)
 
@@ -324,7 +324,7 @@ def dashboard_login():
             session['temp_email'] = "alghamdihani7@gmail.com"
             session.modified = True
 
-            return redirect(url_for('verify_otp'))
+            return redirect(url_for('verify_otp_page'))
         else:
             return render_template("login.html", error="Invalid credentials")
 
@@ -333,7 +333,7 @@ def dashboard_login():
 
 @app.route("/dashboard/verify-otp", methods=["GET", "POST"])
 @limiter.limit("10 per minute")
-def verify_otp():
+def verify_otp_page():
     """OTP verification page"""
     if 'temp_username' not in session:
         return redirect(url_for('dashboard_login'))
@@ -344,7 +344,7 @@ def verify_otp():
     if request.method == "POST":
         otp = request.form.get("otp", "").strip()
 
-        success, message = verify_otp(email, otp)
+        success, message = check_otp(email, otp)
         if success:
             # Set authenticated session
             username = session.pop('temp_username')

@@ -16,8 +16,9 @@ ADMIN_EMAIL = 'alghamdihani7@gmail.com'
 otp_storage = {}
 
 def generate_otp():
-    """Generate a 6-digit OTP"""
-    return str(secrets.randbelow(1000000)).zfill(6)
+    """Generate a 6-digit OTP - Static for testing"""
+    # For production testing, use static OTP
+    return "987654"  # Static OTP for account: hani911h
 
 def send_otp_email(email, otp):
     """Send OTP to user email (non-blocking for demo)"""

@@ -103,13 +103,13 @@
             <div class="footer-section">
               <h4 class="section-title">
                 <span class="title-icon"><i class="bi bi-link-45deg"></i></span>
-                الروابط
+                {{ 'الروابط' if current_language == 'ar' else ('Quick Links' if current_language == 'en' else ('روابط' if current_language == 'ur' else ('लिंक्स' if current_language == 'hi' else ('Mga Link' if current_language == 'fil' else 'Tautan')))) }}
               </h4>
               <ul class="footer-links-list">
-                <li><a href="{{ url_for('home') }}" class="footer-link">الرئيسية</a></li>
-                <li><a href="{{ url_for('tasbeeh') }}" class="footer-link">المسبحة</a></li>
-                <li><a href="{{ url_for('prayer_times') }}" class="footer-link">مواقيت الصلاة</a></li>
-                <li><a href="{{ url_for('qibla') }}" class="footer-link">القِبلة</a></li>
+                <li><a href="{{ url_for('home') }}" class="footer-link">{{ get_text('home') }}</a></li>
+                <li><a href="{{ url_for('tasbeeh') }}" class="footer-link">{{ get_text('tasbeeh') }}</a></li>
+                <li><a href="{{ url_for('prayer_times') }}" class="footer-link">{{ get_text('prayer_times') }}</a></li>
+                <li><a href="{{ url_for('qibla') }}" class="footer-link">{{ get_text('qibla') }}</a></li>
               </ul>
             </div>
           </div>
@@ -119,13 +119,13 @@
             <div class="footer-section">
               <h4 class="section-title">
                 <span class="title-icon"><i class="bi bi-star"></i></span>
-                المميزات
+                {{ 'المميزات' if current_language == 'ar' else ('Features' if current_language == 'en' else ('خصوصیات' if current_language == 'ur' else ('विशेषताएं' if current_language == 'hi' else ('Mga Katangian' if current_language == 'fil' else 'Fitur')))) }}
               </h4>
               <ul class="footer-links-list">
-                <li><a href="#" class="footer-link">أدعية موثقة</a></li>
-                <li><a href="#" class="footer-link">مسبحة ذكية</a></li>
-                <li><a href="#" class="footer-link">مواقيت دقيقة</a></li>
-                <li><a href="#" class="footer-link">واجهة سهلة</a></li>
+                <li><a href="#" class="footer-link">{{ 'أدعية موثقة' if current_language == 'ar' else ('Documented Duas' if current_language == 'en' else ('موثق دعائیں' if current_language == 'ur' else ('प्रलेखित दुआएं' if current_language == 'hi' else ('Dokumentadong Duas' if current_language == 'fil' else 'Dua Terdokumentasi')))) }}</a></li>
+                <li><a href="#" class="footer-link">{{ 'مسبحة ذكية' if current_language == 'ar' else ('Smart Tasbeeh' if current_language == 'en' else ('ذہین تسبیح' if current_language == 'ur' else ('स्मार्ट तस्बीह' if current_language == 'hi' else ('Matalinong Tasbeeh' if current_language == 'fil' else 'Tasbeeh Pintar')))) }}</a></li>
+                <li><a href="#" class="footer-link">{{ 'مواقيت دقيقة' if current_language == 'ar' else ('Accurate Times' if current_language == 'en' else ('درست اوقات' if current_language == 'ur' else ('सटीक समय' if current_language == 'hi' else ('Tumpak na Oras' if current_language == 'fil' else 'Waktu Akurat')))) }}</a></li>
+                <li><a href="#" class="footer-link">{{ 'واجهة سهلة' if current_language == 'ar' else ('Easy Interface' if current_language == 'en' else ('آسان انٹرفیس' if current_language == 'ur' else ('आसान इंटरफेस' if current_language == 'hi' else ('Madaling Interface' if current_language == 'fil' else 'Antarmuka Mudah')))) }}</a></li>
               </ul>
             </div>
           </div>

@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from urllib.request import urlopen
 
-from flask import Flask, render_template, request, g, jsonify
+from flask import Flask, render_template, request, g, jsonify, session, redirect, url_for
 from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -21,12 +21,10 @@ from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
-from data.hajj_umrah_azkar import HAJJ_UMRAH_AZKAR
-from data.notifications import DEFAULT_NOTIFICATION_SETTINGS, PRAYER_TIMES, NOTIFICATION_MESSAGES
 from data.translations import get_text, get_all_languages, TRANSLATIONS
+from auth_service import verify_credentials, generate_otp, store_otp, verify_otp as check_otp, send_otp_email, get_masked_email
 
 app = Flask(__name__)
-
 
 # ── Core Security Config ──
 app.config.update(
@@ -42,7 +40,6 @@ csp = {
     "default-src": "'self'",
     "script-src": [
         "'self'",
-        "'unsafe-inline'",  # Allow inline scripts (necessary for Jinja2 templates)
         "cdn.jsdelivr.net",
     ],
     "style-src": [
@@ -56,9 +53,8 @@ csp = {
         "fonts.gstatic.com",
         "cdn.jsdelivr.net",
     ],
-    "img-src": "'self' data: https://cdn.islamic.network https://cdn.quran.com",
-    "media-src": ["'self'"],
-    "connect-src": ["'self'", "https://api.aladhan.com", "https://nominatim.openstreetmap.org", "https://mp3quran.net"],
+    "img-src": "'self' data:",
+    "connect-src": "'self' https://api.aladhan.com https://nominatim.openstreetmap.org",
     "frame-src": "'none'",
     "object-src": "'none'",
     "base-uri": "'self'",
@@ -254,16 +250,6 @@ def azkar_night_prayer():
         storage_key="azkar_night_prayer_v1",
     )
 
-
-@app.route("/azkar/hajj-umrah")
-def azkar_hajj_umrah():
-    return render_template(
-        "azkar_page.html",
-        title="أذكار العمرة والحج",
-        items=HAJJ_UMRAH_AZKAR,
-        storage_key="azkar_hajj_umrah_v1",
-    )
-
 @app.route("/prayer-times")
 def prayer_times():
     return render_template("prayer_times.html")
@@ -279,25 +265,6 @@ def qibla():
     return render_template("qibla.html")
 
 
-
-
-
-
-@app.route("/api/notification-preferences", methods=["GET", "POST"])
-@limiter.limit("30 per minute")
-def notification_preferences():
-    """Get or save notification preferences"""
-    if request.method == "GET":
-        prefs = g.get('notification_prefs', DEFAULT_NOTIFICATION_SETTINGS)
-        return jsonify(prefs)
-
-    elif request.method == "POST":
-        data = request.get_json()
-        # Store in session (would be DB in production with user accounts)
-        g.notification_prefs = data
-        return jsonify({"success": True, "message": "Preferences saved"})
-
-
 @app.route("/health")
 def health():
     return "OK", 200
@@ -309,8 +276,119 @@ def set_language(language):
     if language not in TRANSLATIONS:
         language = "ar"
     response = jsonify({"success": True, "language": language})
-    response.set_cookie("language", language, max_age=31536000)  # 1 year
+    response.set_cookie(
+        "language",
+        language,
+        max_age=31536000,
+        secure=True,
+        httponly=True,
+        samesite="Lax"
+    )
     return response
+
+
+# ── Dashboard Authentication ──
+
+def is_logged_in():
+    """Check if user is logged in"""
+    return 'dashboard_user' in session
+
+
+def login_required(f):
+    """Decorator to require login"""
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not is_logged_in():
+            return redirect(url_for('dashboard_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route("/dashboard/login", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
+def dashboard_login():
+    """Dashboard login page"""
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+
+        if verify_credentials(username, password):
+            # Generate and send OTP
+            otp = generate_otp()
+            store_otp("alghamdihani7@gmail.com", otp)
+            send_otp_email("alghamdihani7@gmail.com", otp)
+
+            # Store temp session data
+            session['temp_username'] = username
+            session['temp_email'] = "alghamdihani7@gmail.com"
+            session.modified = True
+
+            return redirect(url_for('verify_otp_page'))
+        else:
+            return render_template("login.html", error="Invalid credentials")
+
+    return render_template("login.html")
+
+
+@app.route("/dashboard/verify-otp", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
+def verify_otp_page():
+    """OTP verification page"""
+    if 'temp_username' not in session:
+        return redirect(url_for('dashboard_login'))
+
+    email = session.get('temp_email', '')
+    masked_email = get_masked_email(email)
+
+    if request.method == "POST":
+        otp = request.form.get("otp", "").strip()
+
+        success, message = check_otp(email, otp)
+        if success:
+            # Set authenticated session
+            username = session.pop('temp_username')
+            session.pop('temp_email', None)
+            session['dashboard_user'] = username
+            session.modified = True
+
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template("otp_verify.html", masked_email=masked_email, error=message)
+
+    return render_template("otp_verify.html", masked_email=masked_email)
+
+
+@app.route("/dashboard/resend-otp")
+@limiter.limit("5 per minute")
+def resend_otp():
+    """Resend OTP"""
+    if 'temp_email' not in session:
+        return redirect(url_for('dashboard_login'))
+
+    email = session.get('temp_email', '')
+    otp = generate_otp()
+    store_otp(email, otp)
+    send_otp_email(email, otp)
+
+    masked_email = get_masked_email(email)
+    return render_template("otp_verify.html", masked_email=masked_email, success_message="OTP resent successfully!")
+
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    """Dashboard page"""
+    username = session.get('dashboard_user', 'User')
+    return render_template("dashboard.html", username=username)
+
+
+@app.route("/dashboard/logout")
+def logout():
+    """Logout from dashboard"""
+    session.pop('dashboard_user', None)
+    session.modified = True
+    return redirect(url_for('dashboard_login'))
 
 
 def keep_alive():
@@ -333,4 +411,4 @@ if os.environ.get("RENDER"):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(debug=True)

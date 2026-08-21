@@ -24,9 +24,9 @@
     </h1>
 
     <div class="landing-hero__chips anim-fade-down" style="animation-delay:.65s">
-      <span class="landing-chip"><i class="bi bi-patch-check-fill"></i> موثّق بالمراجع</span>
-      <span class="landing-chip"><i class="bi bi-translate"></i> عربي بالكامل</span>
-      <span class="landing-chip"><i class="bi bi-phone"></i> متوافق مع الجوال</span>
+      <span class="landing-chip"><i class="bi bi-patch-check-fill"></i> {{ get_text('documented') }}</span>
+      <span class="landing-chip"><i class="bi bi-translate"></i> {{ get_text('app_title') }}</span>
+      <span class="landing-chip"><i class="bi bi-phone"></i> {{ get_text('responsive') }}</span>
     </div>
 
     <a href="#sections" class="landing-hero__scroll anim-fade-in" style="animation-delay:.95s">
@@ -45,8 +45,8 @@
         <div class="landing-card__icon-wrap">
           <i class="bi {{ card.icon }}"></i>
         </div>
-        <h3 class="landing-card__title">{{ card.title }}</h3>
-        <p class="landing-card__desc">{{ card.description }}</p>
+        <h3 class="landing-card__title">{{ card.title.get(current_language, card.title.get('ar', '')) }}</h3>
+        <p class="landing-card__desc">{{ card.description.get(current_language, card.description.get('ar', '')) }}</p>
         <span class="landing-card__arrow"><i class="bi bi-arrow-left"></i></span>
       </a>
     </div>
@@ -58,7 +58,7 @@
 <p class="landing-trust-line anim-fade-in" style="animation-delay:1.2s">
   <i class="bi bi-shield-check"></i>
   {% for note in trust_notes %}
-    {{ note }}{% if not loop.last %} · {% endif %}
+    {{ note.get(current_language, note.get('ar', '')) }}{% if not loop.last %} · {% endif %}
   {% endfor %}
 </p>
 {% endblock %}

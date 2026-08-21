@@ -1,0 +1,712 @@
+{% extends 'base.html' %}
+{% block title %}Network Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Courier New', 'Segoe UI', monospace;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0d0f1f 100%);
+    color: #00ffff;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 0, 128, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .navbar {
+    background: transparent;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.1);
+  }
+
+  .navbar-brand__text {
+    color: #00ffff !important;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dashboard {
+    padding: 32px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.2);
+  }
+
+  .header-left h1 {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #00ffff, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+  }
+
+  .status-line {
+    font-size: 12px;
+    color: #00ff88;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ff88;
+    animation: blink 1.5s infinite;
+    margin-right: 6px;
+  }
+
+  @keyframes blink {
+    0%, 49%, 100% { opacity: 1; }
+    50%, 99% { opacity: 0.3; }
+  }
+
+  .logout-btn {
+    background: linear-gradient(135deg, #00ff88, #00ffff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+  }
+
+  .logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+
+  .top-metrics {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+
+  .metric-card {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(0, 255, 136, 0.02));
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ffff, transparent);
+    animation: scan 3s infinite;
+  }
+
+  @keyframes scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .metric-card:hover {
+    border-color: #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .metric-icon {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    color: #00ff88;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+    font-weight: 900;
+    color: #00ffff;
+    font-family: 'Courier New', monospace;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8), rgba(30, 39, 73, 0.5));
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(15px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #00ffff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .card-title-icon {
+    font-size: 18px;
+  }
+
+  .traffic-map {
+    height: 200px;
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 128, 0.05));
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+    padding: 8px;
+    overflow: hidden;
+  }
+
+  .traffic-cell {
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .traffic-cell:hover {
+    background: rgba(0, 255, 255, 0.25);
+    border-color: #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    transform: scale(1.1);
+  }
+
+  .traffic-cell.hot {
+    background: rgba(255, 0, 128, 0.3);
+    border-color: rgba(255, 0, 128, 0.5);
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+  }
+
+  .user-flow {
+    height: 180px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 8px;
+    padding: 16px 8px;
+    background: rgba(0, 255, 255, 0.03);
+    border-radius: 8px;
+  }
+
+  .flow-bar {
+    width: 100%;
+    background: linear-gradient(180deg, #00ffff, #00ff88);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    min-height: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .flow-bar:hover {
+    filter: brightness(1.3);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+  }
+
+  .flow-label {
+    font-size: 10px;
+    color: #00ff88;
+    text-align: center;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  .geo-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .geo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left: 3px solid #00ffff;
+    transition: all 0.3s ease;
+  }
+
+  .geo-item:hover {
+    background: rgba(0, 255, 255, 0.15);
+    transform: translateX(4px);
+  }
+
+  .geo-flag {
+    font-size: 18px;
+  }
+
+  .geo-info {
+    flex: 1;
+  }
+
+  .geo-location {
+    font-size: 12px;
+    font-weight: 700;
+    color: #00ffff;
+  }
+
+  .geo-stat {
+    font-size: 11px;
+    color: #00ff88;
+  }
+
+  .gauge {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(from 180deg, #00ffff 0deg, #00ff88 90deg, rgba(0, 255, 136, 0.3) 180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .gauge::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 255, 255, 0.2);
+  }
+
+  .gauge-inner {
+    width: 110px;
+    height: 110px;
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(30, 39, 73, 0.8));
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+  }
+
+  .gauge-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00ffff;
+    font-family: 'Courier New', monospace;
+  }
+
+  .gauge-label {
+    font-size: 10px;
+    color: #00ff88;
+    text-transform: uppercase;
+  }
+
+  .progress-bar {
+    height: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00ffff);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    transition: width 0.5s ease;
+  }
+
+  .progress-item {
+    margin-bottom: 12px;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #00ffff;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .status-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .status-table th {
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.2);
+  }
+
+  .status-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+    font-size: 12px;
+    color: #00ff88;
+  }
+
+  .status-table tr:hover {
+    background: rgba(0, 255, 255, 0.05);
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    background: #00ff88;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+  }
+
+  .status-dot.error {
+    background: #ff0080;
+    box-shadow: 0 0 10px rgba(255, 0, 128, 0.6);
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+    margin: 12px 0;
+  }
+</style>
+
+<div class="dashboard">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>⚡ NETWORK COMMAND CENTER</h1>
+      <div class="status-line">
+        <span class="status-indicator"></span>
+        SYSTEM OPERATIONAL • WELCOME {{ username }} • 4847 ACTIVE STREAMS
+      </div>
+    </div>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </div>
+
+  <!-- Top Level Metrics -->
+  <div class="top-metrics">
+    <div class="metric-card">
+      <div class="metric-icon">📡</div>
+      <div class="metric-label">Active Users</div>
+      <div class="metric-value">4,847</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">📊</div>
+      <div class="metric-label">Throughput</div>
+      <div class="metric-value">2.4 Gbps</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">🌍</div>
+      <div class="metric-label">Regions</div>
+      <div class="metric-value">127</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">⚡</div>
+      <div class="metric-label">Latency</div>
+      <div class="metric-value">12ms</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">✅</div>
+      <div class="metric-label">Uptime</div>
+      <div class="metric-value">99.9%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">🔥</div>
+      <div class="metric-label">CPU Load</div>
+      <div class="metric-value">68%</div>
+    </div>
+  </div>
+
+  <!-- User Traffic & Analytics -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-icon">🗺️</span>
+        REAL-TIME USER TRAFFIC HEATMAP
+      </div>
+      <div class="traffic-map">
+        <div class="traffic-cell hot">🔥 NA</div>
+        <div class="traffic-cell hot">🔥 EU</div>
+        <div class="traffic-cell">AS</div>
+        <div class="traffic-cell">SA</div>
+        <div class="traffic-cell hot">🔥 USA</div>
+        <div class="traffic-cell">UK</div>
+        <div class="traffic-cell">CN</div>
+        <div class="traffic-cell">JP</div>
+        <div class="traffic-cell">AU</div>
+        <div class="traffic-cell">IN</div>
+        <div class="traffic-cell">BR</div>
+        <div class="traffic-cell">MX</div>
+      </div>
+      <div class="section-divider"></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+        <div style="text-align: center;">
+          <div style="font-size: 11px; color: #00ff88; margin-bottom: 4px;">PEAK REGION</div>
+          <div style="font-size: 16px; font-weight: 900; color: #00ffff;">North America</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 11px; color: #00ff88; margin-bottom: 4px;">GROWTH RATE</div>
+          <div style="font-size: 16px; font-weight: 900; color: #00ff88;">↑ 34%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-icon">📈</span>
+        USER FLOW ANALYTICS
+      </div>
+      <div class="user-flow">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="flow-bar" style="height: 68%;"></div>
+          <div class="flow-label">Mobile</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="flow-bar" style="height: 72%;"></div>
+          <div class="flow-label">Desktop</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="flow-bar" style="height: 42%;"></div>
+          <div class="flow-label">Tablet</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="flow-bar" style="height: 58%;"></div>
+          <div class="flow-label">API</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="flow-bar" style="height: 35%;"></div>
+          <div class="flow-label">IoT</div>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <div style="font-size: 11px; color: #00ff88; text-align: center; margin-top: 8px;">
+        TOTAL TRAFFIC DISTRIBUTION OVER 24H
+      </div>
+    </div>
+  </div>
+
+  <!-- Geographic & Performance -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-icon">🌐</span>
+        TOP TRAFFIC SOURCES
+      </div>
+      <div class="geo-distribution">
+        <div class="geo-item">
+          <div class="geo-flag">🇺🇸</div>
+          <div class="geo-info">
+            <div class="geo-location">United States</div>
+            <div class="geo-stat">1,847 users • +34% growth</div>
+          </div>
+          <div style="font-weight: 900; color: #00ffff;">38%</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-flag">🇬🇧</div>
+          <div class="geo-info">
+            <div class="geo-location">United Kingdom</div>
+            <div class="geo-stat">612 users • +18% growth</div>
+          </div>
+          <div style="font-weight: 900; color: #00ffff;">13%</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-flag">🇩🇪</div>
+          <div class="geo-info">
+            <div class="geo-location">Germany</div>
+            <div class="geo-stat">523 users • +12% growth</div>
+          </div>
+          <div style="font-weight: 900; color: #00ffff;">11%</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-flag">🇯🇵</div>
+          <div class="geo-info">
+            <div class="geo-location">Japan</div>
+            <div class="geo-stat">445 users • +8% growth</div>
+          </div>
+          <div style="font-weight: 900; color: #00ffff;">9%</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-flag">🇮🇳</div>
+          <div class="geo-info">
+            <div class="geo-location">India</div>
+            <div class="geo-stat">420 users • +22% growth</div>
+          </div>
+          <div style="font-weight: 900; color: #00ffff;">9%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-icon">💾</span>
+        SYSTEM PERFORMANCE METRICS
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center;">
+        <div class="gauge">
+          <div class="gauge-inner">
+            <div class="gauge-value">68%</div>
+            <div class="gauge-label">CPU Usage</div>
+          </div>
+        </div>
+        <div>
+          <div class="progress-item">
+            <div class="progress-label">Memory</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 72%;">72%</div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label">Disk I/O</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 45%;">45%</div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label">Network</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 82%;">82%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Status Table -->
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-icon">📋</span>
+      ACTIVE SERVICES STATUS
+    </div>
+    <table class="status-table">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Status</th>
+          <th>Uptime</th>
+          <th>Response Time</th>
+          <th>Requests/sec</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>API Gateway</td>
+          <td><span class="status-dot"></span>Online</td>
+          <td>99.98%</td>
+          <td style="color: #00ffff;">12ms</td>
+          <td style="color: #00ff88; font-weight: 900;">4,247</td>
+        </tr>
+        <tr>
+          <td>Auth Service</td>
+          <td><span class="status-dot"></span>Online</td>
+          <td>99.95%</td>
+          <td style="color: #00ffff;">8ms</td>
+          <td style="color: #00ff88; font-weight: 900;">2,156</td>
+        </tr>
+        <tr>
+          <td>Database Cluster</td>
+          <td><span class="status-dot"></span>Online</td>
+          <td>100%</td>
+          <td style="color: #00ffff;">15ms</td>
+          <td style="color: #00ff88; font-weight: 900;">6,834</td>
+        </tr>
+        <tr>
+          <td>Cache Layer</td>
+          <td><span class="status-dot error"></span>Degraded</td>
+          <td>95%</td>
+          <td style="color: #00ffff;">34ms</td>
+          <td style="color: #00ff88; font-weight: 900;">3,421</td>
+        </tr>
+        <tr>
+          <td>CDN Network</td>
+          <td><span class="status-dot"></span>Online</td>
+          <td>99.99%</td>
+          <td style="color: #00ffff;">4ms</td>
+          <td style="color: #00ff88; font-weight: 900;">8,923</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

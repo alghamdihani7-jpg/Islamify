@@ -245,21 +245,177 @@ a { color: inherit; text-decoration: none; }
 }
 .mk-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .mk-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.mk-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* auto-fit يوزّع البطاقات حسب المساحة: ٤ على سطح المكتب، ٢ على الجوال،
+   بلا حاجة لنقطة توقّف لكل مقاس. */
+.mk-grid--4 { grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); }
+.mk-grid--metrics { grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); }
 .mk-grid--sidebar { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
 
 @media (max-width: 1100px) {
-  .mk-grid--sidebar, .mk-grid--3, .mk-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mk-grid--sidebar, .mk-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+@media (max-width: 860px) {
+  .mk-main, .mk-controls, .mk-topbar__inner { padding-inline: 14px; }
+  .mk-grid--sidebar { grid-template-columns: minmax(0, 1fr); }
+}
+
 @media (max-width: 720px) {
-  .mk-grid--2, .mk-grid--3, .mk-grid--4, .mk-grid--sidebar { grid-template-columns: minmax(0, 1fr); }
+  .mk-grid--2, .mk-grid--3, .mk-grid--sidebar { grid-template-columns: minmax(0, 1fr); }
   .mk-main, .mk-controls, .mk-topbar__inner { padding-inline: 12px; }
 
-  /* مبدّل النمط بثلاثة أزرار أعرض من شاشة الجوال — يتمدّد بدل أن يفيض. */
+  /* الشريط العلوي: البحث يأخذ سطرًا كاملًا بدل مزاحمة الشعار. */
+  .mk-topbar__inner { gap: 10px; row-gap: 8px; }
+  .mk-brand__sub { display: none; }
+  .mk-brand { font-size: 15px; }
+  .mk-topbar__spacer { display: none; }
+  .mk-search { flex: 1 1 100%; order: 3; min-width: 0; }
+
+  /* مبدّل النمط بثلاثة أزرار أعرض من الشاشة — يتمدّد بدل أن يفيض. */
   .mk-controls > .mk-segmented { width: 100%; }
-  .mk-controls > .mk-segmented button { flex: 1 1 0; padding: 6px 4px; font-size: 12px; }
-  .mk-field { flex: 1 1 auto; }
-  .mk-field input { width: 100%; }
+  .mk-controls > .mk-segmented button { flex: 1 1 0; padding: 9px 4px; font-size: 12px; }
+  .mk-field { flex: 1 1 calc(50% - 6px); justify-content: space-between; }
+  .mk-field input { width: 100%; min-width: 0; }
+  .mk-hint { flex: 1 1 100%; }
+
+  .mk-section-title { font-size: 16px; margin-top: 22px; }
+  .mk-stat__value { font-size: 19px; }
+
+  /* ── الجدول العريض يصير بطاقات ──
+     جدول بخمسة عشر عمودًا لا يُقرأ على الجوال ولو انزلق أفقيًا، فكل صف
+     يُعاد بناؤه بطاقةً: اسم السهم عنوانًا، وكل خلية سطر «التسمية ← القيمة»
+     مأخوذة من data-label.
+
+     الجداول الضيّقة (كجدول القطاعات) تبقى جداول قابلة للسحب أفقيًا —
+     تحويلها لبطاقات يمدّد الصفحة لآلاف البكسلات بلا فائدة. */
+  /* تخصيص مركّب حتى لا تتغلّب عليها قاعدة min-width للجداول العادية أدناه. */
+  .mk-table.mk-table--cards { min-width: 0; display: block; }
+  .mk-table--cards thead { display: none; }
+  .mk-table--cards tbody,
+  .mk-table--cards tr,
+  .mk-table--cards td { display: block; width: 100%; }
+
+  .mk-table--cards tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;   /* حقلان في السطر */
+    column-gap: 14px;
+    border: 1px solid var(--mk-border);
+    border-radius: var(--mk-radius-sm);
+    background: var(--mk-surface-2);
+    margin-bottom: 10px;
+    padding: 11px 13px;
+  }
+
+  /* اسم السهم عنوانًا، والنموذج سطرًا كاملًا لأنه نص طويل. */
+  .mk-table--cards td[data-col="symbol"],
+  .mk-table--cards td[data-col="setup"],
+  .mk-table--cards td.mk-empty { grid-column: 1 / -1; }
+
+  /* القائمة أداة *مسح* سريع: تُعرض الحقول القرارية فقط، وتفاصيل
+     المؤشرات مكانها صفحة السهم. عرض الخمسة عشر حقلًا كان يجعل البطاقة
+     بطول ٦٥٠ بكسل والصفحة بطول ١٦ ألفًا. */
+  .mk-table--cards td[data-col="trend"],
+  .mk-table--cards td[data-col="rsi"],
+  .mk-table--cards td[data-col="adx"] { display: none; }
+  .mk-table--cards tbody tr:last-child { margin-bottom: 0; }
+
+  .mk-table--cards td {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    border: 0;
+    padding: 3px 0;
+    white-space: normal;
+    font-size: 12.5px;
+    min-height: 0;
+  }
+  .mk-table--cards td[data-col="setup"] {
+    margin-top: 5px;
+    padding-top: 6px;
+    border-top: 1px solid var(--mk-border-soft);
+  }
+  .mk-table--cards td > * { flex: 1 1 auto; text-align: end; min-width: 0; }
+  .mk-table--cards td::before {
+    content: attr(data-label);
+    color: var(--mk-muted);
+    font-size: 11.5px;
+    flex: 0 0 auto;
+  }
+  /* الخلية الأولى (اسم السهم) عنوان البطاقة، بلا تسمية. */
+  .mk-table--cards td[data-col="symbol"] {
+    display: block;
+    padding-bottom: 7px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--mk-border-soft);
+  }
+  .mk-table--cards td[data-col="symbol"]::before { content: none; }
+  /* خلايا بلا قيمة تُخفى بدل ترك سطر فارغ. */
+  .mk-table--cards td[data-empty="1"] { display: none; }
+  .mk-table--cards td.mk-empty { display: block; text-align: center; }
+
+  /* جدول القطاعات: يبقى جدولًا، بعرض أدنى أصغر ليقلّ السحب.
+     ‏:not(.mk-table--cards) ضروري وإلا فرضت العرض على جدول البطاقات
+     فدفعت عموده الأيسر خارج حدود البطاقة. */
+  .mk-table:not(.mk-table--cards) { min-width: 440px; font-size: 12.5px; }
+  .mk-table:not(.mk-table--cards) th,
+  .mk-table:not(.mk-table--cards) td { padding: 9px 10px; }
+
+  /* شريط أدوات الشارت: رقائق أكبر للمس.
+     مبدّل الأطر الزمنية يحوي ثماني رقائق — أعرض من أي شاشة جوال، وكان
+     يفيض خارج البطاقة لأن .mk-segmented لا يلتف افتراضيًا. */
+  .mk-chart-toolbar { gap: 6px; padding: 10px 12px; }
+  .mk-chart-toolbar .mk-segmented {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+    row-gap: 4px;
+  }
+  .mk-chart-toolbar .mk-segmented .mk-chip { flex: 0 0 auto; }
+  .mk-chip { padding: 7px 12px; }
+  .mk-legend { font-size: 11px; gap: 10px; }
+}
+
+@media (max-width: 400px) {
+  .mk-main, .mk-controls, .mk-topbar__inner { padding-inline: 10px; }
+  .mk-card__body { padding: 12px 13px; }
+  .mk-brand { font-size: 14px; }
+  .mk-brand__badge { width: 27px; height: 27px; font-size: 13px; }
+  .mk-controls > .mk-segmented button { font-size: 11px; padding: 9px 2px; }
+  .mk-field { font-size: 11.5px; padding-inline-start: 11px; }
+  .mk-stat__value { font-size: 18px; }
+  .mk-component { grid-template-columns: 1fr 40px 72px; }
+}
+
+/* شاشات عريضة جدًا: استفد من المساحة بدل هامش فارغ ضخم. */
+@media (min-width: 1700px) {
+  .mk-main, .mk-controls, .mk-topbar__inner { max-width: 1640px; }
+}
+
+/* ── أهداف اللمس ──
+   على الأجهزة اللمسية يرتفع الحد الأدنى لكل عنصر تفاعلي إلى ٤٤ بكسل،
+   وهو الحد الموصى به لتفادي الضغطات الخاطئة. المؤشر الدقيق (فأرة) يبقى
+   على المقاسات المدمجة. */
+@media (pointer: coarse) {
+  .mk-brand { min-height: 44px; }
+  .mk-segmented button,
+  .mk-chip,
+  .mk-search input,
+  .mk-field input,
+  .mk-toggle {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mk-toggle { padding: 0 4px; }
+  .mk-toggle input { width: 18px; height: 18px; }
+  .mk-field { padding-block: 3px; }
+  .mk-search__item { padding-block: 13px; }
+  .mk-table tbody tr { min-height: 44px; }
+  .mk-table--cards td { min-height: 0; }
+  .mk-legend { padding-block: 12px; }
 }
 
 .mk-card {
@@ -583,9 +739,9 @@ a { color: inherit; text-decoration: none; }
 .mk-chart-canvas-wrap {
   position: relative;
   width: 100%;
-  height: 460px;
+  /* يتبع ارتفاع الشاشة: لا يفيض على جوال أفقي ولا يتضاءل على سطح المكتب. */
+  height: clamp(240px, 52vh, 470px);
 }
-@media (max-width: 720px) { .mk-chart-canvas-wrap { height: 340px; } }
 
 .mk-chart-canvas-wrap canvas {
   display: block;

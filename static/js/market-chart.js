@@ -170,8 +170,22 @@
     this.view.start = Math.max(0, Math.min(max, start));
   };
 
-  CandleChart.prototype._padLeft = function () { return 8; };
-  CandleChart.prototype._padRight = function () { return 64; };
+  CandleChart.prototype._padLeft = function () { return this.width < 420 ? 5 : 8; };
+
+  /** هامش محور السعر — ٦٤ بكسل تلتهم خُمس شاشة ٣٢٠، فيتقلّص معها. */
+  CandleChart.prototype._padRight = function () {
+    if (this.width < 420) return 42;
+    if (this.width < 640) return 52;
+    return 64;
+  };
+
+  /** عدد الشموع المعروضة ابتداءً — شمعة بعرض بكسلين لا تُقرأ. */
+  CandleChart.prototype._defaultBars = function (width) {
+    var wanted = this.options.initialBars || 130;
+    if (width < 480) return Math.min(wanted, 55);
+    if (width < 900) return Math.min(wanted, 90);
+    return wanted;
+  };
   CandleChart.prototype._plotWidth = function () {
     return Math.max(10, this.width - this._padLeft() - this._padRight());
   };
@@ -191,7 +205,8 @@
     this.data = data;
     if (!keepView) {
       var total = data.candles.length;
-      var initial = Math.min(total, this.options.initialBars || 130);
+      var width = this.wrap.getBoundingClientRect().width || 900;
+      var initial = Math.min(total, this._defaultBars(width));
       this.view = { start: Math.max(0, total - initial), count: initial };
     }
     this.render();
@@ -381,7 +396,7 @@
     ctx.strokeStyle = COLORS.grid;
     ctx.lineWidth = 1;
     ctx.fillStyle = COLORS.text;
-    ctx.font = "11px " + (this.options.monoFont || "ui-monospace, Menlo, monospace");
+    ctx.font = this._axisFont();
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
 
@@ -411,8 +426,15 @@
     ctx.restore();
   };
 
+  CandleChart.prototype._axisFont = function () {
+    var size = this.width < 420 ? 9.5 : this.width < 640 ? 10 : 11;
+    return size + "px " + (this.options.monoFont || "ui-monospace, Menlo, monospace");
+  };
+
   CandleChart.prototype._timeTicks = function (slice) {
-    var maxTicks = Math.max(2, Math.floor(this._plotWidth() / 88));
+    // مسافة أوسع بين العلامات على الشاشات الضيقة حتى لا تتداخل التواريخ.
+    var spacing = this.width < 480 ? 74 : 88;
+    var maxTicks = Math.max(2, Math.floor(this._plotWidth() / spacing));
     var stride = Math.max(1, Math.ceil(slice.items.length / maxTicks));
     var ticks = [];
     for (var i = slice.items.length - 1; i >= 0; i -= stride) {
@@ -495,7 +517,7 @@
     ctx.setLineDash([]);
 
     if (label && this._tagFor(price, owner)) {
-      ctx.font = "10.5px " + (this.options.monoFont || "ui-monospace, Menlo, monospace");
+      ctx.font = this._axisFont();
       var text = label;
       var w = ctx.measureText(text).width + 10;
       ctx.fillStyle = color;
@@ -597,10 +619,12 @@
 
     ctx.save();
     ctx.fillStyle = COLORS.text;
-    ctx.font = "10px " + (this.options.monoFont || "ui-monospace, Menlo, monospace");
+    ctx.font = this._axisFont();
     ctx.textBaseline = "top";
     ctx.textAlign = "left";
-    ctx.fillText("الحجم " + fmtVolume(maxVol), g.right + 7, g.volTop + 2);
+    // على الشاشات الضيقة يكفي الرقم، فكلمة "الحجم" تفيض خارج الهامش.
+    ctx.fillText((this.width < 480 ? "" : "الحجم ") + fmtVolume(maxVol),
+                 g.right + 5, g.volTop + 2);
     ctx.restore();
   };
 
@@ -614,7 +638,7 @@
     ctx.stroke();
 
     ctx.fillStyle = COLORS.text;
-    ctx.font = "10.5px sans-serif";
+    ctx.font = (this.width < 480 ? 9.5 : 10.5) + "px sans-serif";
     ctx.textBaseline = "top";
     ctx.textAlign = "center";
 
@@ -666,7 +690,7 @@
       ctx.fillStyle = "#2b3a4d";
       ctx.fillRect(g.right + 2, y - 9, this._padRight() - 6, 18);
       ctx.fillStyle = "#e6edf5";
-      ctx.font = "11px " + (this.options.monoFont || "ui-monospace, Menlo, monospace");
+      ctx.font = this._axisFont();
       ctx.textBaseline = "middle";
       ctx.textAlign = "left";
       ctx.fillText(fmtPrice(price), g.right + 7, y);

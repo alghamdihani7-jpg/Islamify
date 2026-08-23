@@ -198,48 +198,58 @@
       });
 
       var symCell = el("td");
+      symCell.dataset.col = "symbol";
       var sym = el("div", "mk-sym");
       sym.appendChild(el("span", "mk-sym__name", row.name_ar));
       sym.appendChild(el("span", "mk-sym__code", row.code + " · " + (row.sector || "")));
       symCell.appendChild(sym);
-      tr.appendChild(symCell);
+      tr.appendChild(symCell);   // عنوان البطاقة على الجوال
 
-      tr.appendChild(cell(M.num(Fmt.price(row.price))));
-      tr.appendChild(cell(M.num(Fmt.pct(row.change_pct, true), Fmt.dirClass(row.change_pct))));
-      tr.appendChild(cell(M.scoreCell(row.score)));
-      tr.appendChild(cell(M.signalBadge(row.signal)));
-      tr.appendChild(cell(el("span", "", row.trend || "—")));
-      tr.appendChild(cell(M.num(row.rsi === null || row.rsi === undefined ? "—" : row.rsi.toFixed(0))));
-      tr.appendChild(cell(M.num(row.adx === null || row.adx === undefined ? "—" : row.adx.toFixed(0))));
+      tr.appendChild(cell(M.num(Fmt.price(row.price)), "السعر", "price"));
+      tr.appendChild(cell(M.num(Fmt.pct(row.change_pct, true), Fmt.dirClass(row.change_pct)), "التغير", "change"));
+      tr.appendChild(cell(M.scoreCell(row.score), "الدرجة", "score"));
+      tr.appendChild(cell(M.signalBadge(row.signal), "الإشارة", "signal"));
+      tr.appendChild(cell(el("span", "", row.trend || "—"), "الاتجاه", "trend"));
+      tr.appendChild(cell(M.num(row.rsi === null || row.rsi === undefined ? "—" : row.rsi.toFixed(0)), "RSI", "rsi"));
+      tr.appendChild(cell(M.num(row.adx === null || row.adx === undefined ? "—" : row.adx.toFixed(0)), "ADX", "adx"));
 
       var gates = el("span", "mk-badge mk-badge--" +
         (row.gates_passed === 5 ? "buy" : row.gates_passed >= 3 ? "warn" : "ghost"));
       gates.textContent = row.gates_passed + "/5";
-      tr.appendChild(cell(gates));
+      tr.appendChild(cell(gates, "البوابات", "gates"));
 
-      tr.appendChild(cell(M.num(Fmt.price(row.entry))));
-      tr.appendChild(cell(M.num(Fmt.price(row.stop), "down")));
-      tr.appendChild(cell(M.num(Fmt.price(row.target), "up")));
+      tr.appendChild(cell(M.num(Fmt.price(row.entry)), "الدخول", "entry"));
+      tr.appendChild(cell(M.num(Fmt.price(row.stop), "down"), "وقف الخسارة", "stop"));
+      tr.appendChild(cell(M.num(Fmt.price(row.target), "up"), "الهدف الأول", "target"));
 
       var rr = row.risk_reward;
       tr.appendChild(cell(M.num(rr === null || rr === undefined ? "—" : rr.toFixed(2),
-        rr && rr >= 1.8 ? "up" : "flat")));
+        rr && rr >= 1.8 ? "up" : "flat"), "العائد/المخاطرة", "rr"));
 
-      tr.appendChild(cell(M.num(Fmt.int(row.shares))));
+      tr.appendChild(cell(M.num(Fmt.int(row.shares)), "الكمية", "shares"));
 
       var setups = el("span", "mk-check__detail");
       setups.textContent = row.setups && row.setups.length
         ? row.setups.join(" · ")
         : (row.vetoes && row.vetoes.length ? "⛔ " + row.vetoes[0] : "—");
-      tr.appendChild(cell(setups));
+      tr.appendChild(cell(setups, "النموذج", "setup"));
 
       body.appendChild(tr);
     });
   }
 
-  function cell(node) {
+  /**
+   * خلية جدول تحمل تسمية العمود في ``data-label``.
+   * على الجوال يتحوّل الجدول إلى بطاقات ويُظهر CSS هذه التسمية قبل القيمة،
+   * فيبقى الصف مفهومًا بلا رأس جدول وبلا سحب أفقي.
+   */
+  function cell(node, label, col) {
     var td = el("td");
+    if (label) td.dataset.label = label;
+    if (col) td.dataset.col = col;
     td.appendChild(node);
+    var text = (node.textContent || "").trim();
+    if (!text || text === "—") td.dataset.empty = "1";   // لا تُعرض كسطر فارغ
     return td;
   }
 
@@ -257,13 +267,13 @@
     }
     sectors.forEach(function (sector) {
       var tr = el("tr");
-      tr.appendChild(cell(el("span", "", sector.sector)));
-      tr.appendChild(cell(M.num(Fmt.int(sector.count))));
+      tr.appendChild(cell(el("span", "", sector.sector)));  // عنوان البطاقة
+      tr.appendChild(cell(M.num(Fmt.int(sector.count)), "عدد الشركات"));
       tr.appendChild(cell(M.num(
         sector.avg_score === null ? "—" : Number(sector.avg_score).toFixed(0),
-        Fmt.dirClass(sector.avg_score))));
-      tr.appendChild(cell(M.num(Fmt.pct(sector.avg_change_pct, true), Fmt.dirClass(sector.avg_change_pct))));
-      tr.appendChild(cell(M.num(Fmt.int(sector.buy_signals), sector.buy_signals ? "up" : "flat")));
+        Fmt.dirClass(sector.avg_score)), "متوسط الدرجة"));
+      tr.appendChild(cell(M.num(Fmt.pct(sector.avg_change_pct, true), Fmt.dirClass(sector.avg_change_pct)), "متوسط التغير"));
+      tr.appendChild(cell(M.num(Fmt.int(sector.buy_signals), sector.buy_signals ? "up" : "flat"), "إشارات شراء"));
       body.appendChild(tr);
     });
   }

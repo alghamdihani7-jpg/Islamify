@@ -104,6 +104,22 @@ limiter.limit("60 per minute")(app.view_functions["market.api_overview"])
 limiter.limit("120 per minute")(app.view_functions["market.api_search"])
 
 
+# ── Cache Busting for Static Assets ──
+# الملفات الثابتة تُخدَّم بـ max-age سنة كاملة (انظر add_security_headers)، وهو
+# صحيح للأداء لكنه يعني أن متصفح المستخدم لن يرى أي تحديث لـ CSS أو JS بعد
+# أول زيارة. إضافة بصمة وقت التعديل إلى الرابط تجعل الملف المعدَّل رابطًا
+# جديدًا، فيُحمَّل فورًا بينما تبقى الملفات غير المتغيّرة مخزّنة.
+@app.url_defaults
+def add_static_asset_version(endpoint, values):
+    if endpoint != "static" or "filename" not in values:
+        return
+    try:
+        path = os.path.join(app.static_folder, values["filename"])
+        values["v"] = int(os.stat(path).st_mtime)
+    except (OSError, TypeError):
+        pass  # ملف مفقود — اترك الرابط كما هو بدل كسر الصفحة
+
+
 # ── Language Support ──
 def get_current_language():
     """Get current language from cookie or request args, default to 'ar'"""

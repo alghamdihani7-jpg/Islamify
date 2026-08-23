@@ -452,7 +452,7 @@
     var ind = data.indicators || {};
     host.innerHTML = "";
 
-    var grid = el("div", "mk-grid mk-grid--3");
+    var grid = el("div", "mk-grid mk-grid--metrics");
     [
       ["RSI (14)", ind.rsi, 1, "القوة النسبية — فوق ٧٠ تشبّع شرائي، تحت ٣٠ تشبّع بيعي"],
       ["ADX", ind.adx, 1, "قوة الاتجاه — فوق ٢٠ اتجاه حقيقي"],

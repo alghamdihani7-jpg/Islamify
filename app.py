@@ -23,6 +23,7 @@ from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
 from data.night_prayer_duas import NIGHT_PRAYER_DUAS
 from data.translations import get_text, get_all_languages, TRANSLATIONS
 from auth_service import verify_credentials, generate_otp, store_otp, verify_otp as check_otp, send_otp_email, get_masked_email
+from market.routes import market_bp
 
 app = Flask(__name__)
 
@@ -90,6 +91,17 @@ limiter = Limiter(
     default_limits=["200 per minute", "5000 per hour"],
     storage_uri="memory://",
 )
+
+
+# ── قسم تحليل السوق السعودي (تاسي) ──
+# المسح يجلب عشرات الرموز من مزوّد خارجي، فله حد أشد من بقية المسارات.
+app.register_blueprint(market_bp)
+limiter.limit("60 per minute")(app.view_functions["market.market_dashboard"])
+limiter.limit("60 per minute")(app.view_functions["market.market_symbol"])
+limiter.limit("20 per minute")(app.view_functions["market.api_scan"])
+limiter.limit("60 per minute")(app.view_functions["market.api_symbol"])
+limiter.limit("60 per minute")(app.view_functions["market.api_overview"])
+limiter.limit("120 per minute")(app.view_functions["market.api_search"])
 
 
 # ── Language Support ──

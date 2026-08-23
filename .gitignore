@@ -36,3 +36,6 @@ build/
 # Logs
 *.log
 islamify_data.db
+
+# Test cache
+.pytest_cache/

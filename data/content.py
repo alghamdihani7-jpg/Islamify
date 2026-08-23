@@ -77,6 +77,12 @@ FEATURE_CARDS = [
         "link": "/qibla",
         "icon": "bi-compass",
     },
+    {
+        "title": {"ar": "تحليل السوق السعودي", "en": "Saudi Market Analysis", "ur": "سعودی مارکیٹ کا تجزیہ", "hi": "सऊदी बाज़ार विश्लेषण", "fil": "Pagsusuri ng Saudi Market", "ms": "Analisis Pasaran Saudi"},
+        "description": {"ar": "تحليل فني آلي لأسهم تاسي وفق استراتيجية موثّقة — إشارات وخطة تنفيذ بلا توصيات", "en": "Automated technical analysis of TASI stocks with a documented strategy — signals and trade plans, not recommendations", "ur": "تاسی حصص کا خودکار تکنیکی تجزیہ — اشارے اور منصوبہ، سفارش نہیں", "hi": "TASI शेयरों का स्वचालित तकनीकी विश्लेषण — संकेत और योजना, सिफ़ारिश नहीं", "fil": "Awtomatikong teknikal na pagsusuri ng mga sapi sa TASI — mga senyas at plano, hindi rekomendasyon", "ms": "Analisis teknikal automatik saham TASI — isyarat dan pelan, bukan cadangan"},
+        "link": "/market",
+        "icon": "bi-graph-up-arrow",
+    },
 ]
 
 TRUST_NOTES = [

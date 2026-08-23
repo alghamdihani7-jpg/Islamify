@@ -50,13 +50,13 @@ CACHE_TTL = {
 # الأطر الزمنية المدعومة في الواجهة: المفتاح -> (range, interval, تسمية)
 TIMEFRAMES: Dict[str, Dict[str, str]] = {
     "1d":  {"range": "1d",  "interval": "5m",  "label": "يوم",     "kind": "intraday"},
-    "5d":  {"range": "5d",  "interval": "30m", "label": "٥ أيام",  "kind": "intraday"},
+    "5d":  {"range": "5d",  "interval": "30m", "label": "5 أيام",  "kind": "intraday"},
     "1mo": {"range": "1mo", "interval": "1d",  "label": "شهر",     "kind": "daily"},
-    "3mo": {"range": "3mo", "interval": "1d",  "label": "٣ أشهر",  "kind": "daily"},
-    "6mo": {"range": "6mo", "interval": "1d",  "label": "٦ أشهر",  "kind": "daily"},
+    "3mo": {"range": "3mo", "interval": "1d",  "label": "3 أشهر",  "kind": "daily"},
+    "6mo": {"range": "6mo", "interval": "1d",  "label": "6 أشهر",  "kind": "daily"},
     "1y":  {"range": "1y",  "interval": "1d",  "label": "سنة",     "kind": "daily"},
     "2y":  {"range": "2y",  "interval": "1wk", "label": "سنتان",   "kind": "daily"},
-    "5y":  {"range": "5y",  "interval": "1wk", "label": "٥ سنوات", "kind": "daily"},
+    "5y":  {"range": "5y",  "interval": "1wk", "label": "5 سنوات", "kind": "daily"},
 }
 DEFAULT_TIMEFRAME = "6mo"
 

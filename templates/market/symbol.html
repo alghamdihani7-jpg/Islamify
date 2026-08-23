@@ -1,0 +1,99 @@
+{% extends "market/base.html" %}
+{% block title %}{{ info.name_ar or code }} ({{ code }}) — تحليل فني{% endblock %}
+
+{% block content %}
+<a class="mk-back" href="{{ url_for('market.market_dashboard') }}">↩ رجوع إلى لوحة السوق</a>
+
+<div id="mkAlerts"></div>
+
+<section class="mk-card" style="margin-bottom:14px">
+  <div class="mk-card__body" id="mkQuote" data-code="{{ code }}">
+    <div class="mk-skeleton" style="width:240px;height:24px;margin-bottom:10px"></div>
+    <div class="mk-skeleton" style="width:340px;height:32px"></div>
+  </div>
+</section>
+
+<section class="mk-grid mk-grid--sidebar">
+  <div>
+    <div class="mk-chart-shell">
+      <div class="mk-chart-toolbar">
+        <div class="mk-segmented" id="mkTimeframes">
+          {% for key, tf in timeframes.items() %}
+          <button type="button" class="mk-chip" data-timeframe="{{ key }}">{{ tf.label }}</button>
+          {% endfor %}
+        </div>
+        <span style="flex:1 1 auto"></span>
+        <label class="mk-toggle"><input type="checkbox" data-layer="ema" checked> المتوسطات</label>
+        <label class="mk-toggle"><input type="checkbox" data-layer="levels" checked> الدعوم/المقاومات</label>
+        <label class="mk-toggle"><input type="checkbox" data-layer="trendlines" checked> خطوط الاتجاه</label>
+        <label class="mk-toggle"><input type="checkbox" data-layer="plan" checked> خطة التنفيذ</label>
+        <label class="mk-toggle"><input type="checkbox" data-layer="volume" checked> الحجم</label>
+      </div>
+      <div class="mk-chart-canvas-wrap" id="mkChart"></div>
+      <div class="mk-legend" id="mkLegend"></div>
+    </div>
+
+    <h2 class="mk-section-title">🚪 البوابات الخمس</h2>
+    <div class="mk-card"><div class="mk-card__body" id="mkGates">
+      <div class="mk-skeleton" style="margin-bottom:8px"></div>
+      <div class="mk-skeleton" style="width:80%"></div>
+    </div></div>
+
+    <div class="mk-grid mk-grid--2" style="margin-top:14px">
+      <div class="mk-card">
+        <div class="mk-card__head"><span>🎯 نماذج الدخول</span></div>
+        <div class="mk-card__body" id="mkSetups"></div>
+      </div>
+      <div class="mk-card">
+        <div class="mk-card__head"><span>✅ قائمة التأكيد</span>
+          <span class="mk-hint" id="mkConfirmCount"></span></div>
+        <div class="mk-card__body" id="mkConfirmations"></div>
+      </div>
+    </div>
+
+    <div class="mk-grid mk-grid--2" style="margin-top:14px">
+      <div class="mk-card">
+        <div class="mk-card__head"><span>⛔ قائمة الفيتو</span></div>
+        <div class="mk-card__body" id="mkVetoes"></div>
+      </div>
+      <div class="mk-card">
+        <div class="mk-card__head"><span>🚪 إشارات الخروج</span></div>
+        <div class="mk-card__body" id="mkExits"></div>
+      </div>
+    </div>
+
+    <h2 class="mk-section-title">📐 المؤشرات الفنية</h2>
+    <div class="mk-card"><div class="mk-card__body" id="mkIndicators"></div></div>
+  </div>
+
+  <aside>
+    <div class="mk-card">
+      <div class="mk-card__head"><span>🧮 الدرجة المركّبة</span></div>
+      <div class="mk-card__body" id="mkScore">
+        <div class="mk-skeleton" style="height:22px;margin-bottom:10px"></div>
+        <div class="mk-skeleton" style="width:70%"></div>
+      </div>
+    </div>
+
+    <div class="mk-card" style="margin-top:14px">
+      <div class="mk-card__head"><span>📋 خطة التنفيذ</span>
+        <span class="mk-hint" id="mkPlanState"></span></div>
+      <div class="mk-card__body" id="mkPlan"></div>
+    </div>
+
+    <div class="mk-card" style="margin-top:14px">
+      <div class="mk-card__head"><span>📊 النطاق المتوقع</span></div>
+      <div class="mk-card__body" id="mkForecast"></div>
+    </div>
+
+    <div class="mk-card" style="margin-top:14px">
+      <div class="mk-card__head"><span>🧱 الدعوم والمقاومات</span></div>
+      <div class="mk-card__body" id="mkLevels"></div>
+    </div>
+  </aside>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/market-symbol.js') }}"></script>
+{% endblock %}

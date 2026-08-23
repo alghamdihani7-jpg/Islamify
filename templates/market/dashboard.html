@@ -1,0 +1,115 @@
+{% extends "market/base.html" %}
+{% block title %}لوحة السوق السعودي — تاسي{% endblock %}
+
+{% block content %}
+<div id="mkAlerts"></div>
+
+<section class="mk-grid mk-grid--sidebar">
+  <div class="mk-card">
+    <div class="mk-card__head">
+      <span>📈 المؤشر العام (تاسي)</span>
+      <span class="mk-hint" id="mkIndexUpdated"></span>
+    </div>
+    <div class="mk-card__body" id="mkIndexBody">
+      <div class="mk-skeleton" style="width:180px;height:26px;margin-bottom:10px"></div>
+      <div class="mk-skeleton" style="width:120px"></div>
+    </div>
+    <div class="mk-chart-canvas-wrap" id="mkIndexChart" style="height:190px"></div>
+  </div>
+
+  <div class="mk-card">
+    <div class="mk-card__head"><span>🚦 حالة السوق</span></div>
+    <div class="mk-card__body" id="mkRegimeBody">
+      <div class="mk-skeleton" style="width:100%;margin-bottom:8px"></div>
+      <div class="mk-skeleton" style="width:70%"></div>
+    </div>
+  </div>
+</section>
+
+<section class="mk-grid mk-grid--4" style="margin-top:14px" id="mkStats">
+  <div class="mk-stat"><div class="mk-stat__label">اتساع السوق</div>
+    <div class="mk-stat__value" id="mkBreadth">—</div>
+    <div class="mk-stat__meta">صاعد مقابل هابط</div></div>
+  <div class="mk-stat"><div class="mk-stat__label">إشارات شراء</div>
+    <div class="mk-stat__value up" id="mkBuyCount">—</div>
+    <div class="mk-stat__meta">بعد تطبيق البوابات الخمس</div></div>
+  <div class="mk-stat"><div class="mk-stat__label">إشارات بيع</div>
+    <div class="mk-stat__value down" id="mkSellCount">—</div>
+    <div class="mk-stat__meta">ضعف أو اتجاه هابط</div></div>
+  <div class="mk-stat"><div class="mk-stat__label">متوسط الدرجة</div>
+    <div class="mk-stat__value" id="mkAvgScore">—</div>
+    <div class="mk-stat__meta" id="mkScanMeta">جارٍ المسح…</div></div>
+</section>
+
+<h2 class="mk-section-title">🔎 نتائج المسح</h2>
+
+<div class="mk-card">
+  <div class="mk-chart-toolbar" id="mkListTabs">
+    <button type="button" class="mk-chip is-active" data-list="rising">🟢 مرشحة للصعود</button>
+    <button type="button" class="mk-chip" data-list="watchlist">👀 تحت المراقبة</button>
+    <button type="button" class="mk-chip" data-list="falling">🔴 مرشحة للهبوط</button>
+    <button type="button" class="mk-chip" data-list="losers">📉 الأسهم الخاسرة</button>
+    <button type="button" class="mk-chip" data-list="gainers_today">⬆️ الأعلى ارتفاعًا</button>
+    <button type="button" class="mk-chip" data-list="losers_today">⬇️ الأعلى انخفاضًا</button>
+    <button type="button" class="mk-chip" data-list="most_active">💧 الأنشط سيولة</button>
+    <span class="mk-hint" id="mkListHint" style="margin-inline-start:auto"></span>
+  </div>
+  <div class="mk-card__body mk-card__body--flush">
+    <div class="mk-table-wrap">
+      <table class="mk-table" id="mkListTable">
+        <thead>
+          <tr>
+            <th>السهم</th>
+            <th>السعر</th>
+            <th>التغير</th>
+            <th>الدرجة</th>
+            <th>الإشارة</th>
+            <th>الاتجاه</th>
+            <th>RSI</th>
+            <th>ADX</th>
+            <th>البوابات</th>
+            <th>الدخول</th>
+            <th>الوقف</th>
+            <th>الهدف</th>
+            <th>ع/م</th>
+            <th>الكمية</th>
+            <th>النموذج</th>
+          </tr>
+        </thead>
+        <tbody id="mkListBody">
+          <tr><td colspan="15" class="mk-empty">جارٍ مسح السوق… <span class="mk-spinner"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h2 class="mk-section-title">🏭 القطاعات</h2>
+<div class="mk-card">
+  <div class="mk-card__body mk-card__body--flush">
+    <div class="mk-table-wrap">
+      <table class="mk-table" style="min-width:520px">
+        <thead>
+          <tr><th>القطاع</th><th>عدد الشركات</th><th>متوسط الدرجة</th><th>متوسط التغير</th><th>إشارات شراء</th></tr>
+        </thead>
+        <tbody id="mkSectorBody">
+          <tr><td colspan="5" class="mk-empty">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="mk-banner mk-banner--muted" style="margin-top:20px">
+  <span class="mk-banner__icon">📘</span>
+  <span>
+    الترتيب مبني على الاستراتيجية الموثّقة في <code>docs/STRATEGY.md</code>:
+    خمس بوابات متتابعة (سيولة ← حالة السوق ← اتجاه السهم ← إشارة دخول ← مخاطرة مقبولة)
+    ثم درجة مركّبة من سبعة مكوّنات موزونة. اضغط أي سهم لعرض التحليل الكامل وخطة التنفيذ.
+  </span>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/market-dashboard.js') }}"></script>
+{% endblock %}

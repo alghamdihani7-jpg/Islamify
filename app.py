@@ -422,5 +422,40 @@ if os.environ.get("RENDER"):
     t.start()
 
 
+def _lan_ip():
+    """عنوان الجهاز على الشبكة المحلية — لطباعة رابط يعمل من الجوال."""
+    import socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # لا يُرسل أي شيء فعليًا؛ فقط يسأل النظام أي واجهة سيستخدم للخروج.
+        sock.connect(("8.8.8.8", 80))
+        return sock.getsockname()[0]
+    except OSError:
+        return None
+    finally:
+        sock.close()
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    # HOST=0.0.0.0 يجعل الخادم يستمع لكل واجهات الشبكة، فيصبح قابلًا
+    # للفتح من الجوال عبر عنوان الكمبيوتر على شبكة الواي فاي.
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "5000"))
+
+    # مصحّح Werkzeug يسمح بتنفيذ كود عن بُعد، فلا يُفتح على الشبكة أبدًا.
+    loopback = host in ("127.0.0.1", "localhost", "::1")
+    debug = os.environ.get("FLASK_DEBUG", "1") == "1" and loopback
+
+    if not loopback:
+        ip = _lan_ip()
+        print("\n" + "═" * 58)
+        print("  الخادم يستمع لكل واجهات الشبكة (المصحّح مُعطَّل للأمان).")
+        if ip:
+            print(f"  من هذا الجهاز :  http://127.0.0.1:{port}/market")
+            print(f"  من الجوال     :  http://{ip}:{port}/market")
+            print("  اربط الجوال بنفس شبكة الواي فاي.")
+        else:
+            print(f"  تعذّر تحديد عنوان الشبكة — جرّب ipconfig أو ifconfig. المنفذ {port}.")
+        print("═" * 58 + "\n")
+
+    app.run(host=host, port=port, debug=debug)

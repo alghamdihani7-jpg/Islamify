@@ -18,6 +18,13 @@ FEATURE_CARDS = [
         "icon": "bi-stars",
     },
     {
+        "title": {"ar": "٣٠٠ دعاء", "en": "300 Duas", "ur": "300 دعائیں", "hi": "300 दुआएं", "fil": "300 Duas", "ms": "300 Doa"},
+        "description": {"ar": "مجموعة من ٣٠٠ دعاء مختار من القرآن الكريم وصحيح السنة والأثر", "en": "A collection of 300 selected duas from the Quran, authentic Sunnah, and narrations", "ur": "قرآن، صحیح سنت اور آثار سے منتخب 300 دعاؤں کا مجموعہ", "hi": "कुरान, प्रामाणिक सुन्नत और रिवायतों से चुनी गई 300 दुआओं का संग्रह", "fil": "Koleksyon ng 300 piling dua mula sa Quran, tunay na Sunnah, at mga salaysay", "ms": "Koleksi 300 doa pilihan daripada al-Quran, Sunnah sahih, dan riwayat"},
+        "link": "/static/files/300_dua.pdf",
+        "icon": "bi-book-half",
+        "external": True,
+    },
+    {
         "title": {"ar": "تسابيح وأذكار عظيمة", "en": "Glorious Tasabeeh", "ur": "عظیم تسابیح", "hi": "महान तस्बीहें", "fil": "Mga Kahanga-hangang Tasabeeh", "ms": "Tasabeeh yang Mulia"},
         "description": {"ar": "تسابيح يومية عظيمة الأجر مع عداد", "en": "Daily glorifications with great reward and counter", "ur": "روزانہ عظیم تسابیح شمار کے ساتھ", "hi": "दैनिक तस्बीहें बड़ी प्रतिफल के साथ", "fil": "Araw-araw na pagpapaganda na may malaking gantimpala", "ms": "Tasbih harian dengan pahala besar dan kaunter"},
         "link": "/azkar/tasabeeh",
@@ -240,6 +247,504 @@ ARAFAT_DUAS = [
         "count": 1,
     },
     {
+FEATURE_CARDS = [
+    {
+        "title": {"ar": "أذكار الصباح", "en": "Morning Azkar", "ur": "صبح کے اذکار", "hi": "सुबह की अज़कार", "fil": "Umaga Azkar", "ms": "Azkar Pagi"},
+        "description": {"ar": "ورد الصباح الكامل مع عداد لكل ذكر", "en": "Complete morning litanies with counter for each remembrance", "ur": "مکمل صبح کی دعائیں ہر اذکار کے لیے شمار کے ساتھ", "hi": "पूर्ण सुबह के अज़कार हर प्रार्थना के लिए गिनती के साथ", "fil": "Kumpletong Umaga Azkar na may counter para sa bawat panalangin", "ms": "Azkar pagi lengkap dengan kaunter untuk setiap zikir"},
+        "link": "/azkar/morning",
+        "icon": "bi-sunrise",
+    },
+    {
+        "title": {"ar": "أذكار المساء", "en": "Evening Azkar", "ur": "شام کے اذکار", "hi": "शाम की अज़कार", "fil": "Gabi Azkar", "ms": "Azkar Petang"},
+        "description": {"ar": "ورد المساء لتجديد القلب بالذكر", "en": "Evening remembrances to refresh the heart", "ur": "شام کی دعائیں دل کو تازہ کرنے کے لیے", "hi": "दिल को तरोताजा करने के लिए शाम के अज़कार", "fil": "Gabi na panalangin upang mapanatili ang puso sa alaala", "ms": "Zikir malam untuk menyegarkan hati"},
+        "link": "/azkar/evening",
+        "icon": "bi-moon-stars",
+    },
+    {
+        "title": {"ar": "أذكار بعد الصلاة", "en": "After Prayer Azkar", "ur": "نماز کے بعد اذکار", "hi": "नमाज़ के बाद अज़कार", "fil": "Azkar Pagkatapos ng Panalangin", "ms": "Azkar Selepas Solat"},
+        "description": {"ar": "أذكار ثابتة بعد السلام من الصلاة المفروضة", "en": "Established remembrances after completing prayer", "ur": "نماز کے بعد مقررہ اذکار", "hi": "नमाज़ के बाद निर्धारित अज़कार", "fil": "Mga itinakdang azkar pagkatapos ng panalangin", "ms": "Zikir tetap selepas menyelesaikan solat"},
+        "link": "/azkar/post-salah",
+        "icon": "bi-stars",
+    },
+    {
+        "title": {"ar": "٣٠٠ دعاء", "en": "300 Duas", "ur": "300 دعائیں", "hi": "300 दुआएं", "fil": "300 Duas", "ms": "300 Doa"},
+        "description": {"ar": "مجموعة من ٣٠٠ دعاء مختار من القرآن الكريم وصحيح السنة والأثر", "en": "A collection of 300 selected duas from the Quran, authentic Sunnah, and narrations", "ur": "قرآن، صحیح سنت اور آثار سے منتخب 300 دعاؤں کا مجموعہ", "hi": "कुरान, प्रामाणिक सुन्नत और रिवायतों से चुनी गई 300 दुआओं का संग्रह", "fil": "Koleksyon ng 300 piling dua mula sa Quran, tunay na Sunnah, at mga salaysay", "ms": "Koleksi 300 doa pilihan daripada al-Quran, Sunnah sahih, dan riwayat"},
+        "link": "/static/files/300_dua.pdf",
+        "icon": "bi-book-half",
+        "external": True,
+    },
+    {
+        "title": {"ar": "تسابيح وأذكار عظيمة", "en": "Glorious Tasabeeh", "ur": "عظیم تسابیح", "hi": "महान तस्बीहें", "fil": "Mga Kahanga-hangang Tasabeeh", "ms": "Tasabeeh yang Mulia"},
+        "description": {"ar": "تسابيح يومية عظيمة الأجر مع عداد", "en": "Daily glorifications with great reward and counter", "ur": "روزانہ عظیم تسابیح شمار کے ساتھ", "hi": "दैनिक तस्बीहें बड़ी प्रतिफल के साथ", "fil": "Araw-araw na pagpapaganda na may malaking gantimpala", "ms": "Tasbih harian dengan pahala besar dan kaunter"},
+        "link": "/azkar/tasabeeh",
+        "icon": "bi-infinity",
+    },
+    {
+        "title": {"ar": "جوامع الدعاء", "en": "Comprehensive Duas", "ur": "جامع دعائیں", "hi": "व्यापक दुआएं", "fil": "Komprehensibong Duas", "ms": "Doa-Doa Komprehensif"},
+        "description": {"ar": "أدعية جامعة شاملة لخيري الدنيا والآخرة", "en": "Comprehensive supplications for worldly and afterlife blessings", "ur": "دنیا اور آخرت کی خیر کے لیے جامع دعائیں", "hi": "दुनिया और आख़िरत की भलाई के लिए व्यापक दुआएं", "fil": "Komprehensibong panalangin para sa biyaya ng mundo at akhirat", "ms": "Doa-doa komprehensif untuk kebaikan dunia dan akhirat"},
+        "link": "/azkar/jawami",
+        "icon": "bi-collection",
+    },
+    {
+        "title": {"ar": "أدعية النبي ﷺ", "en": "Duas of the Prophet ﷺ", "ur": "نبی ﷺ کی دعائیں", "hi": "पैगंबर ﷺ की दुआएं", "fil": "Duas ng Propeta ﷺ", "ms": "Doa-Doa Nabi ﷺ"},
+        "description": {"ar": "أدعية مأثورة عن النبي صلى الله عليه وسلم", "en": "Authentic supplications narrated from the Prophet", "ur": "نبی صلی اللہ علیہ وسلم سے منقول دعائیں", "hi": "पैगंबर सल्लल्लाहु अलैहि वसल्लम से वर्णित दुआएं", "fil": "Mga autentikong panalangin mula sa Propeta", "ms": "Doa-doa autentik yang diriwayatkan dari Nabi"},
+        "link": "/azkar/prophet-duas",
+        "icon": "bi-star",
+    },
+    {
+        "title": {"ar": "الأدعية القرآنية", "en": "Quranic Duas", "ur": "قرآنی دعائیں", "hi": "कुरान की दुआएं", "fil": "Quran Duas", "ms": "Doa-Doa Quranic"},
+        "description": {"ar": "أدعية من القرآن الكريم بالآيات والسور", "en": "Supplications from the Quran with verses and chapters", "ur": "قرآن سے دعائیں آیات اور سورتوں کے ساتھ", "hi": "कुरान से दुआएं आयतों और सूरों के साथ", "fil": "Mga panalangin mula sa Quran kasama ang mga ayat at kabanata", "ms": "Doa-doa dari Quran dengan ayat dan surah"},
+        "link": "/azkar/quran-duas",
+        "icon": "bi-book",
+    },
+    {
+        "title": {"ar": "أدعية الأنبياء", "en": "Duas of the Prophets", "ur": "انبیاء کی دعائیں", "hi": "पैगंबरों की दुआएं", "fil": "Duas ng mga Propeta", "ms": "Doa-Doa Para Nabi"},
+        "description": {"ar": "أدعية الأنبياء من القرآن الكريم", "en": "Supplications of the Prophets from the Quran", "ur": "قرآن سے انبیاء کی دعائیں", "hi": "कुरान से पैगंबरों की दुआएं", "fil": "Mga panalangin ng mga Propeta mula sa Quran", "ms": "Doa-doa Nabi-nabi dari Quran"},
+        "link": "/azkar/prophets-quran",
+        "icon": "bi-people",
+    },
+    {
+        "title": {"ar": "دعاء ليلة القدر", "en": "Night of Power Dua", "ur": "قدر کی رات کی دعا", "hi": "शक्ति की रात की दुआ", "fil": "Gabi ng Kapangyarihan Dua", "ms": "Doa Malam Kemuliaan"},
+        "description": {"ar": "أدعية جامعة مختارة لليلة المباركة مع عداد", "en": "Selected comprehensive supplications for the blessed night with counter", "ur": "مقدس رات کے لیے منتخب دعائیں شمار کے ساتھ", "hi": "पवित्र रात के लिए चुनी हुई दुआएं गिनती के साथ", "fil": "Mga piling komprehensibong panalangin para sa maabot na gabi", "ms": "Doa-doa terpilih untuk malam yang mulia dengan kaunter"},
+        "link": "/azkar/laylat-alqadr",
+        "icon": "bi-moon",
+    },
+    {
+        "title": {"ar": "دعاء يوم عرفة", "en": "Day of Arafah Dua", "ur": "عرفہ کے دن کی دعا", "hi": "अराफा दिवस की दुआ", "fil": "Araw ng Arafah Dua", "ms": "Doa Hari Arafah"},
+        "description": {"ar": "دعاء جامع ليوم عرفة مع تسبيح وذكر مقبول.", "en": "Comprehensive supplication for the Day of Arafah with glorification", "ur": "عرفہ کے دن کی جامع دعا تسبیح کے ساتھ", "hi": "अराफा दिवस के लिए व्यापक दुआ तस्बीह के साथ", "fil": "Komprehensibong panalangin para sa Araw ng Arafah", "ms": "Doa komprehensif untuk Hari Arafah dengan tasbih"},
+        "link": "/azkar/arafah",
+        "icon": "bi-cloud-sun",
+    },
+    {
+        "title": {"ar": "المسبحة الإلكترونية", "en": "Electronic Tasbeeh", "ur": "الیکٹرانک تسبیح", "hi": "इलेक्ट्रॉनिक तस्बीह", "fil": "Electronic Tasbeeh", "ms": "Tasbeeh Elektronik"},
+        "description": {"ar": "مسبحة رقمية بأشكال مختلفة مع حفظ تلقائي", "en": "Digital tasbeeh in various forms with automatic saving", "ur": "مختلف شکلوں میں ڈیجیٹل تسبیح خودکار محفوظ کاری کے ساتھ", "hi": "विभिन्न रूपों में डिजिटल तस्बीह स्वचालित सहेजने के साथ", "fil": "Digital tasbeeh sa iba't ibang anyo na may awtomatikong pagsave", "ms": "Tasbeeh digital dalam berbagai bentuk dengan penyimpanan otomatis"},
+        "link": "/tasbeeh",
+        "icon": "bi-plus-circle",
+    },
+    {
+        "title": {"ar": "مواقيت الصلاة", "en": "Prayer Times", "ur": "نماز کے اوقات", "hi": "नमाज़ के समय", "fil": "Oras ng Panalangin", "ms": "Waktu Solat"},
+        "description": {"ar": "أوقات الصلوات الخمس بحساب أم القرى مع عداد تنازلي للصلاة القادمة", "en": "Five prayer times with Umm al-Qura calculation and countdown timer", "ur": "اُم القرٰی کے حساب سے نمازوں کے اوقات شمار کے ساتھ", "hi": "उम्म अल-कुरा गणना के साथ नमाज़ के समय गिनती टाइमर के साथ", "fil": "Limang oras ng panalangin gamit ang Umm al-Qura calculation", "ms": "Waktu lima solat dengan perhitungan Umm al-Qura dan hitung mundur"},
+        "link": "/prayer-times",
+        "icon": "bi-clock",
+    },
+    {
+        "title": {"ar": "اتجاه القِبلة", "en": "Qibla Direction", "ur": "قبلے کی سمت", "hi": "किबला की दिशा", "fil": "Direksyon ng Qibla", "ms": "Arah Qibla"},
+        "description": {"ar": "يمكنك تحديد اتجاه القِبلة أينما كنت", "en": "Find Qibla direction anywhere you are", "ur": "جہاں بھی ہوں قبلے کی سمت معلوم کریں", "hi": "जहाँ भी हों किबला की दिशा जानें", "fil": "Hanapin ang direksyon ng Qibla kahit saan ka man naroroon", "ms": "Temukan arah Qibla di mana pun Anda berada"},
+        "link": "/qibla",
+        "icon": "bi-compass",
+    },
+]
+
+TRUST_NOTES = [
+    {"ar": "تم اختيار الصيغ المشهورة من كتب الأذكار المعتمدة.", "en": "Authentic wordings selected from established Islamic sources.", "ur": "معتبر اسلامی کتابوں سے درست صیغے منتخب کیے گئے ہیں۔", "hi": "प्रामाणिक इस्लामी स्रोतों से सही शब्द चुने गए हैं।", "fil": "Mga autentikong salita mula sa mga pinagkakatiwalaang Islamic na pinagkukunan.", "ms": "Redaksi autentik dipilih dari sumber-sumber Islam yang terpercaya."},
+    {"ar": "المراجع الأساسية: صحيح مسلم، صحيح البخاري، سنن الترمذي.", "en": "Primary sources: Sahih Muslim, Sahih Bukhari, Sunan At-Tirmidhi.", "ur": "بنیادی ذرائع: صحیح مسلم، صحیح بخاری، سنن ترمذی۔", "hi": "प्राथमिक स्रोत: सहीह मुस्लिम, सहीह बुखारी, सुनन अत-तिर्मिज़ी।", "fil": "Pangunahing pinagkukunan: Sahih Muslim, Sahih Bukhari, Sunan At-Tirmidhi.", "ms": "Sumber utama: Sahih Muslim, Sahih Bukhari, Sunan At-Tirmidhi."},
+    {"ar": "يُنصح بالمراجعة مع إمام أو طالب علم عند التفصيل الفقهي.", "en": "Consult with an Islamic scholar for detailed jurisprudential explanations.", "ur": "تفصیلی فقہی معاملات میں امام یا عالم سے مشورہ لیں۔", "hi": "विस्तृत न्यायशास्त्रीय व्याख्या के लिए इस्लामिक विद्वान से परामर्श लें।", "fil": "Kumunsulta sa isang Islamic scholar para sa detalyadong jurisprudential na paliwanag.", "ms": "Konsultasikan dengan ulama untuk penjelasan fiqh yang lebih detail."},
+]
+
+ARAFAT_DUAS = [
+    {
+        "text": "اللهم لك الحمد كما ينبغي لجلال وجهك وعظيم سلطانك، اللهم هذا يوم عرفة، يوم الرحمة والمغفرة والعتق من النار، نسألك فيه رحمةً من عندك تغنينا بها عن رحمة من سواك، اللهم تقبل دعاءنا، واغفر ذنوبنا، واستر عيوبنا، وأصلح قلوبنا ونياتنا وذرياتنا، واكتبنا من المقبولين الفائزين برضاك والجنة، واجعل خير أعمالنا خواتيمها، وخير أيامنا يوم نلقاك.",
+        "count": 1,
+    },
+    {
+        "text": "﴿رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ ۝ وَتُبْ عَلَيْنَا ۖ إِنَّكَ أَنْتَ التَّوَّابُ الرَّحِيمُ﴾",
+        "count": 1,
+        "note": "سورة البقرة",
+    },
+    {
+        "text": "﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾",
+        "count": 1,
+        "note": "سورة البقرة",
+    },
+    {
+        "text": "﴿رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ۖ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا ۚ أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ﴾",
+        "count": 1,
+        "note": "سورة البقرة",
+    },
+    {
+        "text": "﴿رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً ۚ إِنَّكَ أَنْتَ الْوَهَّابُ﴾",
+        "count": 1,
+        "note": "سورة آل عمران",
+    },
+    {
+        "text": "﴿رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ﴾",
+        "count": 1,
+        "note": "سورة آل عمران",
+    },
+    {
+        "text": "﴿رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً ۖ إِنَّكَ سَمِيعُ الدُّعَاءِ﴾",
+        "count": 1,
+        "note": "سورة آل عمران",
+    },
+    {
+        "text": "﴿رَبَّنَا آمَنَّا بِمَا أَنْزَلْتَ وَاتَّبَعْنَا الرَّسُولَ فَاكْتُبْنَا مَعَ الشَّاهِدِينَ﴾",
+        "count": 1,
+        "note": "سورة آل عمران",
+    },
+    {
+        "text": "﴿رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِي أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ﴾",
+        "count": 1,
+        "note": "سورة آل عمران",
+    },
+    {
+        "text": "﴿رَبَّنَا وَآتِنَا مَا وَعَدْتَنَا عَلَىٰ رُسُلِكَ وَلَا تُخْزِنَا يَوْمَ الْقِيَامَةِ ۖ إِنَّكَ لَا تُخْلِفُ الْمِيعَادَ﴾",
+        "count": 1,
+        "note": "سورة آل عمران",
+    },
+    {
+        "text": "﴿آمَنَّا فَاكْتُبْنَا مَعَ الشَّاهِدِينَ﴾",
+        "count": 1,
+        "note": "سورة المائدة",
+    },
+    {
+        "text": "﴿رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ﴾",
+        "count": 1,
+        "note": "سورة الأعراف",
+    },
+    {
+        "text": "﴿رَبَّنَا لَا تَجْعَلْنَا مَعَ الْقَوْمِ الظَّالِمِينَ﴾",
+        "count": 1,
+        "note": "سورة الأعراف",
+    },
+    {
+        "text": "﴿حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۖ عَلَيْهِ تَوَكَّلْتُ ۖ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ﴾",
+        "count": 1,
+        "note": "سورة التوبة",
+    },
+    {
+        "text": "﴿رَبَّنَا لَا تَجْعَلْنَا فِتْنَةً لِلْقَوْمِ الظَّالِمِينَ ۝ وَنَجِّنَا بِرَحْمَتِكَ مِنَ الْقَوْمِ الْكَافِرِينَ﴾",
+        "count": 1,
+        "note": "سورة يونس",
+    },
+    {
+        "text": "﴿رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي ۚ رَبَّنَا وَتَقَبَّلْ دُعَاءِ ۝ رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ﴾",
+        "count": 1,
+        "note": "سورة إبراهيم",
+    },
+    {
+        "text": "﴿رَبَّنَا آتِنَا مِنْ لَدُنْكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا﴾",
+        "count": 1,
+        "note": "سورة الكهف",
+    },
+    {
+        "text": "﴿رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي﴾",
+        "count": 1,
+        "note": "سورة طه",
+    },
+    {
+        "text": "﴿لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ﴾",
+        "count": 1,
+        "note": "سورة الأنبياء",
+    },
+    {
+        "text": "﴿رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ﴾",
+        "count": 1,
+        "note": "سورة الأنبياء",
+    },
+    {
+        "text": "﴿رَبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ ۝ وَأَعُوذُ بِكَ رَبِّ أَنْ يَحْضُرُونِ﴾",
+        "count": 1,
+        "note": "سورة المؤمنون",
+    },
+    {
+        "text": "﴿رَبَّنَا اصْرِفْ عَنَّا عَذَابَ جَهَنَّمَ ۖ إِنَّ عَذَابَهَا كَانَ غَرَامًا ۝ إِنَّهَا سَاءَتْ مُسْتَقَرًّا وَمُقَامًا﴾",
+        "count": 1,
+        "note": "سورة الفرقان",
+    },
+    {
+        "text": "﴿رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا﴾",
+        "count": 1,
+        "note": "سورة الفرقان",
+    },
+    {
+        "text": "﴿رَبِّ إِنِّي ظَلَمْتُ نَفْسِي فَاغْفِرْ لِي﴾",
+        "count": 1,
+        "note": "سورة القصص",
+    },
+    {
+        "text": "﴿رَبِّ نَجِّنِي مِنَ الْقَوْمِ الظَّالِمِينَ﴾",
+        "count": 1,
+        "note": "سورة القصص",
+    },
+    {
+        "text": "﴿رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ﴾",
+        "count": 1,
+        "note": "سورة القصص",
+    },
+    {
+        "text": "﴿رَبِّ انْصُرْنِي عَلَى الْقَوْمِ الْمُفْسِدِينَ﴾",
+        "count": 1,
+        "note": "سورة العنكبوت",
+    },
+    {
+        "text": "﴿رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ﴾",
+        "count": 1,
+        "note": "سورة النمل",
+    },
+    {
+        "text": "﴿رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا الَّذِينَ سَبَقُونَا بِالْإِيمَانِ وَلَا تَجْعَلْ فِي قُلُوبِنَا غِلًّا لِلَّذِينَ آمَنُوا ۚ رَبَّنَا إِنَّكَ رَءُوفٌ رَحِيمٌ﴾",
+        "count": 1,
+        "note": "سورة الحشر",
+    },
+    {
+        "text": "﴿رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِمَنْ دَخَلَ بَيْتِيَ مُؤْمِنًا وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ﴾",
+        "count": 1,
+        "note": "سورة نوح",
+    },
+    {
+        "text": "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير",
+        "count": 1,
+    },
+    {
+        "text": "سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر",
+        "count": 1,
+    },
+    {
+        "text": "سبحان الله وبحمده سبحان الله العظيم",
+        "count": 1,
+    },
+    {
+        "text": "لا إله إلا أنت سبحانك إني كنت من الظالمين",
+        "count": 1,
+    },
+    {
+        "text": "لا إله إلا الله ولا نعبد إلا إياه، له النعمة وله الفضل وله الثناء الحسن، لا إله إلا الله مخلصين له الدين ولو كره الكافرون",
+        "count": 1,
+    },
+    {
+        "text": "لا حول ولا قوة إلا بالله",
+        "count": 1,
+    },
+    {
+        "text": "اللهم أصلح لي ديني الذي هو عصمة أمري، وأصلح لي دنياي التي فيها معاشي، وأصلح لي آخرتي التي فيها معادي، واجعل الحياة زيادة لي في كل خير، والموت راحة لي من كل شر",
+        "count": 1,
+    },
+    {
+        "text": "أعوذ بالله من جهد البلاء ودرك الشقاء وسوء القضاء وشماتة الأعداء",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أعوذ بك من الهم والحزن، ومن العجز والكسل، ومن الجبن والبخل، ومن المأثم والمغرم، ومن غلبة الدين وقهر الرجال",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
+        "count": 1,
+    },
+    {
+        "text": "اللهم اغفر لي خطيئتي وجهلي وإسرافي في أمري",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أسألك الثبات في الأمر والعزيمة على الرشد",
+        "count": 1,
+    },
+    {
+        "text": "اللهم رب النبي محمد ﷺ اغفر لي ذنبي وأذهب غيظ قلبي وأعذني من مضلات الفتن ما أبقيتني",
+        "count": 1,
+    },
+    {
+        "text": "اللهم رب السموات ورب الأرض ورب العرش العظيم، اقض عني الدين وأغنني من الفقر",
+        "count": 1,
+    },
+    {
+        "text": "اللهم أعط نفسي تقواها وزكها أنت خير من زكاها، أنت وليها ومولاها",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أعوذ بك من العجز والكسل، وأعوذ بك من الجبن والهرم والبخل، وأعوذ بك من عذاب القبر",
+        "count": 1,
+    },
+    {
+        "text": "اللهم لك أسلمت، وبك آمنت، وعليك توكلت، وإليك أنبت",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أعوذ بك من علم لا ينفع، ومن قلب لا يخشع، ومن نفس لا تشبع، ومن دعوة لا يستجاب لها",
+        "count": 1,
+    },
+    {
+        "text": "اللهم جنبني منكرات الأخلاق والأعمال والأهواء والأدواء",
+        "count": 1,
+    },
+    {
+        "text": "اللهم ألهمني رشدي وأعذني من شر نفسي",
+        "count": 1,
+    },
+    {
+        "text": "اللهم اكفني بحلالك عن حرامك، وأغنني بفضلك عمن سواك",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أسألك الهدى والتقى والعفاف والغنى",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أسألك الهدى والسداد",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أسألك من الخير كله عاجله وآجله",
+        "count": 1,
+    },
+    {
+        "text": "اللهم إني أسألك الجنة وما قرب إليها من قول أو عمل",
+        "count": 1,
+    },
+    {
+        "text": "اللهم صل على محمد وعلى آل محمد، كما صليت على إبراهيم وعلى آل إبراهيم إنك حميد مجيد، وبارك على محمد وعلى آل محمد، كما باركت على إبراهيم وعلى آل إبراهيم إنك حميد مجيد.",
+        "count": 1,
+    },
+]
+
+# Legacy sections removed — all content now served from dedicated pages.
+_REMOVED_SECTIONS = [
+    {
+        "id": "after-salah",
+        "title": "أذكار بعد الصلاة",
+        "description": "أذكار ثابتة بعد الصلاة المفروضة.",
+        "source_summary": "أحاديث صحيحة في مسلم والبخاري.",
+        "items": [
+            {
+                "text": "أستغفرُ اللهَ (ثلاثًا)، اللهم أنت السلام ومنك السلام تباركت يا ذا الجلال والإكرام.",
+                "count": "3 مرات",
+                "source": "صحيح مسلم (591)",
+            },
+            {
+                "text": "سبحان الله 33، الحمد لله 33، الله أكبر 33، ثم تمام المئة: لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",
+                "count": "بعد كل صلاة",
+                "source": "صحيح مسلم (597)",
+            },
+            {
+                "text": "قراءة آية الكرسي بعد كل صلاة مكتوبة.",
+                "count": "مرة واحدة",
+                "source": "النسائي في عمل اليوم والليلة (100) - صححه جمع من أهل العلم",
+            },
+        ],
+    },
+    {
+        "id": "morning",
+        "title": "أذكار الصباح",
+        "description": "أذكار بداية اليوم لحفظ القلب واللسان.",
+        "source_summary": "من أذكار اليوم والليلة الصحيحة.",
+        "items": [
+            {
+                "text": "اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.",
+                "count": "مرة واحدة",
+                "source": "سنن الترمذي (3391)",
+            },
+            {
+                "text": "رضيت بالله ربًا وبالإسلام دينًا وبمحمد ﷺ نبيًا.",
+                "count": "3 مرات",
+                "source": "سنن أبي داود (5072)",
+            },
+            {
+                "text": "حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم.",
+                "count": "7 مرات",
+                "source": "أبو داود (5081) - حسن",
+            },
+        ],
+    },
+    {
+        "id": "evening",
+        "title": "أذكار المساء",
+        "description": "أذكار ختام اليوم قبل الليل.",
+        "source_summary": "من الأدعية الثابتة في كتب السنة.",
+        "items": [
+            {
+                "text": "اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.",
+                "count": "مرة واحدة",
+                "source": "سنن الترمذي (3391)",
+            },
+            {
+                "text": "أعوذ بكلمات الله التامات من شر ما خلق.",
+                "count": "3 مرات (مساءً)",
+                "source": "صحيح مسلم (2709)",
+            },
+            {
+                "text": "اللهم إني أمسيت أُشهدك وأشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله لا إله إلا أنت وحدك لا شريك لك.",
+                "count": "4 مرات",
+                "source": "أبو داود (5069) - حسن",
+            },
+        ],
+    },
+    {
+        "id": "arafah",
+        "title": "دعاء يوم عرفة",
+        "description": "من أفضل الدعاء في أفضل يوم من أيام الدنيا.",
+        "source_summary": "فضله ثابت في حديث حسن.",
+        "items": [
+            {
+                "text": "خير الدعاء دعاء يوم عرفة، وخير ما قلت أنا والنبيون من قبلي: لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",
+                "count": "يُكثر منه في يوم عرفة",
+                "source": "سنن الترمذي (3585) - حسن",
+            },
+            {
+                "text": "اللهم اغفر لي ولوالدي ولجميع المسلمين، وأصلح قلبي وعملي واجعلني من المقبولين.",
+                "count": "دعاء مطلق",
+                "source": "دعاء مشروع بالمعنى العام",
+            },
+        ],
+    },
+    {
+        "id": "laylat-al-qadr",
+        "title": "دعاء ليلة القدر",
+        "description": "صيَغ دعاء مختارة مناسبة لليلة القدر، مع التركيز على الأدعية المأثورة.",
+        "source_summary": "أهمها: اللهم إنك عفو تحب العفو فاعف عني.",
+        "items": [
+            {
+                "text": "اللهم إنك عفوٌ كريمٌ تحب العفو فاعفُ عني.",
+                "count": "يُكثر منه طوال الليلة",
+                "source": "سنن الترمذي (3513) - صحيح",
+            },
+            {
+                "text": "رَبِّ اشْرَحْ لِي صَدْرِي * وَيَسِّرْ لِي أَمْرِي * وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي * يَفْقَهُوا قَوْلِي.",
+                "count": "دعاء قرآني",
+                "source": "سورة طه 25-28",
+            },
+            {
+                "text": "اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن، وضَلَع الدَّين، وغَلَبة الرجال.",
+                "count": "دعاء مأثور",
+                "source": "صحيح البخاري (6369)",
+            },
+            {
+                "text": "يا مُقلِّب القلوب ثبّت قلبي على دينك.",
+                "count": "دعاء ثابت",
+                "source": "سنن الترمذي (2140) - صحيح",
+            },
+            {
+                "text": "ربنا لا تزغ قلوبنا بعد إذ هديتنا وهب لنا من لدنك رحمة إنك أنت الوهاب.",
+                "count": "دعاء قرآني",
+                "source": "سورة آل عمران 8",
+            },
+            {
+                "text": "يا حي يا قيوم برحمتك أستغيث أصلح لي شأني كله ولا تكلني إلى نفسي طرفة عين.",
+                "count": "دعاء جامع",
+                "source": "النسائي في الكبرى (10330) - حسن",
+            },
+            {
+                "text": "لا إله إلا أنت سبحانك إني كنت من الظالمين.",
+                "count": "دعوة ذي النون",
+                "source": "سنن الترمذي (3505) - صحيح",
+            },
+            {
+                "text": "اللهم إني أسألك العفو والعافية في الدنيا والآخرة.",
+                "count": "دعاء مأثور",
+                "source": "سنن أبي داود (5074) - صحيح",
+            },
+            {
+                "text": "اللهم اجعل لنا من ليلة القدر أوفر الحظ والنصيب، وتقبّل منا الدعاء والقيام.",
+                "count": "دعاء مطلق",
+                "source": "دعاء مشروع بالمعنى العام",
+            },
+            {
+                "text": "اللهم أصلح لنا ديننا ودنيانا وآخرتنا، واجعل الحياة زيادة لنا في كل خير.",
+                "count": "دعاء جامع",
+                "source": "صحيح مسلم (2720)",
+            },
+        ],
+    },
+]
         "text": "سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر",
         "count": 1,
     },

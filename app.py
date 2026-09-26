@@ -260,6 +260,24 @@ def tasbeeh():
     return render_template("tasbeeh.html")
 
 
+@app.route("/300-duas")
+def three_hundred_duas():
+    page_bundles = [
+        ("026_037", "٢٦ - ٣٧", 12),
+        ("038_049", "٣٨ - ٤٩", 12),
+        ("050_061", "٥٠ - ٦١", 12),
+        ("062_073", "٦٢ - ٧٣", 12),
+        ("074_085", "٧٤ - ٨٥", 12),
+        ("086_097", "٨٦ - ٩٧", 12),
+        ("098_108", "٩٨ - ١٠٨", 11),
+    ]
+    return render_template(
+        "three_hundred_duas.html",
+        page_numbers=range(1, 26),
+        page_bundles=page_bundles,
+    )
+
+
 @app.route("/qibla")
 def qibla():
     return render_template("qibla.html")

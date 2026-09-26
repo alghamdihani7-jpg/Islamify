@@ -18,6 +18,12 @@ FEATURE_CARDS = [
         "icon": "bi-stars",
     },
     {
+        "title": {"ar": "٣٠٠ دعاء", "en": "300 Duas", "ur": "300 دعائیں", "hi": "300 दुआएं", "fil": "300 Duas", "ms": "300 Doa"},
+        "description": {"ar": "مجموعة من ٣٠٠ دعاء مختار من القرآن الكريم وصحيح السنة والأثر", "en": "A collection of 300 selected duas from the Quran, authentic Sunnah, and narrations", "ur": "قرآن، صحیح سنت اور آثار سے منتخب 300 دعاؤں کا مجموعہ", "hi": "कुरान, प्रामाणिक सुन्नत और रिवायतों से चुनी गई 300 दुआओं का संग्रह", "fil": "Koleksyon ng 300 piling dua mula sa Quran, tunay na Sunnah, at mga salaysay", "ms": "Koleksi 300 doa pilihan daripada al-Quran, Sunnah sahih, dan riwayat"},
+        "link": "/300-duas",
+        "icon": "bi-book-half",
+    },
+    {
         "title": {"ar": "تسابيح وأذكار عظيمة", "en": "Glorious Tasabeeh", "ur": "عظیم تسابیح", "hi": "महान तस्बीहें", "fil": "Mga Kahanga-hangang Tasabeeh", "ms": "Tasabeeh yang Mulia"},
         "description": {"ar": "تسابيح يومية عظيمة الأجر مع عداد", "en": "Daily glorifications with great reward and counter", "ur": "روزانہ عظیم تسابیح شمار کے ساتھ", "hi": "दैनिक तस्बीहें बड़ी प्रतिफल के साथ", "fil": "Araw-araw na pagpapaganda na may malaking gantimpala", "ms": "Tasbih harian dengan pahala besar dan kaunter"},
         "link": "/azkar/tasabeeh",

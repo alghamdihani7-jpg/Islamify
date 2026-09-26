@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}٣٠٠ دعاء | أدعية إسلامية{% endblock %}
+
+{% block content %}
+<section class="book-reader-hero">
+  <span class="book-reader-hero__icon" aria-hidden="true">
+    <i class="bi bi-book-half"></i>
+  </span>
+  <div>
+    <p class="book-reader-hero__eyebrow">مكتبة الأدعية</p>
+    <h1>٣٠٠ دعاء</h1>
+    <p class="book-reader-hero__description">
+      مجموعة مختارة من أدعية القرآن الكريم وصحيح السنة والأثر،
+      جمعها ورتبها صالح عطية الزهراني.
+    </p>
+  </div>
+</section>
+
+<nav class="book-reader-nav" aria-label="التنقل داخل الكتاب">
+  <a href="#page-1"><i class="bi bi-book"></i> بداية الكتاب</a>
+  <span><i class="bi bi-files"></i> ١٠٨ صفحات</span>
+  <a href="#page-108"><i class="bi bi-bookmark-check"></i> آخر الكتاب</a>
+</nav>
+
+<section class="book-reader" aria-label="كتاب ٣٠٠ دعاء">
+  {% for page_number in page_numbers %}
+  <figure class="book-page" id="page-{{ page_number }}">
+    <img
+      src="{{ url_for('static', filename='files/300_duas_page-%03d.webp'|format(page_number)) }}"
+      alt="صفحة {{ page_number }} من كتاب ٣٠٠ دعاء"
+      width="425"
+      height="615"
+      {% if page_number == 1 %}fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}>
+    <figcaption>الصفحة {{ page_number }}</figcaption>
+  </figure>
+  {% endfor %}
+
+  {% for filename, page_label, page_count in page_bundles %}
+  <figure class="book-page book-page--bundle">
+    <img
+      src="{{ url_for('static', filename='files/300_duas_pages_' ~ filename ~ '.webp') }}"
+      alt="صفحات {{ page_label }} من كتاب ٣٠٠ دعاء"
+      width="425"
+      height="{{ 615 * page_count }}"
+      loading="lazy"
+      decoding="async">
+    <figcaption>الصفحات {{ page_label }}</figcaption>
+  </figure>
+  {% endfor %}
+</section>
+
+<a class="book-reader-top" href="#" aria-label="العودة إلى أعلى الصفحة">
+  <i class="bi bi-arrow-up"></i>
+</a>
+{% endblock %}
+
+{% block scripts %}
+<style>
+  .book-reader-hero {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    background: linear-gradient(135deg, #075d61, #0d7377 58%, #159a9c);
+    border-radius: 1.5rem;
+    box-shadow: 0 18px 45px rgba(7, 93, 97, .2);
+  }
+  .book-reader-hero__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
+    font-size: 2rem;
+    color: #e9c46a;
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 1.25rem;
+  }
+  .book-reader-hero__eyebrow {
+    margin: 0 0 .25rem;
+    color: #f4d58d;
+    font-size: .85rem;
+    font-weight: 600;
+  }
+  .book-reader-hero h1 {
+    margin: 0 0 .5rem;
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    font-weight: 700;
+  }
+  .book-reader-hero__description {
+    max-width: 720px;
+    margin: 0;
+    color: rgba(255, 255, 255, .88);
+    line-height: 1.9;
+  }
+  .book-reader-nav {
+    position: sticky;
+    top: 76px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .75rem 1.25rem;
+    padding: .85rem 1rem;
+    margin-bottom: 1.25rem;
+    background: rgba(255, 255, 255, .94);
+    border: 1px solid rgba(13, 115, 119, .14);
+    border-radius: 1rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .08);
+    backdrop-filter: blur(12px);
+  }
+  .book-reader-nav a,
+  .book-reader-nav span {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: #0d7377;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .book-reader {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  .book-page {
+    width: min(100%, 680px);
+    margin: 0;
+    scroll-margin-top: 145px;
+  }
+  .book-page img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid rgba(11, 62, 64, .1);
+    border-radius: .9rem;
+    box-shadow: 0 14px 40px rgba(22, 45, 46, .12);
+  }
+  .book-page figcaption {
+    padding-top: .45rem;
+    color: #6c757d;
+    font-size: .78rem;
+    text-align: center;
+  }
+  .book-reader-top {
+    position: fixed;
+    inset-inline-end: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    color: #fff;
+    background: #0d7377;
+    border-radius: 50%;
+    box-shadow: 0 10px 25px rgba(13, 115, 119, .3);
+    text-decoration: none;
+  }
+  @media (max-width: 576px) {
+    .book-reader-hero {
+      align-items: flex-start;
+      padding: 1.25rem;
+    }
+    .book-reader-hero__icon {
+      flex-basis: 52px;
+      width: 52px;
+      height: 52px;
+      font-size: 1.35rem;
+    }
+    .book-reader-nav {
+      top: 64px;
+      font-size: .82rem;
+    }
+  }
+</style>
+{% endblock %}

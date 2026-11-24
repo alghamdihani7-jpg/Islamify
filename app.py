@@ -20,6 +20,7 @@ from data.prophet_duas import PROPHET_DUAS
 from data.quran_duas import QURAN_DUAS
 from data.prophets_quran_duas import PROPHETS_QURAN_DUAS
 from data.laylat_alqadr import LAYLAT_ALQADR_DUAS
+from data.friday_duas import FRIDAY_DUAS
 
 app = Flask(__name__)
 
@@ -213,6 +214,16 @@ def azkar_laylat_alqadr():
         title="دعاء ليلة القدر",
         items=LAYLAT_ALQADR_DUAS,
         storage_key="azkar_laylat_alqadr_v1",
+    )
+
+
+@app.route("/azkar/friday")
+def azkar_friday():
+    return render_template(
+        "azkar_page.html",
+        title="أدعية يوم الجمعة",
+        items=FRIDAY_DUAS,
+        storage_key="azkar_friday_v1",
     )
 
 

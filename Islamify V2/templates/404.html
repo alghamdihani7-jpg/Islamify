@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}أدعية إسلامية | الصفحة غير موجودة{% endblock %}
+
+{% block content %}
+<div class="error-page">
+  <div class="error-card">
+    <div class="error-card__icon">
+      <i class="bi bi-exclamation-triangle"></i>
+    </div>
+    <div class="error-card__code">{{ error_code | default('404') }}</div>
+    <p class="error-card__msg">{{ error_message | default('عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.') }}</p>
+    <a class="btn btn-primary" href="{{ url_for('home') }}">
+      <i class="bi bi-house-door"></i> العودة للرئيسية
+    </a>
+  </div>
+</div>
+{% endblock %}

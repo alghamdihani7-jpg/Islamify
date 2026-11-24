@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}أدعية إسلامية | Hadith{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <h1 class="h3">Hadith Library</h1>
+    <p class="text-secondary mb-0">Filter hadith by major collections.</p>
+</div>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-8 col-lg-4">
+        <select class="form-select" name="book">
+            <option value="all" {% if selected_book == 'all' %}selected{% endif %}>All Books</option>
+            {% for book in books %}
+                <option value="{{ book.lower() }}" {% if selected_book == book.lower() %}selected{% endif %}>{{ book }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" type="submit">Apply</button>
+    </div>
+</form>
+
+<div class="row g-3">
+    {% for item in hadith_list %}
+    <div class="col-lg-6">
+        <article class="panel-card rounded-4 p-4 h-100">
+            <div class="d-flex justify-content-between mb-2">
+                <h2 class="h6 m-0">{{ item.book }}</h2>
+                <span class="badge text-bg-light">Hadith</span>
+            </div>
+            <p class="arabic-text mb-2">{{ item.arabic }}</p>
+            <p class="mb-2">{{ item.translation }}</p>
+            <small class="text-secondary">{{ item.reference }}</small>
+        </article>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-warning rounded-4">No hadith available for this filter.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

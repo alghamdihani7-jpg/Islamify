@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}أدعية إسلامية | الأذكار والأدعية{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4 text-md-end">
+    <h1 class="h3">الأذكار والأدعية</h1>
+    <p class="text-secondary mb-0">جميع الأقسام الخمسة المطلوبة في صفحة واحدة مرتبة.</p>
+</div>
+
+<div class="quick-nav panel-card rounded-4 p-3 mb-4">
+    <div class="d-flex flex-wrap gap-2">
+        {% for section in sections %}
+            <a class="btn btn-sm btn-outline-primary" href="#{{ section['id'] }}">{{ section['title'] }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="row g-3">
+    {% for section in sections %}
+        <div class="col-lg-6" id="{{ section['id'] }}">
+            <section class="panel-card rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="h5 mb-0">{{ section['title'] }}</h2>
+                    <span class="badge rounded-pill text-bg-light">{{ section['items']|length }} أذكار</span>
+                </div>
+                <p class="text-secondary small mb-2">{{ section['description'] }}</p>
+                <p class="small source-pill mb-3"><i class="bi bi-patch-check-fill"></i> {{ section['source_summary'] }}</p>
+                <ol class="m-0 ps-3">
+                    {% for item in section['items'] %}
+                        <li class="mb-3 zikr-item">
+                            <p class="mb-2 arabic-text">{{ item['text'] }}</p>
+                            <div class="meta-line small text-secondary d-flex flex-wrap gap-3">
+                                <span><i class="bi bi-repeat"></i> {{ item['count'] }}</span>
+                                <span><i class="bi bi-bookmark-check"></i> {{ item['source'] }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </section>
+        </div>
+    {% endfor %}
+</div>
+
+<section class="panel-card rounded-4 p-4 mt-4 trust-box">
+    <h2 class="h6 mb-3">تنبيه مهم</h2>
+    <ul class="mb-0">
+        {% for note in trust_notes %}
+            <li class="mb-2">{{ note }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

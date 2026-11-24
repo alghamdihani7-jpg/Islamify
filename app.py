@@ -219,6 +219,7 @@ def azkar_laylat_alqadr():
 
 @app.route("/azkar/friday")
 def azkar_friday():
+    # Friday Duas route with full multilingual support
     return render_template(
         "azkar_page.html",
         title="أدعية يوم الجمعة",
